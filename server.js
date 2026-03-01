@@ -195,5 +195,5 @@ app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.ht
 // Start
 (async () => {
   await getDb();
-  app.listen(PORT, () => console.log(`\n🚗 CheryBatam CRM running at http://localhost:${PORT}\n`));
+  app.listen(PORT, () => console.log(`\n🚗 Chery Batam CRM running at http://localhost:${PORT}\n`));
 })();
