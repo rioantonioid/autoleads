@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoLead CRM — Dealership Lead Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0E17;--bg2:#111827;--bg3:#1A2332;--bg4:#232F42;--bg5:#2C3A50;
+  --bdr:rgba(255,255,255,.06);--bdr2:rgba(255,255,255,.12);
+  --t1:#F1F5F9;--t2:#94A3B8;--t3:#64748B;--t4:#475569;
+  --acc:#3B82F6;--acc2:#2563EB;--acc-g:rgba(59,130,246,.12);
+  --grn:#22C55E;--grn-g:rgba(34,197,94,.12);
+  --org:#F59E0B;--org-g:rgba(245,158,11,.12);
+  --red:#EF4444;--red-g:rgba(239,68,68,.12);
+  --pur:#A78BFA;--pur-g:rgba(167,139,250,.12);
+  --cyn:#06B6D4;--cyn-g:rgba(6,182,212,.12);
+  --pnk:#EC4899;--pnk-g:rgba(236,72,153,.12);
+  --r:10px;--r2:14px;--r3:20px;
+  --sh:0 4px 24px rgba(0,0,0,.25);
+  --tr:.2s cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+.hidden{display:none!important}
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0A0E17,#111827,#0F1729);position:relative;overflow:hidden}
+.login-page::before{content:'';position:absolute;top:-50%;right:-30%;width:80vw;height:80vw;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.06),transparent 70%)}
+.login-box{width:460px;max-width:94vw;background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r3);padding:36px 32px;position:relative;z-index:1;box-shadow:var(--sh)}
+.login-logo{font-size:26px;font-weight:800;letter-spacing:-.5px;margin-bottom:3px}.login-logo span{color:var(--acc)}
+.login-sub{color:var(--t3);font-size:12px;margin-bottom:24px}
+.login-error{background:var(--red-g);color:var(--red);padding:10px 14px;border-radius:var(--r);font-size:12px;font-weight:500;margin-bottom:14px;display:none}
+.login-accounts{margin-top:18px;padding-top:14px;border-top:1px solid var(--bdr)}
+.login-accounts-title{font-size:10px;color:var(--t4);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600}
+.login-acc-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.login-acc{padding:7px 10px;border-radius:var(--r);background:var(--bg3);border:1px solid var(--bdr);cursor:pointer;transition:all var(--tr);text-align:left}
+.login-acc:hover{background:var(--bg4);border-color:var(--bdr2)}
+.login-acc-name{font-size:11px;font-weight:600}.login-acc-role{font-size:9px;color:var(--t3);margin-top:1px}
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.fl-hint{font-weight:400;text-transform:none;color:var(--t4)}
+.fi,.fs,.ft{width:100%;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:10px 12px;color:var(--t1);font-family:inherit;font-size:13px;outline:none;transition:all var(--tr)}
+.fi:focus,.fs:focus,.ft:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-g)}
+.fi::placeholder{color:var(--t4)}
+.fi:disabled,.fs:disabled{opacity:.5;cursor:not-allowed}
+.fs{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+.ft{min-height:66px;resize:vertical}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:640px){.fr2,.fr3{grid-template-columns:1fr}}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all var(--tr);white-space:nowrap}
+.btn-p{background:var(--acc);color:#fff}.btn-p:hover{background:var(--acc2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(59,130,246,.3)}
+.btn-s{background:var(--bg3);color:var(--t2);border:1px solid var(--bdr)}.btn-s:hover{background:var(--bg4);color:var(--t1)}
+.btn-d{background:var(--red-g);color:var(--red)}.btn-d:hover{background:rgba(239,68,68,.2)}
+.btn-g{background:var(--grn-g);color:var(--grn)}.btn-g:hover{background:rgba(34,197,94,.2)}
+.btn-w{width:100%;justify-content:center}
+.btn-sm{padding:7px 12px;font-size:11px}
+.btn-icon{width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:var(--r);background:var(--bg3);border:1px solid var(--bdr);cursor:pointer;color:var(--t3);transition:all var(--tr)}
+.btn-icon:hover{background:var(--bg4);color:var(--t1)}
+.app-wrap{display:flex;min-height:100vh}
+.side{width:248px;background:var(--bg2);border-right:1px solid var(--bdr);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s ease}
+.side-head{padding:20px 16px;border-bottom:1px solid var(--bdr)}
+.side-logo{font-size:19px;font-weight:800;letter-spacing:-.3px}.side-logo span{color:var(--acc)}
+.side-ubox{margin-top:12px;padding:10px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--bdr)}
+.side-uname{font-size:13px;font-weight:600}
+.side-urole{display:inline-block;margin-top:4px;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700}
+.side-uperm{font-size:9px;color:var(--t4);margin-top:4px;line-height:1.4}
+.side-nav{padding:12px 8px;flex:1;overflow-y:auto}
+.sn{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r);color:var(--t3);font-size:12px;font-weight:500;cursor:pointer;transition:all var(--tr);margin-bottom:2px;border:none;background:none;width:100%;font-family:inherit;text-align:left}
+.sn:hover{background:var(--bg3);color:var(--t1)}.sn.act{background:var(--acc-g);color:var(--acc)}
+.sn svg{opacity:.6;flex-shrink:0}.sn.act svg{opacity:1}
+.sn .nbadge{margin-left:auto;background:var(--acc);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;font-family:'JetBrains Mono',monospace}
+.side-foot{padding:10px 16px;border-top:1px solid var(--bdr)}
+.main-c{flex:1;margin-left:248px;min-height:100vh}
+.top{position:sticky;top:0;z-index:50;background:rgba(10,14,23,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);padding:12px 22px;display:flex;align-items:center;justify-content:space-between}
+.top-t{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.top-a{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.pg{padding:20px 22px}
+.mob-ham{display:none}.side-ov{display:none}
+@media(max-width:768px){.side{transform:translateX(-100%)}.side.open{transform:translateX(0)}.side-ov{display:block;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}.main-c{margin-left:0}.mob-ham{display:flex}.top{padding:10px 14px}.pg{padding:14px}}
+.rc-director{background:var(--pnk-g);color:var(--pnk)}
+.rc-admin{background:var(--grn-g);color:var(--grn)}
+.rc-branch_manager{background:var(--pur-g);color:var(--pur)}
+.rc-sales_manager{background:var(--cyn-g);color:var(--cyn)}
+.rc-supervisor{background:var(--org-g);color:var(--org)}
+.rc-sales{background:var(--acc-g);color:var(--acc)}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:1100px){.sg{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.sg{grid-template-columns:1fr}}
+.sc{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:16px;position:relative;overflow:hidden;transition:all var(--tr)}
+.sc:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.sc-bar{position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r2) var(--r2) 0 0}
+.sc-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.sc-v{font-size:22px;font-weight:800;letter-spacing:-1px;font-family:'JetBrains Mono',monospace}
+.sc-l{font-size:10px;color:var(--t3);margin-top:2px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+.tc{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);overflow:hidden}
+.th{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr);flex-wrap:wrap;gap:8px}
+.th-t{font-size:13px;font-weight:700}.th-c{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.sb{position:relative}.sb svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);pointer-events:none}
+.sb input{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);padding:7px 10px 7px 30px;color:var(--t1);font-family:inherit;font-size:11px;outline:none;width:180px;transition:all var(--tr)}
+.sb input:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-g)}.sb input::placeholder{color:var(--t4)}
+.fd{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);padding:7px 24px 7px 9px;color:var(--t2);font-family:inherit;font-size:11px;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center}
+table{width:100%;border-collapse:collapse}
+thead th{padding:9px 16px;text-align:left;font-size:10px;font-weight:600;color:var(--t4);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--bdr);white-space:nowrap}
+tbody tr{transition:background var(--tr);cursor:pointer}tbody tr:hover{background:var(--bg4)}
+tbody td{padding:10px 16px;font-size:12px;border-bottom:1px solid var(--bdr);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:600}
+.bdot{width:5px;height:5px;border-radius:50%}
+.acell{display:flex;gap:2px}
+.abtn{width:26px;height:26px;border-radius:6px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t4);transition:all var(--tr)}
+.abtn:hover{background:var(--bg5);color:var(--t1)}.abtn.del:hover{background:var(--red-g);color:var(--red)}
+.empty{padding:44px 20px;text-align:center}.empty-i{font-size:32px;margin-bottom:8px;opacity:.3}.empty-t{font-size:13px;font-weight:600;color:var(--t3)}.empty-s{font-size:11px;color:var(--t4);margin-top:3px}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;animation:fi .15s ease}
+.md{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r2);width:100%;max-width:540px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:su .25s ease}
+.md-h{padding:16px 20px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between}
+.md-t{font-size:15px;font-weight:700}
+.md-x{width:28px;height:28px;border-radius:7px;border:none;background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t3);transition:all var(--tr)}.md-x:hover{background:var(--bg4);color:var(--t1)}
+.md-b{padding:20px}.md-f{padding:14px 20px;border-top:1px solid var(--bdr);display:flex;justify-content:flex-end;gap:8px}
+.dp{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:100vw;background:var(--bg2);border-left:1px solid var(--bdr);z-index:150;display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.3);animation:sr .25s ease;overflow-y:auto}
+.dp-h{padding:16px 20px;border-bottom:1px solid var(--bdr);display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0}
+.dp-b{padding:18px 20px;flex:1}
+.ds{margin-bottom:18px}.ds-t{font-size:10px;font-weight:600;color:var(--t4);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.df{display:flex;align-items:center;gap:10px;padding:7px 0}.df+.df{border-top:1px solid var(--bdr)}
+.df-l{font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.3px}.df-v{font-size:13px;font-weight:500}
+.spills{display:flex;flex-wrap:wrap;gap:4px}
+.spill{padding:6px 12px;border-radius:12px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all var(--tr);background:var(--bg3);color:var(--t3)}
+.spill:hover{background:var(--bg4);color:var(--t1)}.spill.act{border-color:transparent;color:#fff}
+.usr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;margin-bottom:8px}
+.usr-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:14px;display:flex;align-items:center;gap:11px;transition:all var(--tr)}.usr-card:hover{border-color:var(--bdr2)}
+.usr-av{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.usr-name{font-size:12px;font-weight:600}.usr-meta{font-size:10px;color:var(--t3);margin-top:2px;line-height:1.4}
+.usr-acts{margin-left:auto;display:flex;gap:2px}
+.set-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:16px;margin-bottom:12px}
+.set-title{font-size:13px;font-weight:700;margin-bottom:10px}
+.tag-list{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:12px;background:var(--bg4);font-size:10px;font-weight:500;color:var(--t2)}
+.tag .tag-x{cursor:pointer;opacity:.5;transition:opacity var(--tr)}.tag .tag-x:hover{opacity:1}
+.add-row{display:flex;gap:5px}.add-row input{flex:1}
+.color-tag{border:1px solid transparent!important}
+.color-opts{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.color-opt{width:22px;height:22px;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:all var(--tr);display:flex;align-items:center;justify-content:center}
+.color-opt:hover{transform:scale(1.15)}.color-opt.sel{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.2)}
+.color-opt svg{display:none}.color-opt.sel svg{display:block}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+@media(max-width:768px){.chart-row{grid-template-columns:1fr}}
+.chart-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:16px}
+.chart-title{font-size:12px;font-weight:700;margin-bottom:12px}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:120px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar-v{font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.bar-f{width:100%;border-radius:4px;transition:height .5s ease;min-height:2px}
+.bar-l{font-size:8px;color:var(--t4);font-weight:600;text-align:center;max-width:50px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.h-bar{margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.h-bar-label{font-size:10px;font-weight:500;min-width:74px;color:var(--t2)}
+.h-bar-track{flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.h-bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.h-bar-val{font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;min-width:20px;text-align:right}
+.hbar{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px}
+.hbar-sep{color:var(--t4)}
+.hbar-right{margin-left:auto;font-size:10px;color:var(--t4)}
+.role-sec{margin-bottom:16px}
+.role-sec-h{font-size:10px;font-weight:600;color:var(--t4);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.role-sec-dot{width:7px;height:7px;border-radius:50%}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--bg4);border:1px solid var(--bdr2);color:var(--t1);padding:10px 16px;border-radius:var(--r);font-size:12px;font-weight:600;z-index:300;box-shadow:var(--sh);animation:su .25s ease;display:flex;align-items:center;gap:7px}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes su{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sr{from{transform:translateX(100%)}to{transform:translateX(0)}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage" class="login-page">
+  <div class="login-box">
+    <div class="login-logo">Auto<span>Lead</span></div>
+    <div class="login-sub">New Car Dealership — Lead Management System</div>
+    <div class="login-error" id="loginError"></div>
+    <div class="fg"><label class="fl">Username</label><input class="fi" id="loginUser" placeholder="Enter username"></div>
+    <div class="fg"><label class="fl">Password</label><input class="fi" id="loginPass" type="password" placeholder="Enter password"></div>
+    <button class="btn btn-p btn-w" onclick="doLogin()" style="padding:12px">Sign In</button>
+    <div class="login-accounts">
+      <div class="login-accounts-title">Demo Accounts <span style="color:var(--t4)">(password: pass123 · admin: admin123)</span></div>
+      <div class="login-acc-grid" id="quickLogins"></div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appWrap" class="app-wrap hidden">
+  <div class="side-ov hidden" id="sideOv" onclick="toggleSide()"></div>
+  <aside class="side" id="side">
+    <div class="side-head">
+      <div class="side-logo">Auto<span>Lead</span></div>
+      <div class="side-ubox">
+        <div class="side-uname" id="sUname"></div>
+        <div class="side-urole" id="sUrole"></div>
+        <div class="side-uperm" id="sUperm"></div>
+      </div>
+    </div>
+    <nav class="side-nav" id="sideNav"></nav>
+    <div class="side-foot"><button class="btn btn-s btn-w btn-sm" onclick="doLogout()">⎋ Sign Out</button></div>
+  </aside>
+  <main class="main-c">
+    <div class="top">
+      <div class="top-t"><button class="btn-icon mob-ham" onclick="toggleSide()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><span id="pgTitle">Dashboard</span></div>
+      <div class="top-a" id="topA"></div>
+    </div>
+    <div class="pg" id="pgC"></div>
+  </main>
+</div>
+
+<div id="modalC" class="hidden"></div>
+<div id="detailC" class="hidden"></div>
+<div id="toastC" class="hidden"></div>
+
+<script>
+/* ═══════════════════════════════════════
+   CONFIG & STATE
+   ═══════════════════════════════════════ */
+const ROLES=[
+  {id:'director',label:'Director',level:5,viewAll:true,canExport:true,canUsers:true,canSettings:true},
+  {id:'admin',label:'Admin',level:5,viewAll:true,canExport:true,canUsers:true,canSettings:true},
+  {id:'branch_manager',label:'Branch Manager',level:4,viewAll:true,canExport:true,canUsers:true,canSettings:true},
+  {id:'sales_manager',label:'Sales Manager',level:3,viewAll:true,canExport:true,canUsers:true,canSettings:false},
+  {id:'supervisor',label:'Supervisor',level:2,viewAll:false,canExport:true,canUsers:false,canSettings:false},
+  {id:'sales',label:'Sales',level:1,viewAll:false,canExport:false,canUsers:false,canSettings:false}
+];
+const PERM_DESC={
+  director:'View all leads · Export · Manage users · Settings',
+  admin:'View all leads · Export · Manage users · Settings',
+  branch_manager:'View all leads · Export · Manage users · Settings',
+  sales_manager:'View all leads · Export · Manage users',
+  supervisor:'View own team leads only · Export team data',
+  sales:'View own leads only'
+};
+
+// Status color map
+let STATUS_COLORS={
+  New:'#3B82F6',Contacted:'#F59E0B',Interested:'#06B6D4','Test Drive':'#A78BFA',
+  Negotiation:'#F59E0B',Sold:'#22C55E',Lost:'#EF4444','Follow Up':'#F59E0B',
+  Hot:'#EF4444',Closed:'#22C55E',Warm:'#F59E0B',Cold:'#06B6D4',
+  Pending:'#64748B',Won:'#22C55E',Booked:'#22C55E',Cancelled:'#EF4444',
+  'No Answer':'#64748B',Callback:'#F59E0B',Confirmed:'#22C55E'
+};
+function sC(s){return STATUS_COLORS[s]||'#64748B'}
+function sBg(s){const c=sC(s);return c+'1F'}
+
+// Global state
+let CU=null; // current user
+let PERMS=null; // permissions
+let LEADS=[];
+let USERS=[];
+let SETTINGS={statuses:[],sources:[],carTypes:[],statusColors:{}};
+
+function R(id){return ROLES.find(r=>r.id===id)||ROLES[5]}
+function rLabel(id){return R(id).label}
+function $el(id){return document.getElementById(id)}
+
+/* ═══════════════════════════════════════
+   API HELPERS
+   ═══════════════════════════════════════ */
+async function api(url,opts={}){
+  const res=await fetch(url,{
+    headers:{'Content-Type':'application/json',...(opts.headers||{})},
+    credentials:'include',
+    ...opts,
+    body:opts.body?JSON.stringify(opts.body):undefined
+  });
+  if(res.status===401){showLogin();throw new Error('Unauthorized')}
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok) throw new Error(data.error||'Request failed');
+  return data;
+}
+
+async function loadAll(){
+  const [leads,users,settings]=await Promise.all([
+    api('/api/leads'),api('/api/users'),api('/api/settings')
+  ]);
+  LEADS=leads;USERS=users;
+  SETTINGS={
+    statuses:settings.statuses||[],sources:settings.sources||[],
+    carTypes:settings.carTypes||[],statusColors:settings.statusColors||{}
+  };
+  Object.assign(STATUS_COLORS,SETTINGS.statusColors);
+}
+
+/* ═══════════════════════════════════════
+   PERMISSION HELPERS
+   ═══════════════════════════════════════ */
+function pViewAll(){return PERMS?.viewAll}
+function pExport(){return PERMS?.canExport}
+function pUsers(){return PERMS?.canUsers}
+function pSettings(){return PERMS?.canSettings}
+
+function getVisibleLeads(){return LEADS}
+function getTeamUsers(){
+  if(pViewAll())return USERS;
+  if(CU.role==='supervisor')return USERS.filter(u=>u.supervisorId===CU.id||u.id===CU.id);
+  return [CU];
+}
+function userById(id){return USERS.find(u=>u.id===id)}
+function userByUn(un){return USERS.find(u=>u.username===un)}
+function getSupervisors(){return USERS.filter(u=>u.role==='supervisor'&&u.active)}
+function initials(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2)}
+
+/* ═══════════════════════════════════════
+   AUTH
+   ═══════════════════════════════════════ */
+async function doLogin(){
+  const u=$el('loginUser').value.trim(),p=$el('loginPass').value;
+  try{
+    const data=await api('/api/login',{method:'POST',body:{username:u,password:p}});
+    CU=data.user;PERMS=data.permissions;
+    $el('loginPage').classList.add('hidden');
+    $el('appWrap').classList.remove('hidden');
+    await initApp();
+  }catch(e){
+    $el('loginError').textContent=e.message;$el('loginError').style.display='block';
+  }
+}
+async function doLogout(){
+  await api('/api/logout',{method:'POST'}).catch(()=>{});
+  CU=null;PERMS=null;showLogin();
+}
+function showLogin(){
+  $el('appWrap').classList.add('hidden');$el('loginPage').classList.remove('hidden');
+  $el('loginUser').value='';$el('loginPass').value='';$el('loginError').style.display='none';
+}
+async function checkSession(){
+  try{
+    const data=await api('/api/me');
+    CU=data.user;PERMS=data.permissions;
+    $el('loginPage').classList.add('hidden');$el('appWrap').classList.remove('hidden');
+    await initApp();
+  }catch(e){showLogin()}
+}
+
+// Quick login buttons (hardcoded demo accounts)
+const DEMO_ACCOUNTS=[
+  {u:'director',p:'pass123',n:'Tan Wei Ming',r:'Director'},
+  {u:'admin',p:'admin123',n:'Nurul Hana',r:'Admin'},
+  {u:'branchmgr',p:'pass123',n:'Ahmad Razak',r:'Branch Manager'},
+  {u:'salesmgr',p:'pass123',n:'Lim Mei Ling',r:'Sales Manager'},
+  {u:'supv_ali',p:'pass123',n:'Ali bin Hassan',r:'Supervisor'},
+  {u:'supv_siti',p:'pass123',n:'Siti Nurhaliza',r:'Supervisor'},
+  {u:'sarah',p:'pass123',n:'Sarah Rahman',r:'Sales'},
+  {u:'james',p:'pass123',n:'James Ong',r:'Sales'},
+  {u:'farah',p:'pass123',n:'Farah Aminah',r:'Sales'},
+  {u:'kevin',p:'pass123',n:'Kevin Loh',r:'Sales'},
+];
+$el('quickLogins').innerHTML=DEMO_ACCOUNTS.map(a=>
+  `<div class="login-acc" onclick="$el('loginUser').value='${a.u}';$el('loginPass').value='${a.p}';doLogin()"><div class="login-acc-name">${a.n}</div><div class="login-acc-role">${a.r}</div></div>`
+).join('');
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!$el('loginPage').classList.contains('hidden'))doLogin()});
+
+/* ═══════════════════════════════════════
+   APP INIT
+   ═══════════════════════════════════════ */
+async function initApp(){
+  $el('sUname').textContent=CU.fullName;
+  $el('sUrole').className='side-urole rc-'+CU.role;$el('sUrole').textContent=rLabel(CU.role);
+  $el('sUperm').textContent=PERM_DESC[CU.role];
+  await loadAll();
+  buildNav();go('dashboard');
+}
+
+function buildNav(){
+  const n=LEADS.length;
+  let h=`<button class="sn act" data-v="dashboard">📊 Dashboard</button><button class="sn" data-v="leads">📋 Leads <span class="nbadge">${n}</span></button>`;
+  if(CU.role==='supervisor') h+=`<button class="sn" data-v="team">👥 My Team</button>`;
+  if(pUsers()) h+=`<button class="sn" data-v="users">⚙ Users</button>`;
+  if(pSettings()) h+=`<button class="sn" data-v="settings">🔧 Settings</button>`;
+  $el('sideNav').innerHTML=h;
+  $el('sideNav').querySelectorAll('.sn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.v)));
+}
+
+async function go(v){
+  $el('sideNav').querySelectorAll('.sn').forEach(b=>b.classList.toggle('act',b.dataset.v===v));
+  $el('pgTitle').textContent={dashboard:'Dashboard',leads:'Leads',team:'My Team',users:'Manage Users',settings:'Settings'}[v]||v;
+  closeDt();closeMd();$el('side').classList.remove('open');$el('sideOv').classList.add('hidden');
+  await loadAll();
+  ({dashboard:renderDash,leads:renderLeads,team:renderTeam,users:renderUsers,settings:renderSets})[v]?.();
+}
+function toggleSide(){$el('side').classList.toggle('open');$el('sideOv').classList.toggle('hidden')}
+function toast(m){const c=$el('toastC');c.innerHTML=`<div class="toast">✓ ${m}</div>`;c.classList.remove('hidden');clearTimeout(c._t);c._t=setTimeout(()=>c.classList.add('hidden'),2800)}
+
+/* ═══════════════════════════════════════
+   DASHBOARD
+   ═══════════════════════════════════════ */
+function renderDash(){
+  const leads=LEADS;const sts=SETTINGS.statuses;
+  const total=leads.length,sold=leads.filter(l=>l.status==='Sold').length;
+  const active=leads.filter(l=>!['Sold','Lost'].includes(l.status)).length;
+  const td=new Date().toISOString().split('T')[0];
+  const fups=leads.filter(l=>l.followUp&&l.followUp<=td&&!['Sold','Lost'].includes(l.status)).length;
+
+  $el('topA').innerHTML=`<button class="btn btn-p btn-sm" onclick="openLF()">+ New Lead</button>`;
+
+  let hb='';
+  if(CU.role==='sales'){
+    const sup=userById(CU.supervisorId);
+    hb=`<div class="hbar">👤 <strong>${CU.fullName}</strong> (Sales)${sup?` <span class="hbar-sep">→</span> Supervisor: <strong>${sup.fullName}</strong>`:''}<span class="hbar-right">🔒 Showing your leads only</span></div>`;
+  }else if(CU.role==='supervisor'){
+    const tc=USERS.filter(u=>u.supervisorId===CU.id&&u.active).length;
+    hb=`<div class="hbar">📋 <strong>${CU.fullName}</strong> (Supervisor) <span class="hbar-sep">→</span> <strong>${tc}</strong> team members<span class="hbar-right">🔒 Showing your team's leads</span></div>`;
+  }else{
+    hb=`<div class="hbar">🏢 <strong>${CU.fullName}</strong> (${rLabel(CU.role)})<span class="hbar-right">✓ Viewing all dealership leads</span></div>`;
+  }
+
+  let h=hb+`<div class="sg">`;
+  [{l:'Total Leads',v:total,c:'#3B82F6',bg:'rgba(59,130,246,.12)'},
+   {l:'Active Pipeline',v:active,c:'#06B6D4',bg:'rgba(6,182,212,.12)'},
+   {l:'Sold',v:sold,c:'#22C55E',bg:'rgba(34,197,94,.12)'},
+   {l:'Follow Ups Due',v:fups,c:'#F59E0B',bg:'rgba(245,158,11,.12)'}
+  ].forEach(s=>{h+=`<div class="sc"><div class="sc-bar" style="background:${s.c}"></div><div class="sc-icon" style="background:${s.bg}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${s.c}" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="sc-v" style="color:${s.c}">${s.v}</div><div class="sc-l">${s.l}</div></div>`});
+  h+=`</div>`;
+
+  const sc=sts.map(s=>({s,c:leads.filter(l=>l.status===s).length}));const mx=Math.max(...sc.map(x=>x.c),1);
+  const srcs=SETTINGS.sources;const srcC=srcs.map(s=>({s,c:leads.filter(l=>l.source===s).length})).filter(x=>x.c>0).sort((a,b)=>b.c-a.c);const mxS=Math.max(...srcC.map(x=>x.c),1);
+  h+=`<div class="chart-row"><div class="chart-card"><div class="chart-title">Leads by Status</div><div class="bar-chart">${sc.map(x=>`<div class="bar-col"><div class="bar-v" style="color:${sC(x.s)}">${x.c}</div><div class="bar-f" style="height:${(x.c/mx)*100}px;background:${sC(x.s)}"></div><div class="bar-l">${x.s}</div></div>`).join('')}</div></div>
+  <div class="chart-card"><div class="chart-title">Leads by Source</div>${srcC.length?srcC.map(x=>`<div class="h-bar"><div class="h-bar-label">${x.s}</div><div class="h-bar-track"><div class="h-bar-fill" style="width:${(x.c/mxS)*100}%;background:#3B82F6"></div></div><div class="h-bar-val">${x.c}</div></div>`).join(''):'<div class="empty-s">No data</div>'}</div></div>`;
+
+  if(pViewAll()){
+    const salesUsers=USERS.filter(u=>u.role==='sales'&&u.active);const allL=LEADS;
+    const perf=salesUsers.map(u=>({n:u.fullName,sup:userById(u.supervisorId),t:allL.filter(l=>l.createdBy===u.username).length,s:allL.filter(l=>l.createdBy===u.username&&l.status==='Sold').length})).sort((a,b)=>b.t-a.t);
+    const mxP=Math.max(...perf.map(x=>x.t),1);
+    h+=`<div class="chart-card" style="margin-bottom:20px"><div class="chart-title">Sales Performance by Person</div>${perf.map(x=>`<div class="h-bar"><div class="h-bar-label">${x.n}<br><span style="font-size:8px;color:var(--t4)">Sup: ${x.sup?x.sup.fullName:'—'}</span></div><div class="h-bar-track"><div class="h-bar-fill" style="width:${(x.t/mxP)*100}%;background:#3B82F6"></div></div><div class="h-bar-val">${x.t} <span style="color:#22C55E;font-size:9px">${x.s}✓</span></div></div>`).join('')}</div>`;
+  }
+
+  if(CU.role==='supervisor'){
+    const teamU=USERS.filter(u=>u.supervisorId===CU.id&&u.active);
+    const perf=teamU.map(u=>({n:u.fullName,t:LEADS.filter(l=>l.createdBy===u.username).length,s:LEADS.filter(l=>l.createdBy===u.username&&l.status==='Sold').length})).sort((a,b)=>b.t-a.t);
+    const mxP=Math.max(...perf.map(x=>x.t),1);
+    if(perf.length) h+=`<div class="chart-card" style="margin-bottom:20px"><div class="chart-title">My Team Performance</div>${perf.map(x=>`<div class="h-bar"><div class="h-bar-label">${x.n}</div><div class="h-bar-track"><div class="h-bar-fill" style="width:${(x.t/mxP)*100}%;background:#F59E0B"></div></div><div class="h-bar-val">${x.t} <span style="color:#22C55E;font-size:9px">${x.s}✓</span></div></div>`).join('')}</div>`;
+  }
+
+  h+=`<div class="tc"><div class="th"><div class="th-t">Recent Leads</div></div><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th>Source</th><th>Sales</th><th>Supervisor</th><th>Follow Up</th></tr></thead><tbody>${leads.slice(0,10).map(lRow).join('')}</tbody></table></div>`;
+  $el('pgC').innerHTML=h;
+}
+
+function lRow(l){
+  const u=userByUn(l.createdBy);const sup=u?userById(u.supervisorId):null;
+  const od=l.followUp&&l.followUp<=new Date().toISOString().split('T')[0]&&!['Sold','Lost'].includes(l.status);
+  return `<tr onclick="openLD(${l.id})"><td><strong style="font-size:12px">${l.name}</strong><div style="font-size:10px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td style="color:var(--t3);font-size:10px">${l.source}</td><td style="font-size:11px">${u?u.fullName:l.createdBy}</td><td style="font-size:10px;color:var(--t4)">${sup?sup.fullName:'—'}</td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td></tr>`;
+}
+
+/* ═══════════════════════════════════════
+   LEADS TABLE
+   ═══════════════════════════════════════ */
+function renderLeads(){
+  const sts=SETTINGS.statuses;const srcs=SETTINGS.sources;const team=getTeamUsers();
+  let exp=pExport()?`<button class="btn btn-s btn-sm" onclick="expCSV()">📥 Export CSV</button>`:'';
+  $el('topA').innerHTML=`${exp}<button class="btn btn-p btn-sm" onclick="openLF()">+ New Lead</button>`;
+
+  let salesDD='';
+  if(team.length>1){
+    const salesOnly=team.filter(u=>['sales','supervisor'].includes(u.role));
+    salesDD=`<select class="fd" id="fSales" onchange="filt()"><option value="All">All Sales</option>${salesOnly.map(u=>`<option value="${u.username}">${u.fullName}</option>`).join('')}</select>`;
+  }
+
+  $el('pgC').innerHTML=`<div class="tc"><div class="th"><div class="th-t">All Leads</div><div class="th-c">
+    <div class="sb"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="lSrch" placeholder="Search..." oninput="filt()"></div>
+    <select class="fd" id="fSt" onchange="filt()"><option value="All">All Status</option>${sts.map(s=>`<option>${s}</option>`).join('')}</select>
+    <select class="fd" id="fSrc" onchange="filt()"><option value="All">All Sources</option>${srcs.map(s=>`<option>${s}</option>`).join('')}</select>
+    ${salesDD}
+  </div></div><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th>Source</th><th>Date</th><th>Follow Up</th><th>Sales</th><th>Supervisor</th><th style="width:55px"></th></tr></thead><tbody id="lBody"></tbody></table></div></div>`;
+  filt();
+}
+
+function filt(){
+  let leads=LEADS;
+  const q=($el('lSrch')?.value||'').toLowerCase();
+  const st=$el('fSt')?.value||'All';const src=$el('fSrc')?.value||'All';const sal=$el('fSales')?.value||'All';
+  const f=leads.filter(l=>(l.name.toLowerCase().includes(q)||l.phone.includes(q))&&(st==='All'||l.status===st)&&(src==='All'||l.source===src)&&(sal==='All'||l.createdBy===sal));
+  const b=$el('lBody');if(!b)return;
+  if(!f.length){b.innerHTML=`<tr><td colspan="9"><div class="empty"><div class="empty-i">📋</div><div class="empty-t">No leads found</div></div></td></tr>`;return}
+  b.innerHTML=f.map(l=>{
+    const u=userByUn(l.createdBy);const sup=u?userById(u.supervisorId):null;
+    const od=l.followUp&&l.followUp<=new Date().toISOString().split('T')[0]&&!['Sold','Lost'].includes(l.status);
+    const canE=CU.role!=='sales'||l.createdBy===CU.username;
+    return `<tr onclick="openLD(${l.id})"><td><strong style="font-size:12px">${l.name}</strong><div style="font-size:9px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td style="color:var(--t3);font-size:10px">${l.source}</td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3)">${l.date}</td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td><td style="font-size:11px">${u?u.fullName:l.createdBy}</td><td style="font-size:10px;color:var(--t4)">${sup?sup.fullName:'—'}</td><td><div class="acell">${canE?`<button class="abtn" onclick="event.stopPropagation();openLF(${l.id})">✎</button><button class="abtn del" onclick="event.stopPropagation();delL(${l.id})">✕</button>`:''}</div></td></tr>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════
+   LEAD FORM
+   ═══════════════════════════════════════ */
+function openLF(id){
+  const l=id?LEADS.find(x=>x.id===id):null;
+  const sts=SETTINGS.statuses;const srcs=SETTINGS.sources;const cts=SETTINGS.carTypes;
+  const td=new Date().toISOString().split('T')[0];
+  $el('modalC').classList.remove('hidden');
+  $el('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md">
+    <div class="md-h"><span class="md-t">${l?'Edit Lead':'New Lead'}</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b">
+      <div class="fr2"><div class="fg"><label class="fl">Customer Name *</label><input class="fi" id="fN" value="${l?l.name:''}" placeholder="Full name"></div><div class="fg"><label class="fl">Phone *</label><input class="fi" id="fP" value="${l?l.phone:''}" placeholder="+60 12-345 6789"></div></div>
+      <div class="fr3"><div class="fg"><label class="fl">Car Type</label><select class="fs" id="fCT">${cts.map(c=>`<option ${l&&l.carType===c?'selected':''}>${c}</option>`).join('')}</select></div><div class="fg"><label class="fl">Source</label><select class="fs" id="fSo">${srcs.map(s=>`<option ${l&&l.source===s?'selected':''}>${s}</option>`).join('')}</select></div><div class="fg"><label class="fl">Status</label><select class="fs" id="fStt">${sts.map(s=>`<option ${l&&l.status===s?'selected':''}>${s}</option>`).join('')}</select></div></div>
+      <div class="fr2"><div class="fg"><label class="fl">Date</label><input class="fi" id="fD" type="date" value="${l?l.date:td}"></div><div class="fg"><label class="fl">Follow Up</label><input class="fi" id="fFU" type="date" value="${l?l.followUp||'':''}"></div></div>
+      <div class="fg"><label class="fl">Notes</label><textarea class="ft fi" id="fNo" placeholder="Additional details...">${l?l.notes||'':''}</textarea></div>
+    </div>
+    <div class="md-f"><button class="btn btn-s" onclick="closeMd()">Cancel</button><button class="btn btn-p" onclick="saveL(${id||0})">Save</button></div>
+  </div></div>`;
+}
+
+async function saveL(id){
+  const name=$el('fN').value.trim(),phone=$el('fP').value.trim();
+  if(!name||!phone){toast('Name & Phone required');return}
+  const d={name,phone,carType:$el('fCT').value,source:$el('fSo').value,status:$el('fStt').value,date:$el('fD').value,followUp:$el('fFU').value,notes:$el('fNo').value.trim()};
+  try{
+    if(id){await api(`/api/leads/${id}`,{method:'PUT',body:d});toast('Lead updated')}
+    else{await api('/api/leads',{method:'POST',body:d});toast('Lead added')}
+    closeMd();await loadAll();buildNav();renderLeads();
+  }catch(e){toast(e.message)}
+}
+
+async function delL(id){
+  if(!confirm('Delete this lead?'))return;
+  try{await api(`/api/leads/${id}`,{method:'DELETE'});toast('Lead deleted');closeDt();await loadAll();buildNav();go('leads')}catch(e){toast(e.message)}
+}
+
+/* ═══════════════════════════════════════
+   LEAD DETAIL
+   ═══════════════════════════════════════ */
+function openLD(id){
+  const l=LEADS.find(x=>x.id===id);if(!l)return;
+  const u=userByUn(l.createdBy);const sup=u?userById(u.supervisorId):null;
+  const sts=SETTINGS.statuses;
+  const od=l.followUp&&l.followUp<=new Date().toISOString().split('T')[0]&&!['Sold','Lost'].includes(l.status);
+  const canE=CU.role!=='sales'||l.createdBy===CU.username;
+
+  $el('detailC').classList.remove('hidden');
+  $el('detailC').innerHTML=`<div class="dp">
+    <div class="dp-h"><div><div style="font-size:17px;font-weight:700">${l.name}</div><div style="font-size:12px;color:var(--t3);margin-top:2px">${l.phone}</div></div>
+    <div style="display:flex;gap:4px;flex-shrink:0">
+      ${canE?`<button class="btn btn-s btn-sm" onclick="openLF(${l.id})">Edit</button><button class="btn btn-d btn-sm" onclick="delL(${l.id})">Del</button>`:''}
+      <button class="btn-icon" onclick="closeDt()" style="width:28px;height:28px">✕</button>
+    </div></div>
+    <div class="dp-b">
+      <div class="ds"><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)};font-size:11px;padding:5px 13px"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></div>
+      <div class="ds"><div class="ds-t">Details</div>
+        ${[{l:'Phone',v:l.phone},{l:'Car Type',v:l.carType},{l:'Source',v:l.source},{l:'Date',v:l.date},{l:'Follow Up',v:l.followUp?(od?`<span style="color:var(--red);font-weight:600">${l.followUp} ⚠ OVERDUE</span>`:l.followUp):'—'},{l:'Sales Person',v:u?`${u.fullName} <span class="badge rc-${u.role}" style="font-size:8px;padding:1px 6px">${rLabel(u.role)}</span>`:l.createdBy},{l:'Supervisor',v:sup?sup.fullName:'—'},{l:'Created',v:l.createdAt}].map(f=>`<div class="df"><div><div class="df-l">${f.l}</div><div class="df-v">${f.v}</div></div></div>`).join('')}
+      </div>
+      ${l.notes?`<div class="ds"><div class="ds-t">Notes</div><div style="font-size:12px;line-height:1.6;color:var(--t2);background:var(--bg3);padding:10px 12px;border-radius:var(--r);border:1px solid var(--bdr)">${l.notes}</div></div>`:''}
+      ${canE?`<div class="ds"><div class="ds-t">Update Status</div><div class="spills">${sts.map(s=>`<button class="spill ${l.status===s?'act':''}" style="${l.status===s?`background:${sC(s)}`:''}" onclick="updSt(${l.id},'${s}')">${s}</button>`).join('')}</div></div>`:''}
+    </div>
+  </div>`;
+}
+async function updSt(id,s){
+  try{await api(`/api/leads/${id}/status`,{method:'PATCH',body:{status:s}});toast('Status → '+s);await loadAll();openLD(id);buildNav()}catch(e){toast(e.message)}
+}
+
+/* ═══════════════════════════════════════
+   MY TEAM
+   ═══════════════════════════════════════ */
+function renderTeam(){
+  const team=USERS.filter(u=>u.supervisorId===CU.id&&u.active);
+  $el('topA').innerHTML='';
+  let h=`<div class="hbar">📋 <strong>${CU.fullName}</strong> — Supervisor <span class="hbar-sep">→</span> <strong>${team.length}</strong> sales members</div><div class="usr-grid">`;
+  team.forEach(u=>{
+    const leads=LEADS.filter(l=>l.createdBy===u.username);const sold=leads.filter(l=>l.status==='Sold').length;
+    h+=`<div class="usr-card"><div class="usr-av rc-sales">${initials(u.fullName)}</div><div><div class="usr-name">${u.fullName}</div><div class="usr-meta">@${u.username} · ${leads.length} leads · <span style="color:#22C55E">${sold} sold</span></div></div></div>`;
+  });
+  h+=`</div>`;
+  if(!team.length) h+=`<div class="empty"><div class="empty-t">No team members assigned</div></div>`;
+  $el('pgC').innerHTML=h;
+}
+
+/* ═══════════════════════════════════════
+   USERS
+   ═══════════════════════════════════════ */
+function renderUsers(){
+  if(!pUsers()){$el('pgC').innerHTML=`<div class="empty"><div class="empty-t">Access Denied</div></div>`;return}
+  $el('topA').innerHTML=`<button class="btn btn-p btn-sm" onclick="openUF()">+ Add User</button>`;
+  let h=`<div style="margin-bottom:12px;font-size:11px;color:var(--t3)">${USERS.length} / 50 users</div>`;
+  ['director','admin','branch_manager','sales_manager','supervisor','sales'].forEach(rid=>{
+    const ru=USERS.filter(u=>u.role===rid);if(!ru.length)return;
+    h+=`<div class="role-sec"><div class="role-sec-h"><span class="role-sec-dot" style="background:${R(rid).level>3?'#EC4899':rid==='admin'?'#22C55E':rid==='branch_manager'?'#A78BFA':rid==='sales_manager'?'#06B6D4':rid==='supervisor'?'#F59E0B':'#3B82F6'}"></span>${rLabel(rid)}s (${ru.length})</div><div class="usr-grid">`;
+    ru.forEach(u=>{
+      const sup=userById(u.supervisorId);
+      h+=`<div class="usr-card"><div class="usr-av rc-${rid}">${initials(u.fullName)}</div><div><div class="usr-name">${u.fullName}${!u.active?' <span style="color:var(--red);font-size:9px">DISABLED</span>':''}</div><div class="usr-meta">@${u.username}${sup?` · Sup: ${sup.fullName}`:''}</div></div><div class="usr-acts"><button class="abtn" onclick="openUF(${u.id})">✎</button>${u.id!==1?`<button class="abtn del" onclick="delU(${u.id})">✕</button>`:''}</div></div>`;
+    });
+    h+=`</div></div>`;
+  });
+  $el('pgC').innerHTML=h;
+}
+
+function openUF(id){
+  const u=id?USERS.find(x=>x.id===id):null;const sups=getSupervisors();
+  $el('modalC').classList.remove('hidden');
+  $el('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md">
+    <div class="md-h"><span class="md-t">${u?'Edit User':'Add User'}</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b">
+      <div class="fr2"><div class="fg"><label class="fl">Full Name *</label><input class="fi" id="uN" value="${u?u.fullName:''}"></div><div class="fg"><label class="fl">Username *</label><input class="fi" id="uU" value="${u?u.username:''}" ${u?'disabled':''}></div></div>
+      <div class="fr2"><div class="fg"><label class="fl">${u?'New Password (blank=keep)':'Password *'}</label><input class="fi" id="uP" type="password"></div>
+      <div class="fg"><label class="fl">Role *</label><select class="fs" id="uR" onchange="toggleSup()">${ROLES.map(r=>`<option value="${r.id}" ${u&&u.role===r.id?'selected':''}>${r.label}</option>`).join('')}</select></div></div>
+      <div class="fg" id="supF" style="${u&&u.role==='sales'?'':'display:none'}">
+        <label class="fl">Supervisor * <span class="fl-hint">(Required for Sales)</span></label>
+        <select class="fs" id="uSup"><option value="">— Select Supervisor —</option>${sups.map(s=>`<option value="${s.id}" ${u&&u.supervisorId===s.id?'selected':''}>${s.fullName}</option>`).join('')}</select>
+      </div>
+      <div class="fg"><label class="fl">Status</label><select class="fs" id="uA"><option value="true" ${!u||u.active?'selected':''}>Active</option><option value="false" ${u&&!u.active?'selected':''}>Disabled</option></select></div>
+      <div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:10px 12px;font-size:10px;color:var(--t4);line-height:1.5;margin-top:4px">
+        <strong style="color:var(--t2)">Role permissions:</strong><br>
+        • <strong>Director / Admin</strong> — View all, export, manage users, settings<br>
+        • <strong>Branch Manager</strong> — View all, export, manage users, settings<br>
+        • <strong>Sales Manager</strong> — View all, export, manage users<br>
+        • <strong>Supervisor</strong> — View own team only, export team data<br>
+        • <strong>Sales</strong> — View own leads only, must select a supervisor
+      </div>
+    </div>
+    <div class="md-f"><button class="btn btn-s" onclick="closeMd()">Cancel</button><button class="btn btn-p" onclick="saveU(${id||0})">Save</button></div>
+  </div></div>`;
+}
+
+function toggleSup(){$el('supF').style.display=$el('uR').value==='sales'?'block':'none'}
+
+async function saveU(id){
+  const name=$el('uN').value.trim(),user=$el('uU').value.trim().toLowerCase(),pass=$el('uP').value,role=$el('uR').value,active=$el('uA').value==='true';
+  const supId=role==='sales'?Number($el('uSup').value)||null:null;
+  if(!name||(!id&&(!user||!pass))){toast('Fill required fields');return}
+  if(role==='sales'&&!supId){toast('Sales must select a Supervisor!');return}
+  try{
+    if(id){
+      await api(`/api/users/${id}`,{method:'PUT',body:{fullName:name,password:pass||undefined,role,supervisorId:supId,active}});
+      toast('User updated');
+    }else{
+      await api('/api/users',{method:'POST',body:{username:user,password:pass,fullName:name,role,supervisorId:supId,active}});
+      toast('User created');
+    }
+    closeMd();await loadAll();renderUsers();buildNav();
+  }catch(e){toast(e.message)}
+}
+
+async function delU(id){
+  if(!confirm('Delete user?'))return;
+  try{await api(`/api/users/${id}`,{method:'DELETE'});toast('User deleted');await loadAll();renderUsers();buildNav()}catch(e){toast(e.message)}
+}
+
+/* ═══════════════════════════════════════
+   SETTINGS
+   ═══════════════════════════════════════ */
+function renderSets(){
+  if(!pSettings()){$el('pgC').innerHTML=`<div class="empty"><div class="empty-t">Access Denied</div></div>`;return}
+  $el('topA').innerHTML='';
+  const statuses=SETTINGS.statuses;const sources=SETTINGS.sources;const carTypes=SETTINGS.carTypes;
+
+  const COLOR_CHOICES=[
+    {id:'#3B82F6',label:'Blue'},{id:'#22C55E',label:'Green'},{id:'#F59E0B',label:'Orange'},
+    {id:'#EF4444',label:'Red'},{id:'#A78BFA',label:'Purple'},{id:'#06B6D4',label:'Cyan'},
+    {id:'#EC4899',label:'Pink'},{id:'#64748B',label:'Gray'}
+  ];
+
+  let statusHTML=`<div class="set-card"><div class="set-title">Lead Statuses</div>
+    <div style="font-size:10px;color:var(--t4);margin-bottom:10px">Customize pipeline stages.</div>
+    <div class="tag-list">${statuses.map(s=>{
+      const c=sC(s);
+      return `<span class="tag color-tag" style="background:${c}1F;color:${c};border-color:${c}33"><span class="bdot" style="background:${c};width:6px;height:6px;border-radius:50%"></span>${s}<span class="tag-x" onclick="rmSetting('statuses','${s}')">✕</span></span>`;
+    }).join('')}</div>
+    <div style="margin-top:10px">
+      <div class="add-row"><input class="fi" id="newStatus" placeholder="New status name..." onkeydown="if(event.key==='Enter')addStatus()"><button class="btn btn-p btn-sm" onclick="addStatus()">Add</button></div>
+      <div class="color-opts" id="colorPicker">${COLOR_CHOICES.map((c,i)=>`<div class="color-opt ${i===0?'sel':''}" data-color="${c.id}" style="background:${c.id}" onclick="pickColor(this)" title="${c.label}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>`).join('')}</div>
+    </div>
+  </div>`;
+
+  const mkSec=(t,k,items,desc)=>`<div class="set-card"><div class="set-title">${t}</div><div style="font-size:10px;color:var(--t4);margin-bottom:8px">${desc}</div><div class="tag-list">${items.map(i=>`<span class="tag">${i}<span class="tag-x" onclick="rmSetting('${k}','${i}')">✕</span></span>`).join('')}</div><div class="add-row"><input class="fi" id="new_${k}" placeholder="Add..." onkeydown="if(event.key==='Enter')addSetting('${k}')"><button class="btn btn-p btn-sm" onclick="addSetting('${k}')">Add</button></div></div>`;
+
+  $el('pgC').innerHTML=
+    `<div class="set-card"><div class="set-title">Role Hierarchy & Permissions</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px">${ROLES.map(r=>`<span class="badge rc-${r.id}" style="font-size:10px;padding:4px 10px">${r.label}</span>`).join('<span style="color:var(--t4);font-size:10px">→</span>')}</div>
+      <div style="font-size:10px;color:var(--t4);line-height:1.7">
+        <strong style="color:var(--t2)">Director / Admin</strong> — View ALL leads, export, manage users, settings (same level)<br>
+        <strong style="color:var(--t2)">Branch Manager</strong> — View ALL leads, export, manage users, settings<br>
+        <strong style="color:var(--t2)">Sales Manager</strong> — View ALL leads, export, manage users<br>
+        <strong style="color:var(--t2)">Supervisor</strong> — View only their team's leads, export team data<br>
+        <strong style="color:var(--t2)">Sales</strong> — View ONLY own leads, assigned to a supervisor
+      </div></div>`+
+    statusHTML+
+    mkSec('Lead Sources','sources',sources,'Where leads originate from.')+
+    mkSec('Car Types','carTypes',carTypes,'Vehicle categories at your dealership.');
+}
+
+function pickColor(el){
+  document.querySelectorAll('#colorPicker .color-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+async function addStatus(){
+  const input=$el('newStatus');const name=input.value.trim();
+  if(!name)return;
+  const sel=document.querySelector('#colorPicker .color-opt.sel');
+  const color=sel?sel.dataset.color:'#64748B';
+  const statuses=[...SETTINGS.statuses,name];
+  const colors={...SETTINGS.statusColors,[name]:color};
+  try{
+    await api('/api/settings/statuses',{method:'PUT',body:{value:statuses}});
+    await api('/api/settings/statusColors',{method:'PUT',body:{value:colors}});
+    toast('Added: '+name);await loadAll();renderSets();
+  }catch(e){toast(e.message)}
+}
+
+async function addSetting(key){
+  const input=$el('new_'+key);const v=input.value.trim();
+  if(!v)return;
+  const arr=[...SETTINGS[key],v];
+  try{await api(`/api/settings/${key}`,{method:'PUT',body:{value:arr}});toast('Added');await loadAll();renderSets()}catch(e){toast(e.message)}
+}
+
+async function rmSetting(key,val){
+  const arr=SETTINGS[key].filter(x=>x!==val);
+  if(!arr.length){toast('Need at least one');return}
+  try{
+    await api(`/api/settings/${key}`,{method:'PUT',body:{value:arr}});
+    if(key==='statuses'){
+      const colors={...SETTINGS.statusColors};delete colors[val];
+      await api('/api/settings/statusColors',{method:'PUT',body:{value:colors}});
+    }
+    toast('Removed');await loadAll();renderSets();
+  }catch(e){toast(e.message)}
+}
+
+/* ═══════════════════════════════════════
+   EXPORT CSV
+   ═══════════════════════════════════════ */
+function expCSV(){window.location.href='/api/export/csv'}
+
+/* ═══════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════ */
+function closeMd(){$el('modalC').classList.add('hidden');$el('modalC').innerHTML=''}
+function closeDt(){$el('detailC').classList.add('hidden');$el('detailC').innerHTML=''}
+
+/* BOOT */
+checkSession();
+</script>
+</body>
+</html>
