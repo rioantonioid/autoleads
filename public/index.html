@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Chery Batam CRM — Chery Lead Management System</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -23,8 +23,8 @@
   --tr:.15s ease;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{overflow-x:hidden;width:100%;-webkit-text-size-adjust:100%}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);overflow-x:hidden}
+html{width:100%;-webkit-text-size-adjust:100%}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:3px}
 .hidden{display:none!important}
 
@@ -95,8 +95,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   .side-ov{display:block;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
   .main-c{margin-left:0}
   .mob-ham{display:flex}
-  .top{padding:10px 14px;overflow:hidden}
-  .top-t{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:50vw}
+  .top{padding:10px 14px}
+  .top-t{font-size:14px;white-space:nowrap;text-overflow:ellipsis;max-width:50vw}
   .top-a{gap:4px}
   .top-a .btn-sm{padding:6px 10px;font-size:10px}
   .pg{padding:12px}
@@ -113,10 +113,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   .sc-l{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* Tables - swipe horizontally to see all columns */
-  .tc{border-radius:var(--r);overflow:hidden;position:relative}
-  .tc::after{content:'← swipe →';position:absolute;top:8px;right:8px;font-size:8px;color:var(--t4);background:var(--bg3);padding:2px 6px;border-radius:4px;pointer-events:none;opacity:.7;z-index:1}
-  .tc>div:has(table),.tc>div[style*="overflow"]{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .tc>div:has(table)::-webkit-scrollbar,.tc>div[style*="overflow"]::-webkit-scrollbar{display:none}
+  .tc{border-radius:var(--r);overflow:visible}
+  .tc>div[style*="overflow"]{overflow-x:auto!important;-webkit-overflow-scrolling:touch}
   .th{padding:10px 12px;flex-direction:column;align-items:stretch;gap:8px}
   .th-t{font-size:12px}
   .th-c{display:grid;grid-template-columns:1fr 1fr;gap:4px}
@@ -133,7 +131,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   .bar-chart{height:90px}
   .bar-l{font-size:7px;max-width:40px}
   .h-bar-label{min-width:50px!important;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .h-bar{flex-wrap:nowrap;overflow:hidden}
+  .h-bar{flex-wrap:nowrap}
   .h-bar-val{min-width:18px;font-size:9px}
 
   /* Detail panel - full width on mobile */
@@ -243,8 +241,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   /* DO photo */
   .do-photo-thumb{width:50px;height:50px}
 
-  /* Global overflow prevention */
-  .pg>*{max-width:100%;overflow:hidden}
+  /* Contain page width */
+  .main-c{overflow-x:hidden}
 }
 
 /* Extra small phones */
