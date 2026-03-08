@@ -45,7 +45,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 
 /* FORMS */
 .fg{margin-bottom:14px}
-.fl{display:block;font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.fl{display:block;font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;white-space:nowrap}
 .fl-hint{font-weight:400;text-transform:none;color:var(--t4)}
 .fi,.fs,.ft{width:100%;background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:10px 12px;color:var(--t1);font-family:inherit;font-size:13px;outline:none;transition:all var(--tr)}
 .fi:focus,.fs:focus,.ft:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-g)}
@@ -95,8 +95,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   .side-ov{display:block;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
   .main-c{margin-left:0}
   .mob-ham{display:flex}
-  .top{padding:10px 14px}
-  .top-t{font-size:14px}
+  .top{padding:10px 14px;overflow:hidden}
+  .top-t{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:50vw}
   .top-a{gap:4px}
   .top-a .btn-sm{padding:6px 10px;font-size:10px}
   .pg{padding:12px}
@@ -110,35 +110,38 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   .sc{padding:12px}
   .sc-v{font-size:22px}
   .sc-icon{width:28px;height:28px;margin-bottom:6px}
-  .sc-l{font-size:10px}
+  .sc-l{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-  /* Tables - prevent overflow */
-  .tc{border-radius:var(--r);overflow:hidden}
+  /* Tables - scroll horizontally, never break words */
+  .tc{border-radius:var(--r);overflow-x:auto;-webkit-overflow-scrolling:touch}
   .th{padding:10px 12px;flex-direction:column;align-items:stretch;gap:8px}
   .th-t{font-size:12px}
   .th-c{display:grid;grid-template-columns:1fr 1fr;gap:4px}
   .sb{grid-column:1/-1}
   .sb input{width:100%!important;font-size:16px}
   .fd{width:100%;font-size:16px!important}
-  thead th{padding:7px 8px;font-size:8px;white-space:nowrap}
-  tbody td{padding:8px 8px;font-size:10px;white-space:normal!important;word-break:break-word}
+  table{table-layout:auto;width:100%}
+  thead th{padding:6px 8px;font-size:8px;letter-spacing:0;white-space:nowrap}
+  tbody td{padding:6px 8px;font-size:10px;white-space:nowrap}
+  .mob-hide{display:none!important}
 
   /* Charts */
   .chart-row{grid-template-columns:1fr;gap:8px;margin-bottom:14px}
   .chart-card{padding:12px}
   .bar-chart{height:90px}
   .bar-l{font-size:7px;max-width:40px}
-  .h-bar-label{min-width:50px!important;font-size:9px}
-  .h-bar{flex-wrap:nowrap}
+  .h-bar-label{min-width:50px!important;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .h-bar{flex-wrap:nowrap;overflow:hidden}
   .h-bar-val{min-width:18px;font-size:9px}
 
   /* Detail panel - full width on mobile */
   .dp{width:100vw;max-width:100vw}
   .dp-h{padding:12px 14px;flex-wrap:wrap;gap:8px}
-  .dp-h>div:first-child{width:100%}
+  .dp-h>div:first-child{width:100%;overflow:hidden}
+  .dp-h>div:first-child>div:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .dp-h>div:last-child{width:100%;justify-content:flex-start;flex-wrap:wrap}
   .dp-b{padding:14px}
-  .df-v{font-size:12px}
+  .df-v{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* Modal - full width on mobile */
   .mo{padding:8px;align-items:flex-end}
@@ -154,17 +157,19 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   select.fs{font-size:16px!important}
 
   /* SPK/DO cards */
-  .spk-card{padding:12px}
-  .spk-name{font-size:13px}
+  .spk-card{padding:12px;overflow:hidden}
+  .spk-name{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .spk-phone{font-size:10px}
   .spk-details{gap:6px;font-size:10px;flex-wrap:wrap}
   .spk-head{flex-wrap:wrap;gap:8px}
-  .spk-head>div:first-child{width:100%}
+  .spk-head>div:first-child{width:100%;overflow:hidden}
   .spk-head>div:last-child{display:flex;gap:6px;flex-wrap:wrap}
 
   /* User cards */
   .usr-grid{grid-template-columns:1fr;gap:6px}
-  .usr-card{padding:12px}
+  .usr-card{padding:12px;overflow:hidden}
+  .usr-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .usr-meta{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* Settings */
   .set-card{padding:12px}
@@ -205,35 +210,39 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   /* Performance cards */
   .perf-grid{grid-template-columns:repeat(3,1fr)!important;gap:6px}
   .perf-stat-v{font-size:16px}
-  .perf-stat-l{font-size:8px}
+  .perf-stat-l{font-size:8px;white-space:nowrap}
   .perf-stat{padding:6px 2px}
   .perf-head{flex-wrap:wrap}
-  .perf-name{font-size:13px}
-  .perf-bar-label{min-width:40px;font-size:8px}
+  .perf-name{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .perf-sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .perf-bar-label{min-width:40px;font-size:8px;white-space:nowrap}
+  .perf-card{overflow:hidden}
 
   /* Similar numbers */
   .sim-lead{flex-wrap:wrap;gap:6px}
-  .sim-phone{min-width:auto!important;font-size:12px;width:100%}
-  .sim-info{font-size:10px;width:100%}
-  .sim-sales{min-width:auto!important;text-align:left;width:100%}
+  .sim-phone{min-width:auto!important;font-size:12px;width:100%;white-space:nowrap}
+  .sim-info{font-size:10px;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sim-sales{min-width:auto!important;text-align:left;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sim-group{overflow:hidden}
 
   /* Import preview */
   .import-row{flex-wrap:wrap;gap:4px}
-  .import-row .ir-name{min-width:auto!important}
-  .import-row .ir-phone{min-width:auto!important}
+  .import-row .ir-name{min-width:auto!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .import-row .ir-phone{min-width:auto!important;white-space:nowrap}
   .import-summary{flex-wrap:wrap;gap:6px}
 
   /* Check-in card */
   .checkin-card{flex-direction:column;align-items:stretch}
   .checkin-btn{width:100%;text-align:center}
   .checkin-log{justify-content:center}
+  .checkin-title{white-space:nowrap}
+  .checkin-time{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* DO photo */
   .do-photo-thumb{width:50px;height:50px}
 
   /* Global overflow prevention */
-  *{max-width:100vw}
-  .pg>*{max-width:100%}
+  .pg>*{max-width:100%;overflow:hidden}
 }
 
 /* Extra small phones */
@@ -265,7 +274,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .sc-bar{position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r2) var(--r2) 0 0}
 .sc-icon{width:32px;height:32px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin-bottom:8px}
 .sc-v{font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;letter-spacing:-1px}
-.sc-l{font-size:11px;color:var(--t3);font-weight:500;margin-top:2px}
+.sc-l{font-size:11px;color:var(--t3);font-weight:500;margin-top:2px;white-space:nowrap}
 
 /* TABLE CARD */
 .tc{background:#fff;border:1px solid var(--bdr);border-radius:var(--r2);overflow:hidden;margin-bottom:14px;box-shadow:var(--sh)}
@@ -275,12 +284,13 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .sb input{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:7px 10px 7px 30px;color:var(--t1);font-family:inherit;font-size:11px;outline:none;width:180px;transition:all var(--tr)}
 .sb input:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-g)}.sb input::placeholder{color:var(--t4)}
 .fd{background:#fff;border:1px solid var(--bdr);border-radius:var(--r);padding:7px 24px 7px 9px;color:var(--t2);font-family:inherit;font-size:11px;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center}
-table{width:100%;border-collapse:collapse}
+table{width:100%;border-collapse:collapse;table-layout:auto}
 thead th{padding:9px 16px;text-align:left;font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--bdr);white-space:nowrap;background:var(--bg3)}
 tbody tr{transition:background var(--tr);cursor:pointer}tbody tr:hover{background:#F9FAFB}
 tbody td{padding:10px 16px;font-size:12px;border-bottom:1px solid #F3F4F6;white-space:nowrap;color:var(--t2)}
 tbody tr:last-child td{border-bottom:none}
-.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:600}
+.mob-hide{}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:600;white-space:nowrap}
 .bdot{width:5px;height:5px;border-radius:50%}
 .acell{display:flex;gap:2px}
 .abtn{width:26px;height:26px;border-radius:6px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t4);transition:all var(--tr)}
@@ -299,9 +309,9 @@ tbody tr:last-child td{border-bottom:none}
 .dp{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:100vw;background:#fff;border-left:1px solid var(--bdr);z-index:150;display:flex;flex-direction:column;box-shadow:-4px 0 20px rgba(0,0,0,.08);animation:sr .25s ease;overflow-y:auto}
 .dp-h{padding:16px 20px;border-bottom:1px solid var(--bdr);display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;background:#fff}
 .dp-b{padding:18px 20px;flex:1}
-.ds{margin-bottom:18px}.ds-t{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.ds{margin-bottom:18px}.ds-t{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;white-space:nowrap}
 .df{display:flex;align-items:center;gap:10px;padding:7px 0}.df+.df{border-top:1px solid #F3F4F6}
-.df-l{font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.3px}.df-v{font-size:13px;font-weight:500;color:var(--t1)}
+.df-l{font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}.df-v{font-size:13px;font-weight:500;color:var(--t1)}
 .spills{display:flex;flex-wrap:wrap;gap:4px}
 .spill{padding:6px 12px;border-radius:12px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all var(--tr);background:#fff;color:var(--t3)}
 .spill:hover{background:var(--bg3);color:var(--t1)}.spill.act{border-color:transparent;color:#fff}
@@ -329,14 +339,14 @@ tbody tr:last-child td{border-bottom:none}
 /* CHARTS */
 .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
 .chart-card{background:#fff;border:1px solid var(--bdr);border-radius:var(--r2);padding:16px;box-shadow:var(--sh)}
-.chart-title{font-size:12px;font-weight:700;margin-bottom:12px;color:var(--t1)}
+.chart-title{font-size:12px;font-weight:700;margin-bottom:12px;color:var(--t1);white-space:nowrap}
 .bar-chart{display:flex;align-items:flex-end;gap:6px;height:120px}
 .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
 .bar-v{font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace}
 .bar-f{width:100%;border-radius:4px;transition:height .5s ease;min-height:2px}
 .bar-l{font-size:8px;color:var(--t3);font-weight:600;text-align:center;max-width:50px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .h-bar{margin-bottom:7px;display:flex;align-items:center;gap:7px}
-.h-bar-label{font-size:10px;font-weight:500;min-width:74px;color:var(--t2)}
+.h-bar-label{font-size:10px;font-weight:500;min-width:74px;color:var(--t2);white-space:nowrap}
 .h-bar-track{flex:1;height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
 .h-bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
 .h-bar-val{font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;min-width:20px;text-align:right;color:var(--t1)}
@@ -348,7 +358,7 @@ tbody tr:last-child td{border-bottom:none}
 
 /* ROLE SECTION */
 .role-sec{margin-bottom:16px}
-.role-sec-h{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.role-sec-h{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:6px;white-space:nowrap}
 .role-sec-dot{width:7px;height:7px;border-radius:50%}
 
 /* TOAST */
@@ -372,7 +382,7 @@ tbody tr:last-child td{border-bottom:none}
 .spk-name{font-size:14px;font-weight:700;color:var(--t1)}
 .spk-phone{font-size:11px;color:var(--t3);margin-top:1px}
 .spk-details{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--t3)}
-.spk-details span{display:flex;align-items:center;gap:4px}
+.spk-details span{display:flex;align-items:center;gap:4px;white-space:nowrap}
 .btn-spk{background:#EEF2FF;color:var(--acc);border:1px solid #C7D2FE;font-weight:600;font-size:10px;padding:5px 10px;border-radius:6px;cursor:pointer;font-family:inherit;transition:all var(--tr)}
 .btn-spk:hover{background:#E0E7FF;border-color:#A5B4FC}
 
@@ -454,9 +464,9 @@ body.dark .checkin-dot.no{background:rgba(239,68,68,.12);border-color:rgba(239,6
 .perf-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
 .perf-stat{text-align:center;padding:8px 4px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--bdr)}
 .perf-stat-v{font-size:20px;font-weight:800;font-family:'JetBrains Mono',monospace;letter-spacing:-1px}
-.perf-stat-l{font-size:9px;color:var(--t3);font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.3px}
+.perf-stat-l{font-size:9px;color:var(--t3);font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
 .perf-bar{margin-top:10px;display:flex;align-items:center;gap:8px}
-.perf-bar-label{font-size:9px;color:var(--t4);min-width:60px;text-transform:uppercase;letter-spacing:.3px}
+.perf-bar-label{font-size:9px;color:var(--t4);min-width:60px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
 .perf-bar-track{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
 .perf-bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
 .perf-bar-val{font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;min-width:32px;text-align:right}
@@ -1017,9 +1027,9 @@ function renderCheckinCard(){
       }
       h+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr);flex-wrap:wrap">
         <div class="perf-av rc-${u.role}" style="width:30px;height:30px;font-size:11px">${initials(u.fullName)}</div>
-        <div style="flex:1;min-width:120px"><div style="font-size:12px;font-weight:600;color:var(--t1)">${u.fullName}</div><div style="font-size:10px;color:var(--t3)">${rLabel(u.role)}</div></div>
+        <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600;color:var(--t1)">${u.fullName}</div><div style="font-size:10px;color:var(--t3)">${rLabel(u.role)}</div></div>
         <div class="checkin-log" style="margin-top:0">${dots.join('')}</div>
-        <div style="font-size:10px;min-width:80px;text-align:right">${checked?`<span style="color:var(--grn);font-weight:600">✅ ${checkins.find(c=>c.date===td).time}</span>`:`<span style="color:var(--red);font-weight:600">⏳ Pending</span>`}</div>
+        <div style="font-size:10px;min-width:0;text-align:right">${checked?`<span style="color:var(--grn);font-weight:600">✅ ${checkins.find(c=>c.date===td).time}</span>`:`<span style="color:var(--red);font-weight:600">⏳ Pending</span>`}</div>
       </div>`;
     });
     h+=`</div>`;
@@ -1138,7 +1148,7 @@ function filtDash(){
   }
 
   // Recent leads
-  h+=`<div class="tc"><div class="th"><div class="th-t">Recent Leads</div></div><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th>Source</th><th>Sales</th><th>Supervisor</th><th>Follow Up</th></tr></thead><tbody>${leads.slice(0,10).map(lRow).join('')}</tbody></table></div>`;
+  h+=`<div class="tc"><div class="th"><div class="th-t">Recent Leads</div></div><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th class="mob-hide">Source</th><th>Sales</th><th class="mob-hide">Supervisor</th><th class="mob-hide">Follow Up</th></tr></thead><tbody>${leads.slice(0,10).map(lRow).join('')}</tbody></table></div>`;
   $('dashBody').innerHTML=h;
 }
 
@@ -1146,7 +1156,7 @@ function lRow(l){
   const u=userByUn(l.createdBy);const sup=u?userById(u.supervisorId):null;
   const od=l.followUp&&l.followUp<=new Date().toISOString().split('T')[0]&&!['SPK','LOST'].includes(l.status);
   const dup=isDupe(l.id)?'<span class="dupe-badge">⚠ DUPLICATE</span>':'';
-  return `<tr onclick="openLD(${l.id})"><td><strong style="font-size:12px">${l.name}</strong>${dup}<div style="font-size:10px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td style="font-size:11px">${u?u.fullName:l.createdBy}</td><td style="font-size:10px;color:var(--t4)">${sup?sup.fullName:'—'}</td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td></tr>`;
+  return `<tr onclick="openLD(${l.id})"><td><strong style="font-size:12px">${l.name}</strong>${dup}<div style="font-size:10px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td class="mob-hide"><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td style="font-size:11px">${u?u.fullName:l.createdBy}</td><td class="mob-hide" style="font-size:10px;color:var(--t4)">${sup?sup.fullName:'—'}</td><td class="mob-hide" style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td></tr>`;
 }
 
 /* ═══════════════════════════════════════
@@ -1178,7 +1188,7 @@ function renderLeads(){
     <select class="fd" id="fSt" onchange="filt()"><option value="All">All Status</option>${sts.map(s=>`<option>${s}</option>`).join('')}</select>
     <select class="fd" id="fSrc" onchange="filt()"><option value="All">All Sources</option>${srcs.map(s=>`<option>${s}</option>`).join('')}</select>
     ${salesDD}
-  </div></div><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th>Source</th><th>Date</th><th>Follow Up</th><th>Sales</th><th>Supervisor</th><th style="width:55px"></th></tr></thead><tbody id="lBody"></tbody></table></div></div>`;
+  </div></div><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th class="mob-hide">Car</th><th>Status</th><th class="mob-hide">Source</th><th class="mob-hide">Date</th><th class="mob-hide">Follow Up</th><th>Sales</th><th class="mob-hide">Supervisor</th><th style="width:55px"></th></tr></thead><tbody id="lBody"></tbody></table></div></div>`;
   filt();
 }
 
@@ -1194,7 +1204,7 @@ function filt(){
     const od=l.followUp&&l.followUp<=new Date().toISOString().split('T')[0]&&!['SPK','LOST'].includes(l.status);
     const canE=CU.role!=='sales'||l.createdBy===CU.username;
     const dup=isDupe(l.id)?'<span class="dupe-badge">⚠ DUPLICATE</span>':'';
-    return `<tr onclick="openLD(${l.id})"><td><strong style="font-size:12px">${l.name}</strong>${dup}<div style="font-size:9px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3)">${l.date}</td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td><td style="font-size:11px">${u?u.fullName:l.createdBy}</td><td style="font-size:10px;color:var(--t4)">${sup?sup.fullName:'—'}</td><td><div class="acell">${canE?`<button class="abtn" onclick="event.stopPropagation();openLF(${l.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="abtn del" onclick="event.stopPropagation();delL(${l.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>`:''}</div></td></tr>`;
+    return `<tr onclick="openLD(${l.id})"><td><strong style="font-size:12px">${l.name}</strong>${dup}<div style="font-size:9px;color:var(--t4)">${l.phone}</div></td><td class="mob-hide" style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td class="mob-hide"><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td class="mob-hide" style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3)">${l.date}</td><td class="mob-hide" style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td><td style="font-size:11px">${u?u.fullName:l.createdBy}</td><td class="mob-hide" style="font-size:10px;color:var(--t4)">${sup?sup.fullName:'—'}</td><td><div class="acell">${canE?`<button class="abtn" onclick="event.stopPropagation();openLF(${l.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="abtn del" onclick="event.stopPropagation();delL(${l.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>`:''}</div></td></tr>`;
   }).join('');
 }
 
@@ -1404,7 +1414,7 @@ function checkDupeLive(phone,excludeId){
   if(!dupes.length){w.innerHTML='';return}
   w.innerHTML=`<div class="dupe-warn">⚠️ <b>Duplicate found!</b> This phone number already exists:<div>${dupes.map(d=>{
     const u=userByUn(d.createdBy);
-    return `<div class="dupe-item"><div><span class="dupe-name">${d.name}</span> — ${d.phone}<br>Status: ${d.status} · Source: ${d.source}</div><div style="text-align:right;white-space:nowrap">${u?u.fullName:d.createdBy}<br><span style="font-size:9px;color:var(--t4)">${d.createdAt}</span></div></div>`;
+    return `<div class="dupe-item"><div><span class="dupe-name">${d.name}</span> — ${d.phone}<br>Status: ${d.status} · Source: ${d.source}</div><div style="text-align:right">${u?u.fullName:d.createdBy}<br><span style="font-size:9px;color:var(--t4)">${d.createdAt}</span></div></div>`;
   }).join('')}</div></div>`;
 }
 
@@ -1480,7 +1490,7 @@ function openLD(id){
   const canESPV=isSPV&&(l.spkSection||l.doSection);
   const canEdit=canE||canESPV;
   const dupes=findDupes(l.phone,l.id);
-  const dupeHtml=dupes.length?`<div class="dupe-warn" style="margin-bottom:12px">⚠️ <b>DUPLICATE — This phone number exists in ${dupes.length} other lead${dupes.length>1?'s':''}:</b>${dupes.map(d=>{const du=userByUn(d.createdBy);return `<div class="dupe-item"><div><span class="dupe-name">${d.name}</span> — ${d.phone}<br>Status: ${d.status} · Source: ${d.source}</div><div style="text-align:right;white-space:nowrap">${du?du.fullName:d.createdBy}<br><span style="font-size:9px;color:var(--t4)">${d.createdAt}</span></div></div>`}).join('')}</div>`:'';
+  const dupeHtml=dupes.length?`<div class="dupe-warn" style="margin-bottom:12px">⚠️ <b>DUPLICATE — This phone number exists in ${dupes.length} other lead${dupes.length>1?'s':''}:</b>${dupes.map(d=>{const du=userByUn(d.createdBy);return `<div class="dupe-item"><div><span class="dupe-name">${d.name}</span> — ${d.phone}<br>Status: ${d.status} · Source: ${d.source}</div><div style="text-align:right">${du?du.fullName:d.createdBy}<br><span style="font-size:9px;color:var(--t4)">${d.createdAt}</span></div></div>`}).join('')}</div>`:'';
 
   // Action buttons
   let actionBtns='';
@@ -1584,8 +1594,8 @@ function filtSPK(){
         ${sup?`<span>📋 ${sup.fullName}</span>`:''}
       </div>
       <div style="display:flex;gap:16px;margin-top:8px;padding-top:8px;border-top:1px solid var(--bdr);font-size:11px">
-        <div><span style="color:var(--t4);font-size:9px;text-transform:uppercase;letter-spacing:.5px">Lead Date</span><div style="font-weight:600;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-top:2px">${l.date}</div></div>
-        ${l.spkDate?`<div><span style="color:var(--t4);font-size:9px;text-transform:uppercase;letter-spacing:.5px">SPK Date</span><div style="font-weight:700;color:var(--grn);font-family:'JetBrains Mono',monospace;margin-top:2px">${l.spkDate}</div></div>`:''}
+        <div><span style="color:var(--t4);font-size:9px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap">Lead Date</span><div style="font-weight:600;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-top:2px">${l.date}</div></div>
+        ${l.spkDate?`<div><span style="color:var(--t4);font-size:9px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap">SPK Date</span><div style="font-weight:700;color:var(--grn);font-family:'JetBrains Mono',monospace;margin-top:2px">${l.spkDate}</div></div>`:''}
       </div>
       ${lastAct?`<div style="margin-top:8px;font-size:10px;color:var(--t4);border-top:1px solid var(--bdr);padding-top:6px">Last activity: ${lastAct.detail} — ${lastAct.date} ${lastAct.time}</div>`:''}
     </div>`;
@@ -1640,9 +1650,9 @@ function filtDO(){
         ${sup?`<span>📋 ${sup.fullName}</span>`:''}
       </div>
       <div style="display:flex;gap:16px;margin-top:8px;padding-top:8px;border-top:1px solid var(--bdr);font-size:11px">
-        <div><span style="color:var(--t4);font-size:9px;text-transform:uppercase;letter-spacing:.5px">Lead Date</span><div style="font-weight:600;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-top:2px">${l.date}</div></div>
-        ${l.spkDate?`<div><span style="color:var(--t4);font-size:9px;text-transform:uppercase;letter-spacing:.5px">SPK Date</span><div style="font-weight:700;color:var(--grn);font-family:'JetBrains Mono',monospace;margin-top:2px">${l.spkDate}</div></div>`:''}
-        ${l.doDate?`<div><span style="color:var(--t4);font-size:9px;text-transform:uppercase;letter-spacing:.5px">DO Date</span><div style="font-weight:700;color:var(--pur);font-family:'JetBrains Mono',monospace;margin-top:2px">${l.doDate}</div></div>`:''}
+        <div><span style="color:var(--t4);font-size:9px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap">Lead Date</span><div style="font-weight:600;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-top:2px">${l.date}</div></div>
+        ${l.spkDate?`<div><span style="color:var(--t4);font-size:9px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap">SPK Date</span><div style="font-weight:700;color:var(--grn);font-family:'JetBrains Mono',monospace;margin-top:2px">${l.spkDate}</div></div>`:''}
+        ${l.doDate?`<div><span style="color:var(--t4);font-size:9px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap">DO Date</span><div style="font-weight:700;color:var(--pur);font-family:'JetBrains Mono',monospace;margin-top:2px">${l.doDate}</div></div>`:''}
       </div>
       ${lastAct?`<div style="margin-top:8px;font-size:10px;color:var(--t4);border-top:1px solid var(--bdr);padding-top:6px">Last activity: ${lastAct.detail} — ${lastAct.date} ${lastAct.time}</div>`:''}
     </div>`;
@@ -1842,10 +1852,10 @@ function openSalesDash(username){
   h+=`<div class="chart-card" style="margin-bottom:16px"><div class="chart-title">Monthly SPK ${thisYear}</div><div class="bar-chart" style="height:100px">${months.map(m=>`<div class="bar-col"><div class="bar-v" style="color:var(--grn);font-size:8px">${m.spkCnt}</div><div class="bar-f" style="height:${(m.spkCnt/mxM)*100}px;background:var(--grn)"></div><div class="bar-l">${m.mn}</div></div>`).join('')}</div></div>`;
 
   // Recent leads table
-  h+=`<div class="tc"><div class="th"><div class="th-t">Recent Leads</div></div><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th>Source</th><th>Date</th><th>Follow Up</th></tr></thead><tbody>`;
+  h+=`<div class="tc"><div class="th"><div class="th-t">Recent Leads</div></div><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th class="mob-hide">Source</th><th class="mob-hide">Date</th><th class="mob-hide">Follow Up</th></tr></thead><tbody>`;
   allLeads.slice(0,15).forEach(l=>{
     const od=l.followUp&&l.followUp<=today&&!['SPK','LOST'].includes(l.status);
-    h+=`<tr onclick="openLD(${l.id})" style="cursor:pointer"><td><strong style="font-size:12px">${l.name}</strong><div style="font-size:9px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3)">${l.date}</td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td></tr>`;
+    h+=`<tr onclick="openLD(${l.id})" style="cursor:pointer"><td><strong style="font-size:12px">${l.name}</strong><div style="font-size:9px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td class="mob-hide"><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td class="mob-hide" style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3)">${l.date}</td><td class="mob-hide" style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td></tr>`;
   });
   h+=`</tbody></table></div>`;
 
