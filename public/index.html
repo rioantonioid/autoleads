@@ -112,18 +112,20 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   .sc-icon{width:28px;height:28px;margin-bottom:6px}
   .sc-l{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-  /* Tables - scroll horizontally, never break words */
-  .tc{border-radius:var(--r);overflow-x:auto;-webkit-overflow-scrolling:touch}
+  /* Tables - swipe horizontally to see all columns */
+  .tc{border-radius:var(--r);overflow:hidden;position:relative}
+  .tc::after{content:'← swipe →';position:absolute;top:8px;right:8px;font-size:8px;color:var(--t4);background:var(--bg3);padding:2px 6px;border-radius:4px;pointer-events:none;opacity:.7;z-index:1}
+  .tc>div:has(table),.tc>div[style*="overflow"]{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tc>div:has(table)::-webkit-scrollbar,.tc>div[style*="overflow"]::-webkit-scrollbar{display:none}
   .th{padding:10px 12px;flex-direction:column;align-items:stretch;gap:8px}
   .th-t{font-size:12px}
   .th-c{display:grid;grid-template-columns:1fr 1fr;gap:4px}
   .sb{grid-column:1/-1}
   .sb input{width:100%!important;font-size:16px}
   .fd{width:100%;font-size:16px!important}
-  table{table-layout:auto;width:100%}
+  table{table-layout:auto;min-width:600px}
   thead th{padding:6px 8px;font-size:8px;letter-spacing:0;white-space:nowrap}
   tbody td{padding:6px 8px;font-size:10px;white-space:nowrap}
-  .mob-hide{display:none!important}
 
   /* Charts */
   .chart-row{grid-template-columns:1fr;gap:8px;margin-bottom:14px}
@@ -1148,7 +1150,7 @@ function filtDash(){
   }
 
   // Recent leads
-  h+=`<div class="tc"><div class="th"><div class="th-t">Recent Leads</div></div><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th class="mob-hide">Source</th><th>Sales</th><th class="mob-hide">Supervisor</th><th class="mob-hide">Follow Up</th></tr></thead><tbody>${leads.slice(0,10).map(lRow).join('')}</tbody></table></div>`;
+  h+=`<div class="tc"><div class="th"><div class="th-t">Recent Leads</div></div><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th>Source</th><th>Sales</th><th>Supervisor</th><th>Follow Up</th></tr></thead><tbody>${leads.slice(0,10).map(lRow).join('')}</tbody></table></div></div>`;
   $('dashBody').innerHTML=h;
 }
 
@@ -1156,7 +1158,7 @@ function lRow(l){
   const u=userByUn(l.createdBy);const sup=u?userById(u.supervisorId):null;
   const od=l.followUp&&l.followUp<=new Date().toISOString().split('T')[0]&&!['SPK','LOST'].includes(l.status);
   const dup=isDupe(l.id)?'<span class="dupe-badge">⚠ DUPLICATE</span>':'';
-  return `<tr onclick="openLD(${l.id})"><td><strong style="font-size:12px">${l.name}</strong>${dup}<div style="font-size:10px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td class="mob-hide"><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td style="font-size:11px">${u?u.fullName:l.createdBy}</td><td class="mob-hide" style="font-size:10px;color:var(--t4)">${sup?sup.fullName:'—'}</td><td class="mob-hide" style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td></tr>`;
+  return `<tr onclick="openLD(${l.id})"><td><strong style="font-size:12px">${l.name}</strong>${dup}<div style="font-size:10px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td style="font-size:11px">${u?u.fullName:l.createdBy}</td><td style="font-size:10px;color:var(--t4)">${sup?sup.fullName:'—'}</td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td></tr>`;
 }
 
 /* ═══════════════════════════════════════
@@ -1188,7 +1190,7 @@ function renderLeads(){
     <select class="fd" id="fSt" onchange="filt()"><option value="All">All Status</option>${sts.map(s=>`<option>${s}</option>`).join('')}</select>
     <select class="fd" id="fSrc" onchange="filt()"><option value="All">All Sources</option>${srcs.map(s=>`<option>${s}</option>`).join('')}</select>
     ${salesDD}
-  </div></div><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th class="mob-hide">Car</th><th>Status</th><th class="mob-hide">Source</th><th class="mob-hide">Date</th><th class="mob-hide">Follow Up</th><th>Sales</th><th class="mob-hide">Supervisor</th><th style="width:55px"></th></tr></thead><tbody id="lBody"></tbody></table></div></div>`;
+  </div></div><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th>Source</th><th>Date</th><th>Follow Up</th><th>Sales</th><th>Supervisor</th><th style="width:55px"></th></tr></thead><tbody id="lBody"></tbody></table></div></div>`;
   filt();
 }
 
@@ -1204,7 +1206,7 @@ function filt(){
     const od=l.followUp&&l.followUp<=new Date().toISOString().split('T')[0]&&!['SPK','LOST'].includes(l.status);
     const canE=CU.role!=='sales'||l.createdBy===CU.username;
     const dup=isDupe(l.id)?'<span class="dupe-badge">⚠ DUPLICATE</span>':'';
-    return `<tr onclick="openLD(${l.id})"><td><strong style="font-size:12px">${l.name}</strong>${dup}<div style="font-size:9px;color:var(--t4)">${l.phone}</div></td><td class="mob-hide" style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td class="mob-hide"><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td class="mob-hide" style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3)">${l.date}</td><td class="mob-hide" style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td><td style="font-size:11px">${u?u.fullName:l.createdBy}</td><td class="mob-hide" style="font-size:10px;color:var(--t4)">${sup?sup.fullName:'—'}</td><td><div class="acell">${canE?`<button class="abtn" onclick="event.stopPropagation();openLF(${l.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="abtn del" onclick="event.stopPropagation();delL(${l.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>`:''}</div></td></tr>`;
+    return `<tr onclick="openLD(${l.id})"><td><strong style="font-size:12px">${l.name}</strong>${dup}<div style="font-size:9px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3)">${l.date}</td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td><td style="font-size:11px">${u?u.fullName:l.createdBy}</td><td style="font-size:10px;color:var(--t4)">${sup?sup.fullName:'—'}</td><td><div class="acell">${canE?`<button class="abtn" onclick="event.stopPropagation();openLF(${l.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="abtn del" onclick="event.stopPropagation();delL(${l.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>`:''}</div></td></tr>`;
   }).join('');
 }
 
@@ -1852,12 +1854,12 @@ function openSalesDash(username){
   h+=`<div class="chart-card" style="margin-bottom:16px"><div class="chart-title">Monthly SPK ${thisYear}</div><div class="bar-chart" style="height:100px">${months.map(m=>`<div class="bar-col"><div class="bar-v" style="color:var(--grn);font-size:8px">${m.spkCnt}</div><div class="bar-f" style="height:${(m.spkCnt/mxM)*100}px;background:var(--grn)"></div><div class="bar-l">${m.mn}</div></div>`).join('')}</div></div>`;
 
   // Recent leads table
-  h+=`<div class="tc"><div class="th"><div class="th-t">Recent Leads</div></div><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th class="mob-hide">Source</th><th class="mob-hide">Date</th><th class="mob-hide">Follow Up</th></tr></thead><tbody>`;
+  h+=`<div class="tc"><div class="th"><div class="th-t">Recent Leads</div></div><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th>Source</th><th>Date</th><th>Follow Up</th></tr></thead><tbody>`;
   allLeads.slice(0,15).forEach(l=>{
     const od=l.followUp&&l.followUp<=today&&!['SPK','LOST'].includes(l.status);
-    h+=`<tr onclick="openLD(${l.id})" style="cursor:pointer"><td><strong style="font-size:12px">${l.name}</strong><div style="font-size:9px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td class="mob-hide"><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td class="mob-hide" style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3)">${l.date}</td><td class="mob-hide" style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td></tr>`;
+    h+=`<tr onclick="openLD(${l.id})" style="cursor:pointer"><td><strong style="font-size:12px">${l.name}</strong><div style="font-size:9px;color:var(--t4)">${l.phone}</div></td><td style="font-size:11px">${l.carType}</td><td><span class="badge" style="background:${sBg(l.status)};color:${sC(l.status)}"><span class="bdot" style="background:${sC(l.status)}"></span>${l.status}</span></td><td><span class="badge" style="background:${srcBg(l.source)};color:${srcC(l.source)};font-size:9px"><span class="bdot" style="background:${srcC(l.source)}"></span>${l.source}</span></td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3)">${l.date}</td><td style="font-size:10px;font-family:'JetBrains Mono',monospace;${od?'color:var(--red);font-weight:600':'color:var(--t3)'}">${l.followUp||'—'}${od?' ⚠':''}</td></tr>`;
   });
-  h+=`</tbody></table></div>`;
+  h+=`</tbody></table></div></div>`;
 
   $('pgC').innerHTML=h;
 }
