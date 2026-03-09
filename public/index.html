@@ -1368,6 +1368,7 @@ function getAllNavItems(){
   const isSup=CU.role==='supervisor';
   const items=[
     {id:'dashboard',label:'📊 Dashboard',always:true},
+    {id:'stock',label:'📦 Stock'},
     {id:'leads',label:'📋 Leads',always:true},
     {id:'spk',label:'📦 SPK Results'},
     {id:'dolist',label:'🚚 DO Results'},
@@ -1376,7 +1377,6 @@ function getAllNavItems(){
     {id:'similar',label:'🔍 Similar Numbers',show:canSim},
     {id:'schedule',label:'📅 Sales Schedule'},
     {id:'events',label:'🎯 Activity'},
-    {id:'stock',label:'📦 Stock'},
     {id:'team',label:'👥 My Team',show:isSup},
     {id:'users',label:'⚙ Users',show:pUsers()},
     {id:'settings',label:'🔧 Settings',show:pSettings()}
