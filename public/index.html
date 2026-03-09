@@ -78,6 +78,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .side-uperm{font-size:9px;color:var(--t4);margin-top:4px;line-height:1.4}
 .side-nav{padding:12px 8px;flex:1;overflow-y:auto}
 .sn{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r);color:var(--t3);font-size:12px;font-weight:500;cursor:pointer;transition:all var(--tr);margin-bottom:2px;border:none;background:none;width:100%;font-family:inherit;text-align:left}
+.sn-cfg{display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:var(--r);color:var(--t4);font-size:11px;font-weight:500;cursor:pointer;transition:all var(--tr);margin-bottom:2px;border:none;background:none;width:100%;font-family:inherit;text-align:left;opacity:.7}
+.sn-cfg:hover{background:var(--bg3);color:var(--t2);opacity:1}
 .sn:hover{background:var(--bg3);color:var(--t1)}.sn.act{background:var(--acc-g);color:var(--acc)}
 .sn svg{opacity:.5;flex-shrink:0}.sn.act svg{opacity:1}
 .sn .nbadge{margin-left:auto;background:var(--acc);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;font-family:'JetBrains Mono',monospace}
@@ -323,6 +325,109 @@ tbody tr:last-child td{border-bottom:none}
 .usr-name{font-size:12px;font-weight:600;color:var(--t1)}.usr-meta{font-size:10px;color:var(--t3);margin-top:2px;line-height:1.4}
 .usr-acts{margin-left:auto;display:flex;gap:2px}
 
+/* ACTIVITY EVENTS */
+.evt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.evt-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:16px}
+.evt-cal-hdr{text-align:center;font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;padding:6px 0}
+.evt-cal-day{min-height:60px;padding:3px;border-radius:var(--r);background:#fff;border:1px solid var(--bdr);position:relative;cursor:default;transition:background var(--tr)}
+.evt-cal-day.other{opacity:.3}
+.evt-cal-day.today{border-color:var(--acc);background:rgba(37,99,235,.04)}
+.evt-cal-day-num{font-size:9px;font-weight:600;color:var(--t2);margin-bottom:2px}
+.evt-cal-dot{border-radius:3px;padding:1px 3px;font-size:6px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px;cursor:pointer}
+.evt-card{background:#fff;border:1px solid var(--bdr);border-radius:var(--r2);padding:14px;margin-bottom:8px;box-shadow:var(--sh);border-left:4px solid var(--acc);transition:all var(--tr)}
+.evt-card:hover{box-shadow:var(--sh2)}
+.evt-card.suggested{border-left-color:var(--org);opacity:.85}
+.evt-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.evt-card-name{font-size:14px;font-weight:700;color:var(--t1)}
+.evt-card-loc{font-size:11px;color:var(--t3);margin-top:3px}
+.evt-card-dates{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--acc);margin-top:6px;font-weight:600}
+.evt-card-meta{font-size:9px;color:var(--t4);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}
+.evt-card-acts{display:flex;gap:4px;flex-shrink:0}
+.evt-status{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:600}
+.evt-status.active{background:var(--grn-g);color:var(--grn)}
+.evt-status.upcoming{background:var(--acc-g);color:var(--acc)}
+.evt-status.completed{background:var(--bg3);color:var(--t4)}
+.evt-status.suggested{background:var(--org-g);color:var(--org)}
+.evt-colors{display:flex;gap:3px;flex-wrap:wrap;margin-top:6px}
+.evt-color-opt{width:18px;height:18px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all var(--tr)}
+.evt-color-opt:hover{transform:scale(1.2)}.evt-color-opt.sel{border-color:var(--t1);box-shadow:0 0 0 2px rgba(0,0,0,.1)}
+body.dark .evt-cal-day{background:var(--bg2);border-color:var(--bdr)}
+body.dark .evt-card{background:var(--bg2);border-color:var(--bdr)}
+@media(max-width:768px){.evt-cal-day{min-height:36px}.evt-cal-dot{font-size:5px}}
+
+/* STOCK */
+.stk-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.stk-bar-info{font-size:11px;color:var(--t4)}
+.stk-bar-info strong{color:var(--t2)}
+.stk-badge{display:inline-flex;align-items:center;gap:3px;padding:3px 10px;border-radius:10px;font-size:10px;font-weight:700;white-space:nowrap}
+.stk-badge.ready{background:var(--grn-g);color:var(--grn)}
+.stk-badge.otw{background:var(--org-g);color:var(--org)}
+.stk-count{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.stk-count-item{background:#fff;border:1px solid var(--bdr);border-radius:var(--r2);padding:10px 16px;text-align:center;box-shadow:var(--sh)}
+.stk-count-v{font-size:20px;font-weight:800}
+.stk-count-l{font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+body.dark .stk-count-item{background:var(--bg2);border-color:var(--bdr)}
+
+/* SCHEDULE */
+.sch-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.sch-nav{display:flex;align-items:center;gap:8px}
+.sch-nav-btn{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:6px 12px;cursor:pointer;font-size:12px;font-weight:600;color:var(--t2);transition:all var(--tr)}
+.sch-nav-btn:hover{background:var(--acc);color:#fff;border-color:var(--acc)}
+.sch-month{font-size:15px;font-weight:700;color:var(--t1);min-width:160px;text-align:center}
+.sch-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--r2);box-shadow:var(--sh);border:1px solid var(--bdr);position:relative}
+.sch-scroll::-webkit-scrollbar{height:6px}
+.sch-scroll::-webkit-scrollbar-thumb{background:var(--acc);border-radius:6px}
+.sch-scroll::-webkit-scrollbar-track{background:var(--bg3);border-radius:6px}
+.sch-grid{display:grid;grid-template-columns:150px repeat(7,1fr);background:#fff;min-width:780px}
+.sch-hdr{background:var(--bg3);padding:10px 4px;font-size:11px;font-weight:700;color:var(--t3);text-align:center;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr)}
+.sch-hdr:first-child{position:sticky;left:0;z-index:3;background:var(--bg3);border-right:1px solid var(--bdr)}
+.sch-name-col{background:#fff;padding:10px 8px;font-size:12px;font-weight:600;color:var(--t1);display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--bdr);border-right:1px solid var(--bdr);min-height:56px;position:sticky;left:0;z-index:2;box-shadow:3px 0 8px rgba(0,0,0,.05)}
+.sch-cell{border-bottom:1px solid var(--bdr);border-right:1px solid var(--bdr);padding:5px;min-height:56px;cursor:pointer;transition:background var(--tr);position:relative}
+.sch-cell:hover{background:var(--bg3)}
+.sch-cell.readonly{cursor:default}
+.sch-cell.today{background:rgba(37,99,235,.06)}
+.sch-shift{border-radius:6px;padding:4px 6px;font-size:11px;font-weight:700;text-align:center;white-space:nowrap;letter-spacing:.3px;line-height:1.4}
+.sch-shift.sh-off{background:#F1F5F9;color:#94A3B8}
+.sch-solo{min-width:0!important;grid-template-columns:repeat(7,1fr)!important}
+.sch-solo .sch-hdr{padding:12px 6px;font-size:12px}
+.sch-solo .sch-cell{min-height:72px;padding:8px 6px}
+.sch-solo .sch-shift{font-size:13px;padding:6px 8px}
+@media(max-width:768px){
+  .sch-solo .sch-hdr{padding:10px 4px;font-size:11px}
+  .sch-solo .sch-cell{min-height:66px;padding:6px 4px}
+  .sch-solo .sch-shift{font-size:12px;padding:5px 6px}
+}
+@media(max-width:480px){
+  .sch-solo .sch-hdr{padding:8px 2px;font-size:10px}
+  .sch-solo .sch-cell{min-height:60px;padding:5px 3px}
+  .sch-solo .sch-shift{font-size:11px;padding:4px 4px}
+}
+.sch-swipe-hint{text-align:center;font-size:10px;color:var(--t4);padding:6px 0;display:none;animation:sch-hint-fade 3s ease-in-out forwards}
+@keyframes sch-hint-fade{0%{opacity:1}70%{opacity:1}100%{opacity:0}}
+@media(max-width:768px){
+  .sch-grid{grid-template-columns:120px repeat(7,minmax(80px,1fr));min-width:700px}
+  .sch-name-col{padding:8px 6px;font-size:11px;min-height:58px}
+  .sch-cell{padding:4px;min-height:58px}
+  .sch-shift{font-size:10px;padding:4px 5px}
+  .sch-swipe-hint{display:block}
+  .sch-header{flex-direction:column;align-items:stretch;gap:10px}
+  .sch-nav{width:100%;justify-content:space-between}
+  .sch-hdr{font-size:10px;padding:8px 2px}
+}
+@media(max-width:480px){
+  .sch-grid{grid-template-columns:100px repeat(7,minmax(72px,1fr))}
+  .sch-name-col{font-size:10px;gap:4px;padding:6px 4px}
+  .sch-cell{min-height:54px}
+  .sch-shift{font-size:9px;padding:3px 4px}
+  .sch-hdr{font-size:9px;padding:6px 2px}
+}
+.sch-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.sch-legend-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t3)}
+.sch-legend-dot{width:12px;height:12px;border-radius:3px}
+.sch-view-toggle{display:flex;gap:2px;background:var(--bg3);border-radius:var(--r);padding:2px;border:1px solid var(--bdr)}
+.sch-view-btn{padding:4px 10px;font-size:10px;font-weight:600;border-radius:4px;cursor:pointer;color:var(--t3);transition:all var(--tr);border:none;background:transparent}
+.sch-view-btn.act{background:var(--acc);color:#fff}
+
 /* SETTINGS */
 .set-card{background:#fff;border:1px solid var(--bdr);border-radius:var(--r2);padding:16px;margin-bottom:12px;box-shadow:var(--sh)}
 .set-title{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--t1)}
@@ -527,6 +632,14 @@ body.dark .btn-do{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3)
 body.dark .df+.df{border-color:rgba(255,255,255,.06)}
 body.dark .color-opt.sel{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.2)}
 body.dark .h-bar-track{background:#0F172A}
+body.dark .sch-grid{background:var(--bg2)}
+body.dark .sch-scroll{border-color:var(--bdr)}
+body.dark .sch-hdr{background:var(--bg3);color:var(--t3)}
+body.dark .sch-hdr:first-child{background:var(--bg3)}
+body.dark .sch-name-col{background:var(--bg2);border-color:var(--bdr);box-shadow:3px 0 8px rgba(0,0,0,.3)}
+body.dark .sch-cell{border-color:var(--bdr)}
+body.dark .sch-cell:hover{background:var(--bg3)}
+body.dark .sch-scroll .sch-hdr:first-child{box-shadow:3px 0 8px rgba(0,0,0,.3)}
 
 @keyframes fi{from{opacity:0}to{opacity:1}}
 @keyframes su{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -631,26 +744,12 @@ function srcBg(s){return SC_BG_MAP[srcC(s)]||'rgba(100,116,139,.12)'}
 /* ═══════════════════════════════════════
    STORAGE
    ═══════════════════════════════════════ */
-/* ═══════════════════════════════════════
-   SERVER-BACKED STORAGE (replaces localStorage)
-   ═══════════════════════════════════════ */
 window._db={};
-const G=k=>{
-  if(k==='al_theme') return JSON.parse(localStorage.getItem('al_theme'));
-  return window._db[k]||null;
-};
-const S=(k,v)=>{
-  if(k==='al_theme'){localStorage.setItem(k,JSON.stringify(v));return}
-  window._db[k]=v;
-  // Async save to server (fire and forget)
-  fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:k,value:v}),credentials:'same-origin'}).catch(e=>console.warn('Save failed:',k,e));
-};
+const G=k=>{if(k==='al_theme') return JSON.parse(localStorage.getItem('al_theme'));return window._db[k]||null};
+const S=(k,v)=>{if(k==='al_theme'){localStorage.setItem(k,JSON.stringify(v));return}window._db[k]=v;fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:k,value:v}),credentials:'same-origin'}).catch(()=>{})};
 const $=id=>document.getElementById(id);
 
-/* SERVER MODE — Data loaded from /api/sync on login. No localStorage init needed. */
-const CRM_VERSION = 8;
-let CU=null; // currentUser
-let PAGE='dashboard';
+const CRM_VERSION=10;let CU=null;let PAGE='dashboard';
 
 /* ═══════════════════════════════════════
    PERMISSION HELPERS
@@ -680,47 +779,14 @@ function userById(id){return G('al_users').find(u=>u.id===id)}
 function userByUn(un){return G('al_users').find(u=>u.username===un)}
 function getSupervisors(){return G('al_users').filter(u=>u.role==='supervisor'&&u.active)}
 function initials(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2)}
+function localDate(d){const y=d.getFullYear();const m=String(d.getMonth()+1).padStart(2,'0');const day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
 
 /* ═══════════════════════════════════════
    AUTH
    ═══════════════════════════════════════ */
-function doLogin(){
-  const u=$('loginUser').value.trim(),p=$('loginPass').value;
-  if(!u||!p){$('loginError').textContent='Enter username and password';$('loginError').style.display='block';return}
-  $('loginError').style.display='none';
-  fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p}),credentials:'same-origin'})
-    .then(r=>{if(!r.ok) throw r; return r.json()})
-    .then(()=>syncFromServer())
-    .catch(async(e)=>{
-      const msg=e.json?await e.json().then(j=>j.error).catch(()=>'Login failed'):'Connection error';
-      $('loginError').textContent=msg;$('loginError').style.display='block';
-    });
-}
-
-function doLogout(){
-  fetch('/api/logout',{method:'POST',credentials:'same-origin'}).catch(()=>{});
-  CU=null;window._db={};
-  $('appWrap').classList.add('hidden');$('loginPage').classList.remove('hidden');
-  $('loginUser').value='';$('loginPass').value='';$('loginError').style.display='none';
-}
-
-function syncFromServer(){
-  return fetch('/api/sync',{credentials:'same-origin'})
-    .then(r=>{if(!r.ok) throw r; return r.json()})
-    .then(data=>{
-      // Load all data into in-memory cache
-      Object.keys(data).forEach(k=>{ if(data[k]!==null) window._db[k]=data[k]; });
-      // Find current user
-      const sid=data.al_session;
-      const users=data.al_users||[];
-      const u=users.find(x=>x.id===sid&&x.active);
-      if(!u) throw new Error('User not found');
-      CU=u;
-      $('loginPage').classList.add('hidden');$('appWrap').classList.remove('hidden');
-      initApp();
-    })
-    .catch(e=>{console.warn('Sync failed:',e)});
-}
+function doLogin(){const u=$('loginUser').value.trim(),p=$('loginPass').value;if(!u||!p){$('loginError').textContent='Enter username and password';$('loginError').style.display='block';return}fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p}),credentials:'same-origin'}).then(r=>{if(!r.ok)throw r;return r.json()}).then(()=>syncFromServer()).catch(async e=>{const m=e.json?await e.json().then(j=>j.error).catch(()=>'Failed'):'Error';$('loginError').textContent=m;$('loginError').style.display='block'})}
+function doLogout(){fetch('/api/logout',{method:'POST',credentials:'same-origin'}).catch(()=>{});CU=null;window._db={};$('appWrap').classList.add('hidden');$('loginPage').classList.remove('hidden');$('loginUser').value='';$('loginPass').value='';$('loginError').style.display='none'}
+function syncFromServer(){return fetch('/api/sync',{credentials:'same-origin'}).then(r=>{if(!r.ok)throw r;return r.json()}).then(d=>{Object.keys(d).forEach(k=>{if(d[k]!==null)window._db[k]=d[k]});const u=(d.al_users||[]).find(x=>x.id===d.al_session&&x.active);if(!u)throw 0;CU=u;$('loginPage').classList.add('hidden');$('appWrap').classList.remove('hidden');initApp()}).catch(e=>console.warn('Sync:',e))}
 
 function toggleTheme(){
   const isDark=document.body.classList.toggle('dark');
@@ -734,12 +800,15 @@ function applyTheme(){
 
 function openChangePwd(){
   $('modalC').classList.remove('hidden');
-  $('modalC').innerHTML=`<div class="md-ov" onclick="closeMd()"></div><div class="md"><div class="md-h"><div class="md-t">🔑 Change Password</div><button class="md-x" onclick="closeMd()">✕</button></div><div class="md-b">
-    <div class="fg"><label class="fl">Current Password</label><input class="fi" type="password" id="cpCur" placeholder="Enter current password"></div>
-    <div class="fg"><label class="fl">New Password</label><input class="fi" type="password" id="cpNew" placeholder="Enter new password (min 4 chars)"></div>
-    <div class="fg"><label class="fl">Confirm New Password</label><input class="fi" type="password" id="cpConfirm" placeholder="Confirm new password"></div>
-    <div id="cpError" style="color:var(--red);font-size:12px;margin-bottom:10px;display:none"></div>
-    <div class="fr2"><button class="btn btn-s" onclick="closeMd()">Cancel</button><button class="btn btn-p" onclick="doChangePwd()">Update Password</button></div>
+  $('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md" style="max-width:420px">
+    <div class="md-h"><span class="md-t">🔑 Change Password</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b">
+      <div class="fg"><label class="fl">Current Password</label><input class="fi" type="password" id="cpCur" placeholder="Enter current password"></div>
+      <div class="fg"><label class="fl">New Password</label><input class="fi" type="password" id="cpNew" placeholder="Enter new password (min 4 chars)"></div>
+      <div class="fg"><label class="fl">Confirm New Password</label><input class="fi" type="password" id="cpConfirm" placeholder="Confirm new password"></div>
+      <div id="cpError" style="color:var(--red);font-size:12px;margin-bottom:10px;display:none"></div>
+    </div>
+    <div class="md-f"><button class="btn btn-s" onclick="closeMd()">Cancel</button><button class="btn btn-p" onclick="doChangePwd()">Update Password</button></div>
   </div></div>`;
 }
 
@@ -751,73 +820,62 @@ function doChangePwd(){
   if(nw.length<4){err.textContent='New password must be at least 4 characters';err.style.display='block';return}
   if(nw!==conf){err.textContent='New passwords do not match';err.style.display='block';return}
   if(nw===cur){err.textContent='New password must be different from current';err.style.display='block';return}
-  fetch('/api/me/password',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({currentPassword:cur,newPassword:nw}),credentials:'same-origin'})
-    .then(r=>{if(!r.ok) return r.json().then(j=>{throw new Error(j.error)}); return r.json()})
-    .then(()=>{closeMd();toast('Password updated successfully')})
-    .catch(e=>{err.textContent=e.message||'Password change failed';err.style.display='block'});
+  fetch('/api/me/password',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({currentPassword:cur,newPassword:nw}),credentials:'same-origin'}).then(r=>{if(!r.ok)return r.json().then(j=>{throw new Error(j.error)});return r.json()}).then(()=>{closeMd();toast('Password updated')}).catch(e=>{err.textContent=e.message||'Failed';err.style.display='block'});
 }
-function checkSession(){
-  fetch('/api/me',{credentials:'same-origin'})
-    .then(r=>{if(!r.ok) throw r; return r.json()})
-    .then(()=>syncFromServer())
-    .catch(()=>{/* No session — stay on login page */});
-}
+function checkSession(){fetch('/api/me',{credentials:'same-origin'}).then(r=>{if(!r.ok)throw r;return r.json()}).then(()=>syncFromServer()).catch(()=>{})}
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!$('loginPage').classList.contains('hidden'))doLogin()});
 
 /* ═══════════════════════════════════════
    APP INIT
    ═══════════════════════════════════════ */
 function initApp(){
-  autoLost();
+  autoLost(); // Check for 14-day inactive leads
   $('sUname').textContent=CU.fullName;
   $('sUrole').className='side-urole rc-'+CU.role;$('sUrole').textContent=rLabel(CU.role);
   $('sUperm').textContent=PERM_DESC[CU.role];
-  buildNav();go('dashboard');
-  // Auto-sync from server every 30s to pick up other users' changes
-  if(window._syncTimer) clearInterval(window._syncTimer);
-  window._syncTimer=setInterval(()=>{
-    fetch('/api/sync',{credentials:'same-origin'}).then(r=>r.json()).then(data=>{
-      Object.keys(data).forEach(k=>{if(data[k]!==null&&k!=='al_theme') window._db[k]=data[k]});
-      buildNav(); // Update badges
-    }).catch(()=>{});
-  },30000);
-  // Also sync when tab becomes visible
-  document.addEventListener('visibilitychange',()=>{
-    if(!document.hidden&&CU) fetch('/api/sync',{credentials:'same-origin'}).then(r=>r.json()).then(data=>{
-      Object.keys(data).forEach(k=>{if(data[k]!==null&&k!=='al_theme') window._db[k]=data[k]});
-      buildNav();go(PAGE);
-    }).catch(()=>{});
-  });
-}
+  buildNav();go('dashboard');if(window._st)clearInterval(window._st);window._st=setInterval(()=>{fetch('/api/sync',{credentials:'same-origin'}).then(r=>r.json()).then(d=>{Object.keys(d).forEach(k=>{if(d[k]!==null&&k!=='al_theme')window._db[k]=d[k]});buildNav()}).catch(()=>{})},30000)}
 
 function buildNav(){
   const leads=getVisibleLeads();const n=leads.filter(l=>!l.spkSection&&!l.doSection&&l.status!=='LOST').length;
   const spkN=leads.filter(l=>l.spkSection&&!l.doSection).length;
   const doN=leads.filter(l=>l.doSection).length;
-  const canPerf=CU.role!=='sales';
-  const isTop=['director','admin'].includes(CU.role);
   const canLost=['director','admin','branch_manager','sales_manager'].includes(CU.role);
   const lostN=canLost?G('al_leads').filter(l=>l.status==='LOST'&&!l.spkSection&&!l.doSection).length:0;
-  let h=`<button class="sn act" data-v="dashboard">📊 Dashboard</button><button class="sn" data-v="leads">📋 Leads <span class="nbadge">${n}</span></button>`;
-  h+=`<button class="sn" data-v="spk">📦 SPK Results${spkN?` <span class="nbadge" style="background:var(--grn)">${spkN}</span>`:''}</button>`;
-  h+=`<button class="sn" data-v="dolist">🚚 DO Results${doN?` <span class="nbadge" style="background:var(--pur)">${doN}</span>`:''}</button>`;
-  if(canLost) h+=`<button class="sn" data-v="lost">💀 Lost Leads${lostN?` <span class="nbadge" style="background:var(--red)">${lostN}</span>`:''}</button>`;
-  if(canPerf) h+=`<button class="sn" data-v="perf">📈 Sales Performance</button>`;
   const canSim=['director','admin','branch_manager','sales_manager','supervisor'].includes(CU.role);
-  if(canSim){const simN=countSimilarNumbers();h+=`<button class="sn" data-v="similar">🔍 Similar Numbers${simN?` <span class="nbadge" style="background:var(--red)">${simN}</span>`:''}</button>`}
-  if(CU.role==='supervisor') h+=`<button class="sn" data-v="team">👥 My Team</button>`;
-  if(pUsers()) h+=`<button class="sn" data-v="users">⚙ Users</button>`;
-  if(pSettings()) h+=`<button class="sn" data-v="settings">🔧 Settings</button>`;
+  const simN=canSim?countSimilarNumbers():0;
+
+  const badges={leads:n,spk:spkN,dolist:doN,lost:lostN,similar:simN};
+  const badgeColors={leads:'',spk:'background:var(--grn)',dolist:'background:var(--pur)',lost:'background:var(--red)',similar:'background:var(--red)'};
+
+  const allItems=getAllNavItems();
+  const cfg=getSideConfig();
+  const order=cfg.order.filter(id=>allItems.find(i=>i.id===id));
+  allItems.forEach(i=>{if(!order.includes(i.id)) order.push(i.id)});
+
+  let h='';
+  order.forEach(id=>{
+    if(cfg.hidden.includes(id)) return;
+    const it=allItems.find(i=>i.id===id);if(!it) return;
+    const badge=badges[id];
+    const bc=badgeColors[id]||'';
+    h+=`<button class="sn" data-v="${id}">${it.label}${badge?` <span class="nbadge" ${bc?`style="${bc}"`:''}>${badge}</span>`:''}</button>`;
+  });
+
+  h+=`<div style="border-top:1px solid var(--bdr);margin:8px 0"></div>`;
+  if(['director','admin'].includes(CU.role)){
+    h+=`<button class="sn-cfg" onclick="openDashConfig()">⚙ Customize Dashboard</button>`;
+    h+=`<button class="sn-cfg" onclick="openSideConfig()">☰ Customize Sidebar</button>`;
+  }
   $('sideNav').innerHTML=h;
-  $('sideNav').querySelectorAll('.sn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.v)));
+  $('sideNav').querySelectorAll('.sn[data-v]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.v)));
 }
 
 function go(v){
   PAGE=v;
   $('sideNav').querySelectorAll('.sn').forEach(b=>b.classList.toggle('act',b.dataset.v===v));
-  $('pgTitle').textContent={dashboard:'Dashboard',leads:'Leads',spk:'SPK Results',dolist:'DO Results',lost:'Lost Leads',perf:'Sales Performance',similar:'Similar Numbers',team:'My Team',users:'Manage Users',settings:'Settings'}[v]||v;
+  $('pgTitle').textContent={dashboard:'Dashboard',leads:'Leads',spk:'SPK Results',dolist:'DO Results',lost:'Lost Leads',perf:'Sales Performance',similar:'Similar Numbers',schedule:'Sales Schedule',events:'Activity',stock:'Stock',team:'My Team',users:'Manage Users',settings:'Settings'}[v]||v;
   closeDt();closeMd();$('side').classList.remove('open');$('sideOv').classList.add('hidden');
-  ({dashboard:renderDash,leads:renderLeads,spk:renderSPK,dolist:renderDO,lost:renderLost,perf:renderPerf,similar:renderSimilar,team:renderTeam,users:renderUsers,settings:renderSets})[v]?.();
+  ({dashboard:renderDash,leads:renderLeads,spk:renderSPK,dolist:renderDO,lost:renderLost,perf:renderPerf,similar:renderSimilar,schedule:renderSchedule,events:renderEvents,stock:renderStock,team:renderTeam,users:renderUsers,settings:renderSets})[v]?.();
 }
 function toggleSide(){$('side').classList.toggle('open');$('sideOv').classList.toggle('hidden')}
 function toast(m){const c=$('toastC');c.innerHTML=`<div class="toast">✓ ${m}</div>`;c.classList.remove('hidden');clearTimeout(c._t);c._t=setTimeout(()=>c.classList.add('hidden'),2800)}
@@ -1121,6 +1179,30 @@ function renderDash(){
   filtDash();
 }
 
+function getDashSections(){
+  const isManager=['director','admin','branch_manager','sales_manager'].includes(CU.role);
+  const isSup=CU.role==='supervisor';
+  const all=[
+    {id:'stats',title:'📊 Summary Cards',icon:'📊',always:true},
+    {id:'checkin',title:'✅ Daily Check-in',icon:'✅'},
+    {id:'charts',title:'📈 Charts',icon:'📈'},
+    {id:'perf',title:'👥 Sales Performance',icon:'👥',roles:['director','admin','branch_manager','sales_manager']},
+    {id:'team',title:'👥 My Team Performance',icon:'👥',roles:['supervisor']},
+    {id:'recent',title:'📋 Recent Leads',icon:'📋'},
+    {id:'schedule',title:'📅 This Week Schedule',icon:'📅',roles:['director','admin','branch_manager','sales_manager','supervisor']}
+  ];
+  return all.filter(s=>!s.roles||s.roles.includes(CU.role));
+}
+
+function getDashConfig(){
+  const saved=G('al_dash_config');
+  if(saved&&saved.order) return saved;
+  const sections=getDashSections();
+  return {order:sections.map(s=>s.id),hidden:[]};
+}
+
+function saveDashConfig(cfg){S('al_dash_config',cfg)}
+
 function filtDash(){
   const allLeads=getVisibleLeads();const sts=G('al_statuses');
   const mon=$('dashMonth')?.value||'All';
@@ -1137,8 +1219,12 @@ function filtDash(){
   const doCount=leads.filter(l=>l.doSection).length;
   const td=new Date().toISOString().split('T')[0];
   const fups=leads.filter(l=>l.followUp&&l.followUp<=td&&!['SPK','LOST'].includes(l.status)).length;
-
   const isManager=['director','admin','branch_manager','sales_manager'].includes(CU.role);
+
+  // Build section content map
+  const sec={};
+
+  // Stats
   const cards=isManager?[
     {l:'Total Leads',v:total,c:'var(--acc)',bg:'var(--acc-g)'},
     {l:'Hot',v:hot,c:'var(--red)',bg:'var(--red-g)'},
@@ -1150,21 +1236,17 @@ function filtDash(){
     {l:'SPK',v:spk,c:'var(--grn)',bg:'var(--grn-g)'},
     {l:'Follow Ups Due',v:fups,c:'var(--org)',bg:'var(--org-g)'}
   ];
+  sec.stats=`<div class="sg">${cards.map(s=>`<div class="sc"><div class="sc-bar" style="background:${s.c}"></div><div class="sc-icon" style="background:${s.bg}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${s.c}" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="sc-v" style="color:${s.c}">${s.v}</div><div class="sc-l">${s.l}</div></div>`).join('')}</div>`;
 
-  let h=`<div class="sg">`;
-  cards.forEach(s=>{h+=`<div class="sc"><div class="sc-bar" style="background:${s.c}"></div><div class="sc-icon" style="background:${s.bg}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${s.c}" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="sc-v" style="color:${s.c}">${s.v}</div><div class="sc-l">${s.l}</div></div>`});
-  h+=`</div>`;
-
-  // Daily check-in card (BM/SM button, Director/Admin overview)
-  h+=renderCheckinCard();
+  // Checkin
+  sec.checkin=renderCheckinCard();
 
   // Charts
   const sc=sts.filter(s=>s!=='LOST').map(s=>({s,c:leads.filter(l=>l.status===s).length}));const mx=Math.max(...sc.map(x=>x.c),1);
   const srcs=G('al_sources');const srcC2=srcs.map(s=>({s,c:leads.filter(l=>l.source===s).length})).filter(x=>x.c>0).sort((a,b)=>b.c-a.c);const mxS=Math.max(...srcC2.map(x=>x.c),1);const srcTotal=srcC2.reduce((a,x)=>a+x.c,0);
-  h+=`<div class="chart-row"><div class="chart-card"><div class="chart-title">Leads by Status</div><div class="bar-chart">${sc.map(x=>`<div class="bar-col"><div class="bar-v" style="color:${sC(x.s)}">${x.c}</div><div class="bar-f" style="height:${(x.c/mx)*100}px;background:${sC(x.s)}"></div><div class="bar-l">${x.s}</div></div>`).join('')}</div></div>
-  <div class="chart-card"><div class="chart-title">Leads by Source <span style="font-weight:400;color:var(--t3)">(${srcTotal} total)</span></div>${srcC2.length?srcC2.map(x=>`<div class="h-bar"><div class="h-bar-label">${x.s}</div><div class="h-bar-track"><div class="h-bar-fill" style="width:${(x.c/mxS)*100}%;background:${srcC(x.s)}"></div></div><div class="h-bar-val">${x.c}</div></div>`).join(''):'<div class="empty-s">No data</div>'}</div></div>`;
+  sec.charts=`<div class="chart-row"><div class="chart-card"><div class="chart-title">Leads by Status</div><div class="bar-chart">${sc.map(x=>`<div class="bar-col"><div class="bar-v" style="color:${sC(x.s)}">${x.c}</div><div class="bar-f" style="height:${(x.c/mx)*100}px;background:${sC(x.s)}"></div><div class="bar-l">${x.s}</div></div>`).join('')}</div></div><div class="chart-card"><div class="chart-title">Leads by Source <span style="font-weight:400;color:var(--t3)">(${srcTotal} total)</span></div>${srcC2.length?srcC2.map(x=>`<div class="h-bar"><div class="h-bar-label">${x.s}</div><div class="h-bar-track"><div class="h-bar-fill" style="width:${(x.c/mxS)*100}%;background:${srcC(x.s)}"></div></div><div class="h-bar-val">${x.c}</div></div>`).join(''):'<div class="empty-s">No data</div>'}</div></div>`;
 
-  // Sales performance (visible to managers)
+  // Sales performance
   if(pViewAll()){
     const users=G('al_users').filter(u=>u.role==='sales'&&u.active);const allL=leads;const today=new Date().toISOString().split('T')[0];
     const perf=users.map(u=>{
@@ -1173,13 +1255,13 @@ function filtDash(){
       return {n:u.fullName,sup:userById(u.supervisorId),t:uLeads.length,s:uLeads.filter(l=>l.status==='SPK').length,td:todayCount};
     }).sort((a,b)=>b.t-a.t);
     const mxP=Math.max(...perf.map(x=>x.t),1);
-    h+=`<div class="chart-card" style="margin-bottom:20px"><div class="chart-title">Sales Performance by Person</div>${perf.map(x=>{
+    sec.perf=`<div class="chart-card" style="margin-bottom:20px"><div class="chart-title">Sales Performance by Person</div>${perf.map(x=>{
       const low=x.td<3;
       return `<div class="h-bar"><div class="h-bar-label"><span style="${low?'color:var(--red);font-weight:700':''}">${x.n}</span>${low?'<span style="font-size:8px;color:var(--red);margin-left:4px">⚠ '+x.td+' today</span>':' <span style="font-size:8px;color:var(--grn)">✓ '+x.td+' today</span>'}<br><span style="font-size:8px;color:var(--t4)">Sup: ${x.sup?x.sup.fullName:'—'}</span></div><div class="h-bar-track"><div class="h-bar-fill" style="width:${(x.t/mxP)*100}%;background:${low?'var(--red)':'var(--acc)'}"></div></div><div class="h-bar-val">${x.t} <span style="color:var(--grn);font-size:9px">${x.s} SPK</span></div></div>`;
     }).join('')}</div>`;
   }
 
-  // Team performance for supervisor
+  // Team performance
   if(CU.role==='supervisor'){
     const teamU=G('al_users').filter(u=>u.supervisorId===CU.id&&u.active);const allL=leads;const today2=new Date().toISOString().split('T')[0];
     const perf=teamU.map(u=>{
@@ -1188,15 +1270,274 @@ function filtDash(){
       return {n:u.fullName,t:uLeads.length,s:uLeads.filter(l=>l.status==='SPK').length,td:todayCount};
     }).sort((a,b)=>b.t-a.t);
     const mxP=Math.max(...perf.map(x=>x.t),1);
-    if(perf.length) h+=`<div class="chart-card" style="margin-bottom:20px"><div class="chart-title">My Team Performance</div>${perf.map(x=>{
+    if(perf.length) sec.team=`<div class="chart-card" style="margin-bottom:20px"><div class="chart-title">My Team Performance</div>${perf.map(x=>{
       const low=x.td<3;
       return `<div class="h-bar"><div class="h-bar-label"><span style="${low?'color:var(--red);font-weight:700':''}">${x.n}</span>${low?'<span style="font-size:8px;color:var(--red);margin-left:4px">⚠ '+x.td+' today</span>':' <span style="font-size:8px;color:var(--grn)">✓ '+x.td+' today</span>'}</div><div class="h-bar-track"><div class="h-bar-fill" style="width:${(x.t/mxP)*100}%;background:${low?'var(--red)':'var(--org)'}"></div></div><div class="h-bar-val">${x.t} <span style="color:var(--grn);font-size:9px">${x.s} SPK</span></div></div>`;
     }).join('')}</div>`;
   }
 
   // Recent leads
-  h+=`<div class="tc"><div class="th"><div class="th-t">Recent Leads</div></div><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th>Source</th><th>Sales</th><th>Supervisor</th><th>Follow Up</th></tr></thead><tbody>${leads.slice(0,10).map(lRow).join('')}</tbody></table></div></div>`;
+  sec.recent=`<div class="tc"><div class="th"><div class="th-t">Recent Leads</div></div><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Car</th><th>Status</th><th>Source</th><th>Sales</th><th>Supervisor</th><th>Follow Up</th></tr></thead><tbody>${leads.slice(0,10).map(lRow).join('')}</tbody></table></div></div>`;
+
+  // Schedule
+  if(isManager||CU.role==='supervisor') sec.schedule=buildDashSchedule();
+
+  // Render in configured order
+  const cfg=getDashConfig();
+  const available=getDashSections();
+  const order=cfg.order.filter(id=>available.find(s=>s.id===id));
+  // Add any new sections not in saved order
+  available.forEach(s=>{if(!order.includes(s.id)) order.push(s.id)});
+
+  let h='';
+  order.forEach(id=>{
+    if(cfg.hidden.includes(id)) return;
+    if(sec[id]) h+=sec[id];
+  });
+
   $('dashBody').innerHTML=h;
+}
+
+function openDashConfig(){if(!['director','admin'].includes(CU.role))return;
+  $('side').classList.remove('open');$('sideOv').classList.add('hidden');
+  const cfg=getDashConfig();
+  const sections=getDashSections();
+  const order=cfg.order.filter(id=>sections.find(s=>s.id===id));
+  sections.forEach(s=>{if(!order.includes(s.id)) order.push(s.id)});
+
+  let items=order.map((id,i)=>{
+    const s=sections.find(x=>x.id===id);if(!s) return '';
+    const hidden=cfg.hidden.includes(id);
+    const isFirst=i===0;const isLast=i===order.length-1;
+    return `<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:${hidden?'var(--bg3)':'#fff'};border:1px solid var(--bdr);border-radius:var(--r);${hidden?'opacity:.5':''}">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <button class="sch-nav-btn" style="padding:2px 8px;font-size:10px;${isFirst?'opacity:.2;pointer-events:none':''}" onclick="dashMoveSection('${id}',-1)">▲</button>
+        <button class="sch-nav-btn" style="padding:2px 8px;font-size:10px;${isLast?'opacity:.2;pointer-events:none':''}" onclick="dashMoveSection('${id}',1)">▼</button>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:700;color:var(--t1)">${s.icon} ${s.title}</div>
+      </div>
+      <label style="position:relative;width:38px;height:22px;flex-shrink:0">
+        <input type="checkbox" ${hidden?'':'checked'} ${s.always?'disabled':''} onchange="dashToggleSection('${id}',this.checked)" style="opacity:0;width:0;height:0">
+        <span style="position:absolute;cursor:${s.always?'not-allowed':'pointer'};top:0;left:0;right:0;bottom:0;background:${hidden?'var(--bdr)':'var(--acc)'};border-radius:22px;transition:.3s"></span>
+        <span style="position:absolute;height:18px;width:18px;left:${hidden?'2':'18'}px;top:2px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span>
+      </label>
+    </div>`;
+  }).join('');
+
+  $('modalC').classList.remove('hidden');
+  $('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md" style="max-width:400px">
+    <div class="md-h"><span class="md-t">⚙ Customize Dashboard</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b">
+      <div style="font-size:11px;color:var(--t4);margin-bottom:10px">Reorder sections with ▲▼ arrows. Toggle visibility with switches.</div>
+      <div id="dashCfgList" style="display:flex;flex-direction:column;gap:6px">${items}</div>
+    </div>
+    <div class="md-f"><button class="btn btn-s" onclick="dashResetConfig()">Reset Default</button><button class="btn btn-p" onclick="closeMd();filtDash()">Done</button></div>
+  </div></div>`;
+}
+
+function dashToggleSection(id,visible){
+  const cfg=getDashConfig();
+  if(visible) cfg.hidden=cfg.hidden.filter(h=>h!==id);
+  else if(!cfg.hidden.includes(id)) cfg.hidden.push(id);
+  saveDashConfig(cfg);
+  openDashConfig();
+}
+
+function dashMoveSection(id,dir){
+  const cfg=getDashConfig();
+  const sections=getDashSections();
+  if(!cfg.order.length) cfg.order=sections.map(s=>s.id);
+  const i=cfg.order.indexOf(id);if(i<0) return;
+  const ni=i+dir;if(ni<0||ni>=cfg.order.length) return;
+  [cfg.order[i],cfg.order[ni]]=[cfg.order[ni],cfg.order[i]];
+  saveDashConfig(cfg);
+  openDashConfig();
+}
+
+function dashResetConfig(){
+  S('al_dash_config',null);
+  closeMd();filtDash();toast('Dashboard reset to default');
+}
+
+/* Sidebar Customization */
+function getAllNavItems(){
+  const canLost=['director','admin','branch_manager','sales_manager'].includes(CU.role);
+  const canPerf=CU.role!=='sales';
+  const canSim=['director','admin','branch_manager','sales_manager','supervisor'].includes(CU.role);
+  const isSup=CU.role==='supervisor';
+  const items=[
+    {id:'dashboard',label:'📊 Dashboard',always:true},
+    {id:'leads',label:'📋 Leads',always:true},
+    {id:'spk',label:'📦 SPK Results'},
+    {id:'dolist',label:'🚚 DO Results'},
+    {id:'lost',label:'💀 Lost Leads',show:canLost},
+    {id:'perf',label:'📈 Sales Performance',show:canPerf},
+    {id:'similar',label:'🔍 Similar Numbers',show:canSim},
+    {id:'schedule',label:'📅 Sales Schedule'},
+    {id:'events',label:'🎯 Activity'},
+    {id:'stock',label:'📦 Stock'},
+    {id:'team',label:'👥 My Team',show:isSup},
+    {id:'users',label:'⚙ Users',show:pUsers()},
+    {id:'settings',label:'🔧 Settings',show:pSettings()}
+  ];
+  return items.filter(i=>i.show===undefined||i.show);
+}
+
+function getSideConfig(){
+  const saved=G('al_side_config');
+  if(saved&&saved.order) return saved;
+  return {order:getAllNavItems().map(i=>i.id),hidden:[]};
+}
+
+function saveSideConfig(cfg){S('al_side_config',cfg);buildNav();go(PAGE)}
+
+function openSideConfig(){if(!['director','admin'].includes(CU.role))return;
+  $('side').classList.remove('open');$('sideOv').classList.add('hidden');
+  const cfg=getSideConfig();
+  const items=getAllNavItems();
+  const order=cfg.order.filter(id=>items.find(i=>i.id===id));
+  items.forEach(i=>{if(!order.includes(i.id)) order.push(i.id)});
+
+  let list=order.map((id,i)=>{
+    const it=items.find(x=>x.id===id);if(!it) return '';
+    const hidden=cfg.hidden.includes(id);
+    const isFirst=i===0;const isLast=i===order.length-1;
+    return `<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:${hidden?'var(--bg3)':'#fff'};border:1px solid var(--bdr);border-radius:var(--r);${hidden?'opacity:.5':''}">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <button class="sch-nav-btn" style="padding:2px 8px;font-size:10px;${isFirst?'opacity:.2;pointer-events:none':''}" onclick="sideMove('${id}',-1)">▲</button>
+        <button class="sch-nav-btn" style="padding:2px 8px;font-size:10px;${isLast?'opacity:.2;pointer-events:none':''}" onclick="sideMove('${id}',1)">▼</button>
+      </div>
+      <div style="flex:1;font-size:12px;font-weight:600;color:var(--t1)">${it.label}</div>
+      <label style="position:relative;width:38px;height:22px;flex-shrink:0">
+        <input type="checkbox" ${hidden?'':'checked'} ${it.always?'disabled':''} onchange="sideToggle('${id}',this.checked)" style="opacity:0;width:0;height:0">
+        <span style="position:absolute;cursor:${it.always?'not-allowed':'pointer'};top:0;left:0;right:0;bottom:0;background:${hidden?'var(--bdr)':'var(--acc)'};border-radius:22px;transition:.3s"></span>
+        <span style="position:absolute;height:18px;width:18px;left:${hidden?'2':'18'}px;top:2px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span>
+      </label>
+    </div>`;
+  }).join('');
+
+  $('modalC').classList.remove('hidden');
+  $('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md" style="max-width:400px">
+    <div class="md-h"><span class="md-t">☰ Customize Sidebar</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b">
+      <div style="font-size:11px;color:var(--t4);margin-bottom:10px">Reorder menu items with ▲▼. Toggle visibility with switches.</div>
+      <div style="display:flex;flex-direction:column;gap:6px">${list}</div>
+    </div>
+    <div class="md-f"><button class="btn btn-s" onclick="sideReset()">Reset Default</button><button class="btn btn-p" onclick="closeMd()">Done</button></div>
+  </div></div>`;
+}
+
+function sideToggle(id,visible){
+  const cfg=getSideConfig();
+  if(visible) cfg.hidden=cfg.hidden.filter(h=>h!==id);
+  else if(!cfg.hidden.includes(id)) cfg.hidden.push(id);
+  saveSideConfig(cfg);openSideConfig();
+}
+
+function sideMove(id,dir){
+  const cfg=getSideConfig();
+  const items=getAllNavItems();
+  if(!cfg.order.length) cfg.order=items.map(i=>i.id);
+  const i=cfg.order.indexOf(id);if(i<0) return;
+  const ni=i+dir;if(ni<0||ni>=cfg.order.length) return;
+  [cfg.order[i],cfg.order[ni]]=[cfg.order[ni],cfg.order[i]];
+  saveSideConfig(cfg);openSideConfig();
+}
+
+function sideReset(){
+  S('al_side_config',null);
+  closeMd();buildNav();go(PAGE);toast('Sidebar reset to default');
+}
+
+function buildDashSchedule(){
+  const schedules=G('al_schedules')||[];
+  const events=G('al_events')||[];
+  const salesUsers=G('al_users').filter(u=>u.role==='sales'&&u.active);
+  if(!salesUsers.length) return '';
+
+  // Get this week Mon-Sun
+  const today=new Date();
+  const todayStr=localDate(today);
+  const weekStart=new Date(today);
+  const dow=weekStart.getDay();
+  weekStart.setDate(weekStart.getDate()-(dow===0?6:dow-1));
+  const week=[];
+  for(let i=0;i<7;i++){const d=new Date(weekStart);d.setDate(d.getDate()+i);week.push(d)}
+
+  const dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+  // Count unassigned per day
+  let totalUnassigned=0;
+  week.forEach(d=>{
+    const ds=localDate(d);
+    salesUsers.forEach(u=>{
+      if(!schedules.find(s=>s.date===ds&&s.username===u.username)) totalUnassigned++;
+    });
+  });
+
+  // Sort users by supervisor
+  const sorted=[...salesUsers].sort((a,b)=>{
+    const sa=a.supervisorId||999;const sb=b.supervisorId||999;
+    if(sa!==sb) return sa-sb;
+    return a.fullName.localeCompare(b.fullName);
+  });
+
+  let h=`<div class="chart-card" style="margin-top:20px;padding:0;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--bdr)">
+      <div>
+        <div class="chart-title" style="margin:0">📅 This Week's Schedule</div>
+        <div style="font-size:10px;color:var(--t4);margin-top:2px">${localDate(week[0])} → ${localDate(week[6])}</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        ${totalUnassigned?`<span style="background:var(--red-g);color:var(--red);font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px">${totalUnassigned} unassigned</span>`:`<span style="background:var(--grn-g);color:var(--grn);font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px">✓ All assigned</span>`}
+        <button class="btn btn-p btn-sm" onclick="go('schedule')" style="font-size:10px">Manage →</button>
+      </div>
+    </div>
+    ${(()=>{const ew=getEvtWarnings();if(!ew.length) return '';let a=`<div style="padding:10px 16px;background:rgba(239,68,68,.04);border-bottom:1px solid rgba(239,68,68,.1)">`;ew.forEach((w,wi)=>{const c=w.event.color||EVT_COLORS[0];const sd=w.days.filter(d=>d.short);a+=`<div style="display:flex;align-items:flex-start;gap:8px;${wi<ew.length-1?'margin-bottom:8px':''}"><div style="font-size:14px;line-height:1">⚠</div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700;color:var(--red)"><span style="color:${c}">🎯 ${w.event.name}</span> — needs ${MIN_STAFF}+ sales</div><div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:3px">${sd.map(d=>{const dn=new Date(d.date).toLocaleDateString('en',{weekday:'short',day:'numeric',month:'short'});return `<span style="font-size:8px;padding:2px 6px;border-radius:4px;background:var(--red-g);color:var(--red);font-weight:600">${dn}: ${d.count}/${MIN_STAFF}</span>`}).join('')}</div></div><button class="btn btn-s btn-sm" onclick="go('schedule')" style="font-size:8px;flex-shrink:0">Fix →</button></div>`});a+=`</div>`;return a})()}
+    <div class="sch-scroll" style="border:none;box-shadow:none;border-radius:0">
+      <div class="sch-grid" style="border:none;border-radius:0;box-shadow:none;min-width:700px">
+        <div class="sch-hdr" style="border-right:1px solid var(--bdr)">Sales</div>`;
+
+  week.forEach((d,i)=>{
+    const ds=localDate(d);
+    const isToday=ds===todayStr;
+    h+=`<div class="sch-hdr" style="${isToday?'background:var(--acc);color:#fff':''}">${dayNames[i]}<br>${d.getDate()}</div>`;
+  });
+
+  sorted.forEach(u=>{
+    const sup=userById(u.supervisorId);
+    h+=`<div class="sch-name-col" style="min-height:50px">
+      <div class="perf-av rc-sales" style="width:20px;height:20px;font-size:7px">${initials(u.fullName)}</div>
+      <div style="min-width:0;overflow:hidden"><div style="white-space:nowrap;text-overflow:ellipsis;overflow:hidden;font-size:10px">${u.fullName}</div></div>
+    </div>`;
+
+    week.forEach(d=>{
+      const ds=localDate(d);
+      const isToday=ds===todayStr;
+      const entry=schedules.find(s=>s.date===ds&&s.username===u.username);
+      const hasShift=entry&&entry.shift;
+      const base=hasShift?BASE_SHIFTS.find(s=>s.id===entry.shift):null;
+      const evt=entry&&entry.eventId?(events.find(e=>e.id===entry.eventId)):null;
+      const unassigned=!hasShift;
+
+      h+=`<div class="sch-cell readonly${isToday?' today':''}" style="min-height:50px;${unassigned?'background:rgba(239,68,68,.04)':''}">`;
+      if(hasShift&&base){
+        const c=base.color;
+        h+=`<div class="sch-shift" style="background:${c}20;color:${c};font-size:9px">${base.icon} ${base.label}</div>`;
+        if(evt){
+          const ec=evt.color||'#7C3AED';
+          h+=`<div style="font-size:8px;color:${ec};font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px">🎯 ${evt.name}</div>`;
+        }
+      }else{
+        h+=`<div style="font-size:9px;color:var(--red);text-align:center;padding:4px 0;opacity:.5">—</div>`;
+      }
+      h+=`</div>`;
+    });
+  });
+
+  h+=`</div></div></div>`;
+  return h;
 }
 
 function lRow(l){
@@ -1531,12 +1872,13 @@ function showPhoneValidation(phone,excludeId){
 
 function checkDupeLive(phone,excludeId){
   const w=$('dupeWarn');if(!w)return;
-  const dupes=findDupes(phone,excludeId);
-  if(!dupes.length){w.innerHTML='';return}
+  if(!phone||phone.length<4){w.innerHTML='';return}
+  fetch(`/api/check-phone?phone=${encodeURIComponent(phone)}&excludeId=${excludeId||0}`,{credentials:'same-origin'}).then(r=>r.json()).then(dupes=>{if(!dupes.length){w.innerHTML='';return}
   w.innerHTML=`<div class="dupe-warn">⚠️ <b>Duplicate found!</b> This phone number already exists:<div>${dupes.map(d=>{
     const u=userByUn(d.createdBy);
     return `<div class="dupe-item"><div><span class="dupe-name">${d.name}</span> — ${d.phone}<br>Status: ${d.status} · Source: ${d.source}</div><div style="text-align:right">${u?u.fullName:d.createdBy}<br><span style="font-size:9px;color:var(--t4)">${d.createdAt}</span></div></div>`;
   }).join('')}</div></div>`;
+  }).catch(()=>{});
 }
 
 function isDupe(leadId){
@@ -1547,11 +1889,9 @@ function isDupe(leadId){
 function saveL(id){
   const name=$('fN').value.trim(),phone=$('fP').value.trim();
   if(!name||!phone){toast('Name & Phone required');return}
-  const dupes=findDupes(phone,id||0);
-  if(dupes.length&&!id){
-    const dupeNames=dupes.map(d=>{const u=userByUn(d.createdBy);return `• ${d.name} (${d.phone}) — by ${u?u.fullName:d.createdBy} [${d.status}]`}).join('\n');
-    if(!confirm(`⚠️ DUPLICATE WARNING\n\nThis phone number already exists:\n\n${dupeNames}\n\nDo you still want to save this lead?`))return;
-  }
+  fetch(`/api/check-phone?phone=${encodeURIComponent(phone)}&excludeId=${id||0}`,{credentials:'same-origin'}).then(r=>r.json()).then(dupes=>{if(dupes.length&&!id){const dn=dupes.map(d=>`• ${d.name} (${d.phone}) — by ${d.salesName||d.createdBy} [${d.status}]`).join('\n');if(!confirm(`⚠️ DUPLICATE\n\n${dn}\n\nStill save?`))return}doSaveL(id,name,phone)}).catch(()=>doSaveL(id,name,phone));
+}
+function doSaveL(id,name,phone){
   const now=new Date().toISOString().split('T')[0];
   const d={name,phone,carType:$('fCT').value,source:$('fSo').value,status:$('fStt').value,date:$('fD').value,followUp:$('fFU').value,notes:$('fNo').value.trim(),updatedAt:now,updatedBy:CU.username};
   let leads=G('al_leads');
@@ -2302,8 +2642,986 @@ function confirmDelU(id){
 }
 
 /* ═══════════════════════════════════════
+   STOCK
+   ═══════════════════════════════════════ */
+const DEFAULT_STOCK_COLORS={'White':'#F8FAFC','Black':'#1E293B','Silver':'#CBD5E1','Grey':'#6B7280','Red':'#EF4444','Blue':'#3B82F6','Green':'#22C55E','Brown':'#92400E','Gold':'#D97706','Orange':'#F97316','Yellow':'#EAB308','Purple':'#A855F7','Navy':'#1E3A5F','Maroon':'#7F1D1D','Beige':'#D2B48C'};
+function getStockColors(){return G('al_stock_colors')||DEFAULT_STOCK_COLORS}
+function isDarkHex(hex){if(!hex)return false;const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return(r*299+g*587+b*114)/1000<100}
+let stkSearch='';
+
+function renderStock(){
+  const canManage=['director','admin','branch_manager','sales_manager'].includes(CU.role);
+  const stock=G('al_stock')||[];
+  const stockMeta=G('al_stock_meta')||{};
+  const lastUpdate=stockMeta.updatedAt?stockMeta.updatedAt:'Never';
+  const updatedBy=stockMeta.updatedBy?userByUn(stockMeta.updatedBy):null;
+
+  $('topA').innerHTML=canManage?`<button class="btn btn-p btn-sm" onclick="openStockForm()">+ Add Stock</button>`:'';
+
+  // Summary counts
+  const totalQty=stock.reduce((a,s)=>a+(s.qty||1),0);
+  const ready=stock.filter(s=>s.availability==='Ready').reduce((a,s)=>a+(s.qty||1),0);
+  const otw=stock.filter(s=>s.availability==='OTW').reduce((a,s)=>a+(s.qty||1),0);
+  const models=[...new Set(stock.map(s=>s.model))];
+
+  let h=`<div class="stk-count">
+    <div class="stk-count-item"><div class="stk-count-v" style="color:var(--acc)">${totalQty}</div><div class="stk-count-l">Total Units</div></div>
+    <div class="stk-count-item"><div class="stk-count-v" style="color:var(--grn)">${ready}</div><div class="stk-count-l">Ready</div></div>
+    <div class="stk-count-item"><div class="stk-count-v" style="color:var(--org)">${otw}</div><div class="stk-count-l">On The Way</div></div>
+    <div class="stk-count-item"><div class="stk-count-v" style="color:var(--pur)">${models.length}</div><div class="stk-count-l">Models</div></div>
+  </div>`;
+
+  // Update info bar
+  h+=`<div class="stk-bar">
+    <div style="flex:1;min-width:0">
+      <div class="stk-bar-info">🕐 Last updated: <strong>${lastUpdate!=='Never'?lastUpdate:'Never'}</strong>${updatedBy?' by <strong>'+updatedBy.fullName+'</strong>':''}</div>
+    </div>
+    <input class="fi" style="max-width:220px;font-size:11px" placeholder="🔍 Search model, type, year, color..." value="${stkSearch}" oninput="stkSearch=this.value;renderStockCards()">
+    <select class="fd" id="stkFilter" onchange="renderStockCards()" style="max-width:150px">
+      <option value="All">All Status</option>
+      <option value="Ready">✅ Ready</option>
+      <option value="OTW">🚚 OTW</option>
+    </select>
+    <select class="fd" id="stkModelFilter" onchange="renderStockCards()" style="max-width:160px">
+      <option value="All">All Models</option>
+      ${models.sort().map(m=>`<option value="${m}">${m}</option>`).join('')}
+    </select>
+  </div>`;
+
+  h+=`<div id="stkBody"></div>`;
+  $('pgC').innerHTML=h;
+  renderStockCards();
+}
+
+function renderStockCards(){
+  let stock=G('al_stock')||[];
+  const canManage=['director','admin','branch_manager','sales_manager'].includes(CU.role);
+  const filter=$('stkFilter')?.value||'All';
+  const modelFilter=$('stkModelFilter')?.value||'All';
+
+  if(filter!=='All') stock=stock.filter(s=>s.availability===filter);
+  if(modelFilter!=='All') stock=stock.filter(s=>s.model===modelFilter);
+  if(stkSearch){
+    const q=stkSearch.toLowerCase();
+    stock=stock.filter(s=>(s.model||'').toLowerCase().includes(q)||(s.type||'').toLowerCase().includes(q)||(s.year||'').toString().includes(q)||(s.color||'').toLowerCase().includes(q));
+  }
+
+  if(!stock.length){
+    $('stkBody').innerHTML=`<div class="empty" style="padding:40px"><div class="empty-i">📦</div><div class="empty-t">No stock found</div><div class="empty-s">${stkSearch||filter!=='All'||modelFilter!=='All'?'Try adjusting filters':'Stock inventory will appear here'}</div></div>`;
+    return;
+  }
+
+  stock.sort((a,b)=>(a.model||'').localeCompare(b.model)||(a.type||'').localeCompare(b.type)||(a.color||'').localeCompare(b.color));
+
+  let h=`<div class="tc" style="margin:0"><div style="overflow-x:auto"><table>
+    <thead><tr><th style="width:30px">#</th><th>Model</th><th>Type</th><th>Year</th><th>Color</th><th>Status</th><th style="text-align:center">Qty</th>${canManage?'<th style="width:60px"></th>':''}</tr></thead><tbody>`;
+  stock.forEach((s,i)=>{
+    const colorHex=getStockColors()[s.color]||'#CBD5E1';
+    const isDark=isDarkHex(colorHex);
+    const qty=s.qty||1;
+    h+=`<tr>
+      <td style="font-size:10px;color:var(--t4)">${i+1}</td>
+      <td style="font-weight:700">${s.model||'—'}</td>
+      <td>${s.type||'—'}</td>
+      <td>${s.year||'—'}</td>
+      <td><div style="display:flex;align-items:center;gap:6px"><div style="width:14px;height:14px;border-radius:50%;background:${colorHex};border:2px solid ${isDark?colorHex:'var(--bdr)'};flex-shrink:0"></div>${s.color||'—'}</div></td>
+      <td><span class="stk-badge ${s.availability==='Ready'?'ready':'otw'}">${s.availability==='Ready'?'✅ Ready':'🚚 OTW'}</span></td>
+      <td style="text-align:center;font-weight:800;font-size:14px">${qty}</td>
+      ${canManage?`<td><div style="display:flex;gap:3px"><button class="abtn" onclick="openStockForm(${s.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="abtn del" onclick="delStock(${s.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td>`:''}</tr>`;
+  });
+  h+=`</tbody></table></div></div>`;
+  $('stkBody').innerHTML=h;
+}
+
+function openStockForm(id){
+  const canManage=['director','admin','branch_manager','sales_manager'].includes(CU.role);
+  if(!canManage) return;
+  const stock=G('al_stock')||[];
+  const s=id?stock.find(x=>x.id===id):null;
+
+  const carTypes=G('al_cartypes')||[];
+  const colorOpts=Object.keys(getStockColors());
+  const selColor=s?s.color:'White';
+  const selModel=s?s.model:'';
+  const curYear=new Date().getFullYear();
+  const years=[];for(let y=curYear+1;y>=curYear-5;y--) years.push(y);
+
+  const modelBtns=carTypes.map(m=>{
+    const sel=selModel===m;
+    return `<button type="button" class="btn btn-sm stkModelBtn" data-model="${m}" onclick="pickStkModel(this)" style="padding:8px 12px;font-size:11px;white-space:nowrap;${sel?'background:var(--acc);color:#fff;border-color:var(--acc)':''}">${m}</button>`;
+  }).join('');
+
+  $('modalC').classList.remove('hidden');
+  $('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md" style="max-width:500px">
+    <div class="md-h"><span class="md-t">${s?'✏️ Edit Stock':'📦 Add Stock'}</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b">
+      <div class="fg"><label class="fl">Model *</label>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;max-height:200px;overflow-y:auto;padding:4px 0">${modelBtns}</div>
+        <input type="hidden" id="stkModel" value="${selModel}">
+      </div>
+      <div class="fr2">
+        <div class="fg"><label class="fl">Year *</label>
+          <select class="fi" id="stkYear">${years.map(y=>`<option value="${y}" ${s&&s.year==y?'selected':(!s&&y===curYear?'selected':'')}>${y}</option>`).join('')}</select>
+        </div>
+        <div class="fg"><label class="fl">Type / Variant</label><input class="fi" id="stkType" value="${s?s.type||'':''}" placeholder="e.g. Luxury, Premium"></div>
+      </div>
+      <div class="fg"><label class="fl">Qty *</label><input class="fi" id="stkQty" type="number" min="1" value="${s?s.qty||1:1}" style="max-width:100px"></div>
+      <div class="fg"><label class="fl">Color *</label>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px" id="stkColorPicker">
+          ${colorOpts.map(c=>{const hex=getStockColors()[c];const isDark=isDarkHex(hex);return `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer" onclick="pickStkColor('${c}')"><div class="stk-color-dot${selColor===c?' sel':''}" style="background:${hex};width:28px;height:28px;${isDark?'border-color:'+hex:''}${selColor===c?';box-shadow:0 0 0 3px var(--acc);border-color:var(--acc)':''}"></div><span style="font-size:7px;color:var(--t4)">${c}</span></div>`}).join('')}
+        </div>
+        <input type="hidden" id="stkColor" value="${selColor}">
+      </div>
+      <div class="fg"><label class="fl">Availability *</label>
+        <div style="display:flex;gap:8px;margin-top:4px">
+          <button class="btn btn-sm stkAvailBtn" data-val="Ready" onclick="pickStkAvail('Ready')" style="flex:1;padding:10px;font-size:12px;${(!s||s.availability==='Ready')?'background:var(--grn);color:#fff;border-color:var(--grn)':''}">✅ Ready</button>
+          <button class="btn btn-sm stkAvailBtn" data-val="OTW" onclick="pickStkAvail('OTW')" style="flex:1;padding:10px;font-size:12px;${s&&s.availability==='OTW'?'background:var(--org);color:#fff;border-color:var(--org)':''}">🚚 On The Way</button>
+        </div>
+        <input type="hidden" id="stkAvail" value="${s?s.availability:'Ready'}">
+      </div>
+    </div>
+    <div class="md-f"><button class="btn btn-s" onclick="closeMd()">Cancel</button><button class="btn btn-p" onclick="saveStock(${id||0})">${s?'Update':'Add'}</button></div>
+  </div></div>`;
+}
+
+function pickStkModel(btn){
+  document.querySelectorAll('.stkModelBtn').forEach(b=>{b.style.background='';b.style.color='';b.style.borderColor=''});
+  btn.style.background='var(--acc)';btn.style.color='#fff';btn.style.borderColor='var(--acc)';
+  $('stkModel').value=btn.dataset.model;
+}
+
+function pickStkColor(color){
+  $('stkColor').value=color;
+  document.querySelectorAll('#stkColorPicker .stk-color-dot').forEach(d=>{
+    const c=d.parentElement.querySelector('span').textContent;
+    if(c===color){d.style.boxShadow='0 0 0 3px var(--acc)';d.style.borderColor='var(--acc)'}
+    else{d.style.boxShadow='';d.style.borderColor=''}
+  });
+}
+
+function pickStkAvail(val){
+  $('stkAvail').value=val;
+  document.querySelectorAll('.stkAvailBtn').forEach(b=>{
+    const v=b.dataset.val;const sel=v===val;
+    if(v==='Ready') b.style.cssText=`flex:1;padding:10px;font-size:12px;${sel?'background:var(--grn);color:#fff;border-color:var(--grn)':''}`;
+    else b.style.cssText=`flex:1;padding:10px;font-size:12px;${sel?'background:var(--org);color:#fff;border-color:var(--org)':''}`;
+  });
+}
+
+function saveStock(id){
+  const model=$('stkModel').value.trim();
+  const type=$('stkType').value.trim();
+  const year=$('stkYear').value;
+  const color=$('stkColor').value;
+  const availability=$('stkAvail').value;
+  const qty=Math.max(1,parseInt($('stkQty').value)||1);
+  if(!model){toast('Select a model');return}
+  if(!color){toast('Color is required');return}
+
+  let stock=G('al_stock')||[];
+  const now=localDate(new Date());
+
+  if(id){
+    // Editing — check if the edited values now match another existing row
+    const match=stock.find(s=>s.id!==id&&s.model===model&&s.type===type&&s.year===year&&s.color===color&&s.availability===availability);
+    if(match){
+      // Merge into existing row
+      match.qty=(match.qty||1)+qty;
+      stock=stock.filter(s=>s.id!==id);
+      toast(`Merged — ${model} ${color} now has ${match.qty} units`);
+    }else{
+      stock=stock.map(s=>s.id===id?{...s,model,type,year,color,availability,qty}:s);
+      toast('Stock updated');
+    }
+  }else{
+    // Adding new — check if same combo exists
+    const match=stock.find(s=>s.model===model&&s.type===type&&s.year===year&&s.color===color&&s.availability===availability);
+    if(match){
+      match.qty=(match.qty||1)+qty;
+      toast(`+${qty} added — ${model} ${color} now has ${match.qty} units`);
+    }else{
+      stock.push({id:Date.now(),model,type,year,color,availability,qty});
+      toast('Stock added');
+    }
+  }
+  S('al_stock',stock);
+  S('al_stock_meta',{updatedAt:now+' '+new Date().toTimeString().slice(0,5),updatedBy:CU.username});
+  closeMd();renderStock();
+}
+
+function delStock(id){
+  $('modalC').classList.remove('hidden');
+  $('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md" style="max-width:360px">
+    <div class="md-h"><span class="md-t">🗑 Delete Stock</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b"><div style="text-align:center;padding:10px 0;color:var(--t2);font-size:13px">Remove this vehicle from stock?</div></div>
+    <div class="md-f"><button class="btn btn-s" onclick="closeMd()">Cancel</button><button class="btn btn-d" onclick="confirmDelStock(${id})">Delete</button></div>
+  </div></div>`;
+}
+
+function confirmDelStock(id){
+  let stock=G('al_stock')||[];
+  stock=stock.filter(s=>s.id!==id);
+  S('al_stock',stock);
+  S('al_stock_meta',{updatedAt:localDate(new Date())+' '+new Date().toTimeString().slice(0,5),updatedBy:CU.username});
+  closeMd();toast('Stock removed');renderStock();
+}
+
+/* ═══════════════════════════════════════
+   ACTIVITY / EVENTS
+   ═══════════════════════════════════════ */
+const EVT_COLORS=['#3B82F6','#EF4444','#22C55E','#F59E0B','#A78BFA','#EC4899','#06B6D4','#F97316'];
+const MIN_STAFF=2;
+
+function getEvtStaffing(evtId){
+  const events=G('al_events')||[];
+  const e=events.find(x=>x.id===evtId);if(!e) return null;
+  const schedules=G('al_schedules')||[];
+  const result={event:e,days:[],totalShort:0,minStaff:99};
+  const start=new Date(e.startDate);const end=new Date(e.endDate);
+  for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
+    const ds=localDate(d);
+    const assigned=schedules.filter(s=>s.date===ds&&s.eventId===evtId);
+    const names=assigned.map(s=>{const u=userByUn(s.username);return u?u.fullName:s.username});
+    const count=assigned.length;
+    const short=count<MIN_STAFF;
+    if(short) result.totalShort++;
+    if(count<result.minStaff) result.minStaff=count;
+    result.days.push({date:ds,count,names,short});
+  }
+  return result;
+}
+
+function getEvtWarnings(){
+  const events=G('al_events')||[];
+  const active=events.filter(e=>e.status!=='suggested');
+  const warnings=[];
+  active.forEach(e=>{
+    const info=getEvtStaffing(e.id);
+    if(info&&info.totalShort>0) warnings.push(info);
+  });
+  return warnings;
+}
+let evtMonth=new Date().getMonth();
+let evtYear=new Date().getFullYear();
+
+function renderEvents(){
+  const canCreate=['director','admin','branch_manager','sales_manager'].includes(CU.role);
+  const canSuggest=CU.role==='supervisor';
+  const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  $('topA').innerHTML=(canCreate||canSuggest)?`<button class="btn btn-p btn-sm" onclick="openEvtForm()">${canSuggest?'💡 Suggest Activity':'+ New Activity'}</button>`:'';
+
+  const events=G('al_events')||[];
+  const monthKey=evtYear+'-'+String(evtMonth+1).padStart(2,'0');
+
+  // Filter events that overlap this month
+  const firstOfMonth=monthKey+'-01';
+  const lastOfMonth=monthKey+'-'+new Date(evtYear,evtMonth+1,0).getDate();
+  const monthEvents=events.filter(e=>{
+    return e.startDate<=lastOfMonth&&e.endDate>=firstOfMonth;
+  });
+
+  let h=`<div class="evt-header">
+    <div class="sch-nav">
+      <button class="sch-nav-btn" onclick="evtPrev()">◀</button>
+      <div class="sch-month">${monthNames[evtMonth]} ${evtYear}</div>
+      <button class="sch-nav-btn" onclick="evtNext()">▶</button>
+      <button class="sch-nav-btn" onclick="evtToday()" style="margin-left:8px">Today</button>
+    </div>
+  </div>`;
+
+  // Calendar grid
+  h+=buildEvtCal(monthEvents);
+
+  // List view below calendar
+  const today=localDate(new Date());
+  const sorted=[...monthEvents].sort((a,b)=>a.startDate.localeCompare(b.startDate));
+  const activeEvts=sorted.filter(e=>e.status!=='suggested');
+  const suggestedEvts=sorted.filter(e=>e.status==='suggested');
+
+  if(activeEvts.length){
+    h+=`<div style="font-size:13px;font-weight:700;color:var(--t1);margin:16px 0 8px">📋 Events This Month</div>`;
+    activeEvts.forEach(e=>{ h+=buildEvtCard(e,today,canCreate); });
+  }
+
+  if(suggestedEvts.length&&(canCreate||canSuggest)){
+    h+=`<div style="font-size:13px;font-weight:700;color:var(--org);margin:16px 0 8px">💡 Suggested by Supervisors</div>`;
+    suggestedEvts.forEach(e=>{ h+=buildEvtCard(e,today,canCreate); });
+  }
+
+  if(!sorted.length){
+    h+=`<div class="empty" style="padding:40px 20px"><div class="empty-i">🎯</div><div class="empty-t">No activities this month</div><div class="empty-s">${canCreate?'Click + New Activity to create one':'Activities will appear here when managers create them'}</div></div>`;
+  }
+
+  $('pgC').innerHTML=h;
+}
+
+function buildEvtCal(monthEvents){
+  const dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const firstDay=new Date(evtYear,evtMonth,1);
+  const lastDay=new Date(evtYear,evtMonth+1,0);
+  const daysInMonth=lastDay.getDate();
+  const today=localDate(new Date());
+
+  let startDow=firstDay.getDay();
+  startDow=startDow===0?6:startDow-1;
+
+  let h=`<div class="evt-cal">`;
+  dayNames.forEach(d=>{h+=`<div class="evt-cal-hdr">${d}</div>`});
+
+  // Padding days before month
+  for(let i=0;i<startDow;i++){
+    const pd=new Date(firstDay);pd.setDate(pd.getDate()-(startDow-i));
+    h+=`<div class="evt-cal-day other"><div class="evt-cal-day-num">${pd.getDate()}</div></div>`;
+  }
+
+  // Actual days
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=evtYear+'-'+String(evtMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const isToday=ds===today;
+    const dayEvts=monthEvents.filter(e=>ds>=e.startDate&&ds<=e.endDate&&e.status!=='suggested');
+
+    h+=`<div class="evt-cal-day${isToday?' today':''}">`;
+    h+=`<div class="evt-cal-day-num">${d}</div>`;
+    dayEvts.slice(0,3).forEach(e=>{
+      const color=e.color||EVT_COLORS[0];
+      h+=`<div class="evt-cal-dot" style="background:${color}20;color:${color}" onclick="openEvtDetail(${e.id})" title="${e.name}">${e.name}</div>`;
+    });
+    if(dayEvts.length>3) h+=`<div style="font-size:6px;color:var(--t4);text-align:center">+${dayEvts.length-3} more</div>`;
+    h+=`</div>`;
+  }
+
+  // Padding days after month
+  const totalCells=startDow+daysInMonth;
+  const remaining=totalCells%7===0?0:7-(totalCells%7);
+  for(let i=1;i<=remaining;i++){
+    h+=`<div class="evt-cal-day other"><div class="evt-cal-day-num">${i}</div></div>`;
+  }
+  h+=`</div>`;
+  return h;
+}
+
+function buildEvtCard(e,today,canEdit){
+  const color=e.color||EVT_COLORS[0];
+  const isSuggested=e.status==='suggested';
+  const startD=new Date(e.startDate);
+  const endD=new Date(e.endDate);
+  const days=Math.round((endD-startD)/86400000)+1;
+  const isActive=e.startDate<=today&&e.endDate>=today;
+  const isUpcoming=e.startDate>today;
+  const isPast=e.endDate<today;
+  const statusLabel=isSuggested?'suggested':isActive?'active':isUpcoming?'upcoming':'completed';
+  const statusText=isSuggested?'💡 Suggested':isActive?'🟢 Active Now':isUpcoming?'🔵 Upcoming':'✅ Completed';
+  const createdByUser=userByUn(e.createdBy);
+
+  let acts='';
+  if(canEdit){
+    acts+=`<button class="abtn" onclick="openEvtForm(${e.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
+    acts+=`<button class="abtn del" onclick="delEvt(${e.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>`;
+    if(isSuggested) acts=`<button class="btn btn-p btn-sm" onclick="approveEvt(${e.id})" style="font-size:9px;padding:3px 8px">✓ Approve</button>`+acts;
+  }
+
+  // Staffing check (skip for suggested/completed)
+  let staffHtml='';
+  if(!isSuggested&&!isPast){
+    const info=getEvtStaffing(e.id);
+    if(info){
+      if(info.totalShort>0){
+        staffHtml+=`<div style="margin-top:8px;padding:8px;border-radius:var(--r);background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15)">
+          <div style="font-size:10px;font-weight:700;color:var(--red);margin-bottom:4px">⚠ Understaffed — need ${MIN_STAFF}+ sales per day</div>
+          <div style="display:flex;flex-wrap:wrap;gap:3px">${info.days.map(d=>{
+            const dayName=new Date(d.date).toLocaleDateString('en',{weekday:'short',day:'numeric'});
+            return d.short?`<span style="font-size:8px;padding:2px 6px;border-radius:4px;background:var(--red-g);color:var(--red);font-weight:600">${dayName}: ${d.count}/${MIN_STAFF}</span>`
+              :`<span style="font-size:8px;padding:2px 6px;border-radius:4px;background:var(--grn-g);color:var(--grn);font-weight:600">${dayName}: ${d.count}✓</span>`;
+          }).join('')}</div>
+        </div>`;
+      }else{
+        staffHtml+=`<div style="margin-top:6px;font-size:9px;color:var(--grn);font-weight:600">✓ All days staffed (${MIN_STAFF}+ sales assigned)</div>`;
+      }
+    }
+  }
+
+  return `<div class="evt-card${isSuggested?' suggested':''}" style="border-left-color:${color}">
+    <div class="evt-card-head">
+      <div style="flex:1;min-width:0">
+        <div class="evt-card-name">${e.name}</div>
+        ${e.location?`<div class="evt-card-loc">📍 ${e.location}</div>`:''}
+        <div class="evt-card-dates">📅 ${e.startDate} → ${e.endDate} <span style="font-size:10px;color:var(--t4);font-weight:400">(${days} day${days>1?'s':''})</span></div>
+        <div class="evt-card-meta">
+          <span class="evt-status ${statusLabel}">${statusText}</span>
+          <span>by ${createdByUser?createdByUser.fullName:e.createdBy}</span>
+        </div>
+        ${staffHtml}
+      </div>
+      <div class="evt-card-acts">${acts}</div>
+    </div>
+  </div>`;
+}
+
+function openEvtForm(id){
+  const canCreate=['director','admin','branch_manager','sales_manager'].includes(CU.role);
+  const canSuggest=CU.role==='supervisor';
+  if(!canCreate&&!canSuggest) return;
+
+  const events=G('al_events')||[];
+  const e=id?events.find(x=>x.id===id):null;
+  const today=localDate(new Date());
+  const isEdit=!!e;
+
+  const colorBtns=EVT_COLORS.map((c,i)=>{
+    const sel=e?e.color===c:i===0;
+    return `<div class="evt-color-opt${sel?' sel':''}" style="background:${c}" onclick="pickEvtColor(this,'${c}')"></div>`;
+  }).join('');
+
+  $('modalC').classList.remove('hidden');
+  $('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md" style="max-width:460px">
+    <div class="md-h"><span class="md-t">${isEdit?'✏️ Edit Activity':canSuggest?'💡 Suggest Activity':'🎯 New Activity'}</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b">
+      <div class="fg"><label class="fl">Event Name *</label><input class="fi" id="evtName" value="${e?e.name:''}" placeholder="e.g. Mall Exhibition Nagoya Hill"></div>
+      <div class="fg"><label class="fl">Location / Venue</label><input class="fi" id="evtLoc" value="${e?e.location||'':''}" placeholder="e.g. Nagoya Hill Mall, Lt. 1"></div>
+      <div class="fr2">
+        <div class="fg"><label class="fl">Start Date *</label><input class="fi" id="evtStart" type="date" value="${e?e.startDate:today}"></div>
+        <div class="fg"><label class="fl">End Date *</label><input class="fi" id="evtEnd" type="date" value="${e?e.endDate:today}"></div>
+      </div>
+      <div class="fg"><label class="fl">Color</label><div class="evt-colors">${colorBtns}</div><input type="hidden" id="evtColor" value="${e?e.color||EVT_COLORS[0]:EVT_COLORS[0]}"></div>
+    </div>
+    <div class="md-f"><button class="btn btn-s" onclick="closeMd()">Cancel</button><button class="btn btn-p" onclick="saveEvt(${id||0})">${isEdit?'Update':canSuggest?'Suggest':'Create'}</button></div>
+  </div></div>`;
+}
+
+function pickEvtColor(el,color){
+  document.querySelectorAll('.evt-color-opt').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+  $('evtColor').value=color;
+}
+
+function saveEvt(id){
+  const name=$('evtName').value.trim();
+  const location=$('evtLoc').value.trim();
+  const startDate=$('evtStart').value;
+  const endDate=$('evtEnd').value;
+  const color=$('evtColor').value;
+  if(!name){toast('Event name required');return}
+  if(!startDate||!endDate){toast('Start and end dates required');return}
+  if(endDate<startDate){toast('End date must be after start date');return}
+
+  const canCreate=['director','admin','branch_manager','sales_manager'].includes(CU.role);
+  const now=localDate(new Date());
+  let events=G('al_events')||[];
+
+  if(id){
+    events=events.map(e=>e.id===id?{...e,name,location,startDate,endDate,color,updatedBy:CU.username,updatedAt:now}:e);
+    toast('Activity updated');
+  }else{
+    events.push({
+      id:Date.now(),name,location,startDate,endDate,color,
+      status:canCreate?'active':'suggested',
+      createdBy:CU.username,createdAt:now
+    });
+    toast(canCreate?'Activity created':'Suggestion submitted');
+  }
+  S('al_events',events);
+  closeMd();renderEvents();
+}
+
+function delEvt(id){
+  $('modalC').classList.remove('hidden');
+  $('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md" style="max-width:360px">
+    <div class="md-h"><span class="md-t">🗑 Delete Activity</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b"><div style="text-align:center;padding:10px 0;color:var(--t2);font-size:13px">Are you sure you want to delete this activity?</div></div>
+    <div class="md-f"><button class="btn btn-s" onclick="closeMd()">Cancel</button><button class="btn btn-d" onclick="confirmDelEvt(${id})">Delete</button></div>
+  </div></div>`;
+}
+
+function confirmDelEvt(id){
+  let events=G('al_events')||[];
+  events=events.filter(e=>e.id!==id);
+  S('al_events',events);
+  closeMd();toast('Activity deleted');renderEvents();
+}
+
+function approveEvt(id){
+  let events=G('al_events')||[];
+  events=events.map(e=>e.id===id?{...e,status:'active',approvedBy:CU.username,approvedAt:localDate(new Date())}:e);
+  S('al_events',events);
+  toast('Activity approved');renderEvents();
+}
+
+function openEvtDetail(id){
+  const events=G('al_events')||[];
+  const e=events.find(x=>x.id===id);if(!e) return;
+  const canEdit=['director','admin','branch_manager','sales_manager','supervisor'].includes(CU.role);
+  const days=Math.round((new Date(e.endDate)-new Date(e.startDate))/86400000)+1;
+  const createdByUser=userByUn(e.createdBy);
+  const color=e.color||EVT_COLORS[0];
+
+  $('modalC').classList.remove('hidden');
+  $('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md" style="max-width:420px">
+    <div class="md-h"><span class="md-t">🎯 Activity Detail</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b">
+      <div style="border-left:4px solid ${color};padding-left:12px;margin-bottom:12px">
+        <div style="font-size:16px;font-weight:700;color:var(--t1)">${e.name}</div>
+        ${e.location?`<div style="font-size:12px;color:var(--t3);margin-top:4px">📍 ${e.location}</div>`:''}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div><div style="font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.5px">Start Date</div><div style="font-size:13px;font-weight:700;color:var(--acc);font-family:'JetBrains Mono',monospace;margin-top:2px">${e.startDate}</div></div>
+        <div><div style="font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.5px">End Date</div><div style="font-size:13px;font-weight:700;color:var(--acc);font-family:'JetBrains Mono',monospace;margin-top:2px">${e.endDate}</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--t3);padding-top:8px;border-top:1px solid var(--bdr)">Duration: ${days} day${days>1?'s':''} · Created by ${createdByUser?createdByUser.fullName:e.createdBy} on ${e.createdAt}</div>
+    </div>
+    <div class="md-f">${canEdit?`<button class="btn btn-s" onclick="closeMd();openEvtForm(${e.id})">✏️ Edit</button>`:''}<button class="btn btn-p" onclick="closeMd()">Close</button></div>
+  </div></div>`;
+}
+
+function evtPrev(){evtMonth--;if(evtMonth<0){evtMonth=11;evtYear--}renderEvents()}
+function evtNext(){evtMonth++;if(evtMonth>11){evtMonth=0;evtYear++}renderEvents()}
+function evtToday(){const t=new Date();evtYear=t.getFullYear();evtMonth=t.getMonth();renderEvents()}
+
+/* ═══════════════════════════════════════
+   SALES SCHEDULE
+   ═══════════════════════════════════════ */
+const BASE_SHIFTS=[
+  {id:'morning',label:'Morning',icon:'☀️',color:'#1D4ED8'},
+  {id:'afternoon',label:'Afternoon',icon:'🌅',color:'#92400E'},
+  {id:'off',label:'Off',icon:'😴',color:'#94A3B8'}
+];
+
+function getShiftOptions(dateStr){
+  const events=G('al_events')||[];
+  const dayEvts=events.filter(e=>e.status!=='suggested'&&dateStr>=e.startDate&&dateStr<=e.endDate);
+  return [...dayEvts.map(e=>({id:'evt_'+e.id,label:e.name,icon:'🎯',color:e.color||'#7C3AED',isEvent:true})),...BASE_SHIFTS];
+}
+
+function getShiftInfo(shiftId){
+  if(!shiftId) return null;
+  const base=BASE_SHIFTS.find(s=>s.id===shiftId);
+  if(base) return base;
+  if(shiftId.startsWith('evt_')){
+    const evtId=Number(shiftId.slice(4));
+    const events=G('al_events')||[];
+    const evt=events.find(e=>e.id===evtId);
+    if(evt) return {id:shiftId,label:evt.name,icon:'🎯',color:evt.color||'#7C3AED',isEvent:true};
+  }
+  return null;
+}
+
+function shiftHtml(entry,big){
+  if(!entry) return '';
+  const base=BASE_SHIFTS.find(s=>s.id===entry.shift);
+  if(!base) return '';
+  const c=base.color;
+  const sz=big?'padding:6px;font-size:12px':'';
+  let h=`<div class="sch-shift" style="background:${c}20;color:${c};${sz}">${base.icon} ${base.label}</div>`;
+  if(entry.eventId){
+    const events=G('al_events')||[];
+    const evt=events.find(e=>e.id===entry.eventId);
+    if(evt){
+      const ec=evt.color||'#7C3AED';
+      h+=`<div style="font-size:${big?'10':'9'}px;color:${ec};font-weight:700;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">🎯 ${evt.name}</div>`;
+    }
+  }
+  return h;
+}
+
+let schYear=new Date().getFullYear();
+let schMonth=new Date().getMonth();
+let schView='month';
+let schWeekStart=null;
+
+function renderSchedule(){
+  $('topA').innerHTML='';
+  const canEdit=['director','admin','branch_manager','sales_manager','supervisor'].includes(CU.role);
+  const allSales=G('al_users').filter(u=>u.role==='sales'&&u.active);
+  const sups=G('al_users').filter(u=>u.role==='supervisor'&&u.active);
+  const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+  // Events this month for activity filter
+  const mk=schYear+'-'+String(schMonth+1).padStart(2,'0');
+  const lm=mk+'-'+new Date(schYear,schMonth+1,0).getDate();
+  const ae=(G('al_events')||[]).filter(e=>e.status!=='suggested'&&e.endDate>=mk+'-01'&&e.startDate<=lm);
+  const evtF=window._schEvtFilter||'All';
+
+  // Activity filter dropdown
+  let actFilterHtml='';
+  if(ae.length&&CU.role!=='sales'){
+    actFilterHtml=`<select class="fd" id="schEvt" onchange="onSchEvtChange()" style="max-width:200px"><option value="All">All Schedule</option>${ae.map(e=>{const c=e.color||'#7C3AED';return `<option value="${e.id}" ${String(evtF)===String(e.id)?'selected':''}>🎯 ${e.name}</option>`}).join('')}</select>`;
+  }
+
+  // Role-based user list
+  let users;
+  let filterHtml='';
+  if(CU.role==='sales'){
+    users=allSales.filter(u=>u.username===CU.username);
+  }else{
+    // SPV, SM+, BM, Director, Admin — all see everyone with supervisor filter
+    users=allSales;
+    filterHtml=`<select class="fd" id="schSup" onchange="renderSchedule()"><option value="All">All Supervisors</option>${sups.map(s=>`<option value="${s.id}">${s.fullName}</option>`).join('')}</select>`;
+  }
+
+  const solo=CU.role==='sales'&&users.length===1;
+
+  let h=`<div class="sch-header"><div class="sch-nav"><button class="sch-nav-btn" onclick="schPrev()">◀</button><div class="sch-month">${monthNames[schMonth]} ${schYear}</div><button class="sch-nav-btn" onclick="schNext()">▶</button><button class="sch-nav-btn" onclick="schToday()" style="margin-left:8px">Today</button></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><div class="sch-view-toggle"><button class="sch-view-btn ${schView==='month'?'act':''}" onclick="schView='month';window._schEvtFilter='All';renderSchedule()">Month</button><button class="sch-view-btn ${schView==='week'?'act':''}" onclick="schSetWeekView()">Week</button></div>${actFilterHtml}${filterHtml}</div></div>`;
+
+  // Activity-focused view or normal view
+  if(evtF!=='All'){
+    const selEvt=ae.find(e=>e.id===Number(evtF));
+    if(selEvt) h+=buildEvtScheduleView(selEvt,users,canEdit,dayNames);
+    else { if(schView==='month') h+=buildMonthGrid(users,canEdit,dayNames,solo); else h+=buildWeekGrid(users,canEdit,dayNames,solo); }
+  }else{
+    if(schView==='month') h+=buildMonthGrid(users,canEdit,dayNames,solo);
+    else h+=buildWeekGrid(users,canEdit,dayNames,solo);
+  }
+
+  let lg=BASE_SHIFTS.map(s=>`<div class="sch-legend-item"><div class="sch-legend-dot" style="background:${s.color}20;border:1px solid ${s.color}"></div>${s.icon} ${s.label}</div>`).join('');
+  lg+=ae.map(e=>{const c=e.color||'#7C3AED';return `<div class="sch-legend-item"><div class="sch-legend-dot" style="background:${c}20;border:1px solid ${c}"></div>🎯 ${e.name}</div>`}).join('');
+  h+=`<div class="sch-legend">${lg}</div>`;
+  const ew=getEvtWarnings().filter(w=>w.event.endDate>=mk+'-01'&&w.event.startDate<=lm);
+  if(ew.length){
+    h+=`<div style="margin-top:10px;padding:10px 14px;border-radius:var(--r2);background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.12)">`;
+    h+=`<div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:8px">⚠ Activities needing more staff (min ${MIN_STAFF} sales per day)</div>`;
+    ew.forEach(w=>{
+      const c=w.event.color||EVT_COLORS[0];
+      const sd=w.days.filter(d=>d.short);
+      h+=`<div style="margin-bottom:6px"><div style="font-size:11px;font-weight:600;color:${c}">🎯 ${w.event.name} <span style="font-weight:400;color:var(--t4)">(${w.event.startDate} → ${w.event.endDate})</span></div>`;
+      h+=`<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:3px">${sd.map(d=>{const dn=new Date(d.date).toLocaleDateString('en',{weekday:'short',day:'numeric'});return `<span style="font-size:9px;padding:2px 8px;border-radius:4px;background:var(--red-g);color:var(--red);font-weight:600">${dn}: ${d.count}/${MIN_STAFF} ${d.names.length?'('+d.names.join(', ')+')':'(none)'}</span>`}).join('')}</div></div>`;
+    });
+    h+=`</div>`;
+  }
+  if(!ae.length) h+=`<div style="margin-top:8px;font-size:11px;color:var(--t4);text-align:center">💡 No activities this month. Create activities in the 🎯 Activity page first, then assign them here.</div>`;
+  $('pgC').innerHTML=h;
+}
+
+function onSchEvtChange(){
+  const v=$('schEvt')?.value||'All';
+  window._schEvtFilter=v;
+  if(v!=='All') schView='week'; // Auto-switch to week when activity selected
+  renderSchedule();
+}
+
+function buildEvtScheduleView(evt,users,canEdit,dayNames){
+  const schedules=G('al_schedules')||[];
+  const c=evt.color||'#7C3AED';
+  const today=localDate(new Date());
+  const supF=document.getElementById('schSup')?.value||'All';
+  const salF=document.getElementById('schSales')?.value||'All';
+  let fu=users;
+  if(supF!=='All') fu=users.filter(u=>u.supervisorId===Number(supF));
+  if(salF!=='All') fu=users.filter(u=>u.username===salF);
+  fu.sort((a,b)=>{const sa=a.supervisorId||999;const sb=b.supervisorId||999;if(sa!==sb) return sa-sb;return a.fullName.localeCompare(b.fullName)});
+
+  // Build date range for this event
+  const evtDays=[];
+  const start=new Date(evt.startDate);const end=new Date(evt.endDate);
+  for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)) evtDays.push(new Date(d));
+
+  // Info banner
+  let h=`<div style="padding:12px 16px;margin-bottom:10px;border-radius:var(--r2);border-left:4px solid ${c};background:${c}08;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <div>
+      <div style="font-size:14px;font-weight:700;color:${c}">🎯 ${evt.name}</div>
+      ${evt.location?`<div style="font-size:11px;color:var(--t3);margin-top:2px">📍 ${evt.location}</div>`:''}
+      <div style="font-size:11px;color:var(--t2);margin-top:2px;font-family:'JetBrains Mono',monospace">${evt.startDate} → ${evt.endDate} (${evtDays.length} days)</div>
+    </div>
+    <div>${(()=>{const info=getEvtStaffing(evt.id);if(!info) return '';return info.totalShort>0?`<span style="background:var(--red-g);color:var(--red);font-size:10px;font-weight:700;padding:4px 10px;border-radius:10px">⚠ ${info.totalShort} day${info.totalShort>1?'s':''} understaffed</span>`:`<span style="background:var(--grn-g);color:var(--grn);font-size:10px;font-weight:700;padding:4px 10px;border-radius:10px">✓ All days staffed</span>`})()}</div>
+  </div>`;
+
+  // Grid showing only the event's date range
+  h+=`<div class="sch-scroll"><div class="sch-grid" style="grid-template-columns:140px repeat(${evtDays.length},minmax(80px,1fr));min-width:${140+evtDays.length*80}px">`;
+  h+=`<div class="sch-hdr" style="border-right:1px solid var(--bdr)">Sales Person</div>`;
+  evtDays.forEach(d=>{
+    const ds=localDate(d);
+    const isToday=ds===today;
+    const dow=dayNames[d.getDay()===0?6:d.getDay()-1];
+    const assigned=schedules.filter(s=>s.date===ds&&s.eventId===evt.id).length;
+    const short=assigned<MIN_STAFF;
+    h+=`<div class="sch-hdr" style="${isToday?'background:var(--acc);color:#fff':''}">${dow}<br>${d.getDate()}<br><span style="font-size:9px;font-weight:800;color:${short?(isToday?'#fca5a5':'var(--red)'):(isToday?'#86efac':'var(--grn)')}">${assigned}/${MIN_STAFF}</span></div>`;
+  });
+
+  fu.forEach(u=>{
+    const sup=userById(u.supervisorId);
+    h+=`<div class="sch-name-col"><div class="perf-av rc-sales" style="width:28px;height:28px;font-size:10px">${initials(u.fullName)}</div><div style="min-width:0;overflow:hidden"><div style="white-space:nowrap;text-overflow:ellipsis;overflow:hidden">${u.fullName}</div>${sup?`<div style="font-size:9px;color:var(--t4);white-space:nowrap">${sup.fullName}</div>`:''}</div></div>`;
+
+    evtDays.forEach(d=>{
+      const ds=localDate(d);
+      const isToday=ds===today;
+      const entry=schedules.find(s=>s.date===ds&&s.username===u.username);
+      const isAssigned=entry&&entry.eventId===evt.id;
+      const hasOther=entry&&entry.shift&&!isAssigned;
+
+      h+=`<div class="sch-cell${isToday?' today':''}${!canEdit?' readonly':''}" ${canEdit?`onclick="schClick('${ds}','${u.username}')"`:''} style="min-height:60px;${isAssigned?`background:${c}10;border-left:2px solid ${c}`:hasOther?'opacity:.6':''}">`;
+      if(entry&&entry.shift){
+        h+=shiftHtml(entry,false);
+      }else{
+        h+=`<div style="font-size:9px;color:var(--t4);text-align:center;padding:6px 0;opacity:.4">—</div>`;
+      }
+      h+=`</div>`;
+    });
+  });
+  h+=`</div></div><div class="sch-swipe-hint">← Swipe to see more →</div>`;
+  return h;
+}
+
+function buildMonthGrid(users,canEdit,dayNames,solo){
+  const schedules=G('al_schedules')||[];const firstDay=new Date(schYear,schMonth,1);const lastDay=new Date(schYear,schMonth+1,0);
+  let startDow=firstDay.getDay();startDow=startDow===0?6:startDow-1;
+  const weeks=[];let cd=new Date(firstDay);cd.setDate(cd.getDate()-startDow);
+  while(cd<=lastDay||cd.getDay()!==1){const wd=[];for(let d=0;d<7;d++){wd.push(new Date(cd));cd.setDate(cd.getDate()+1)}weeks.push(wd);if(cd>lastDay&&cd.getDay()===1) break}
+  const today=localDate(new Date());const supF=document.getElementById('schSup')?.value||'All';const salF=document.getElementById('schSales')?.value||'All';
+  let fu=users;
+  if(supF!=='All') fu=users.filter(u=>u.supervisorId===Number(supF));
+  if(salF!=='All') fu=users.filter(u=>u.username===salF);
+  fu.sort((a,b)=>{const sa=a.supervisorId||999;const sb=b.supervisorId||999;if(sa!==sb) return sa-sb;return a.fullName.localeCompare(b.fullName)});
+  const gridCols=solo?'repeat(7,1fr)':'150px repeat(7,1fr)';
+  let h='';
+  weeks.forEach((week,wi)=>{
+    h+=`<div class="sch-scroll"><div class="sch-grid${solo?' sch-solo':''}" style="grid-template-columns:${gridCols}">`;
+    if(!solo) h+=`<div class="sch-hdr" style="border-right:1px solid var(--bdr)">Sales Person</div>`;
+    week.forEach(d=>{const ds=localDate(d);h+=`<div class="sch-hdr" style="${ds===today?'background:var(--acc);color:#fff':''}${d.getMonth()!==schMonth?';opacity:.4':''}">${dayNames[d.getDay()===0?6:d.getDay()-1]}<br>${d.getDate()}</div>`});
+    fu.forEach(u=>{
+      const sup=userById(u.supervisorId);
+      if(!solo) h+=`<div class="sch-name-col"><div class="perf-av rc-sales" style="width:28px;height:28px;font-size:10px">${initials(u.fullName)}</div><div style="min-width:0;overflow:hidden"><div style="white-space:nowrap;text-overflow:ellipsis;overflow:hidden">${u.fullName}</div>${sup?`<div style="font-size:9px;color:var(--t4);white-space:nowrap">${sup.fullName}</div>`:''}</div></div>`;
+      week.forEach(d=>{
+        const ds=localDate(d);const entry=schedules.find(s=>s.date===ds&&s.username===u.username);
+        
+        h+=`<div class="sch-cell${ds===today?' today':''}${!canEdit?' readonly':''}" ${canEdit?`onclick="schClick('${ds}','${u.username}')"`:''} style="${d.getMonth()!==schMonth?'opacity:.35':''}${solo?';min-height:72px':''}">`;
+        if(entry&&entry.shift) h+=shiftHtml(entry,solo);h+=`</div>`;
+      });
+    });
+    h+=`</div></div>`;if(wi<weeks.length-1) h+=`<div style="height:6px"></div>`;
+  });
+  if(!solo) h+=`<div class="sch-swipe-hint">← Swipe to see more →</div>`;
+  return h;
+}
+
+function buildWeekGrid(users,canEdit,dayNames,solo){
+  const schedules=G('al_schedules')||[];const today=new Date();
+  if(!schWeekStart){schWeekStart=new Date(schYear,schMonth,1);const dow=schWeekStart.getDay();schWeekStart.setDate(schWeekStart.getDate()-(dow===0?6:dow-1))}
+  const week=[];const d=new Date(schWeekStart);for(let i=0;i<7;i++){week.push(new Date(d));d.setDate(d.getDate()+1)}
+  const todayStr=localDate(today);const supF=document.getElementById('schSup')?.value||'All';const salF=document.getElementById('schSales')?.value||'All';
+  let fu=users;
+  if(supF!=='All') fu=users.filter(u=>u.supervisorId===Number(supF));
+  if(salF!=='All') fu=users.filter(u=>u.username===salF);
+  fu.sort((a,b)=>{const sa=a.supervisorId||999;const sb=b.supervisorId||999;if(sa!==sb) return sa-sb;return a.fullName.localeCompare(b.fullName)});
+  const gridCols=solo?'repeat(7,1fr)':'150px repeat(7,1fr)';
+  let h=`<div class="sch-scroll"><div class="sch-grid${solo?' sch-solo':''}" style="grid-template-columns:${gridCols}">`;
+  if(!solo) h+=`<div class="sch-hdr" style="border-right:1px solid var(--bdr)">Sales Person</div>`;
+  week.forEach(d=>{const ds=localDate(d);const mon=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];h+=`<div class="sch-hdr" style="${ds===todayStr?'background:var(--acc);color:#fff':''}">${dayNames[d.getDay()===0?6:d.getDay()-1]}<br>${d.getDate()} ${mon}</div>`});
+  fu.forEach(u=>{
+    const sup=userById(u.supervisorId);
+    if(!solo) h+=`<div class="sch-name-col"><div class="perf-av rc-sales" style="width:28px;height:28px;font-size:10px">${initials(u.fullName)}</div><div style="min-width:0;overflow:hidden"><div style="white-space:nowrap;text-overflow:ellipsis;overflow:hidden">${u.fullName}</div>${sup?`<div style="font-size:9px;color:var(--t4);white-space:nowrap">${sup.fullName}</div>`:''}</div></div>`;
+    week.forEach(d=>{
+      const ds=localDate(d);const entry=schedules.find(s=>s.date===ds&&s.username===u.username);
+      
+      h+=`<div class="sch-cell${ds===todayStr?' today':''}${!canEdit?' readonly':''}" ${canEdit?`onclick="schClick('${ds}','${u.username}')"`:''} style="min-height:${solo?'80':'64'}px">`;
+      if(entry&&entry.shift) h+=shiftHtml(entry,true);h+=`</div>`;
+    });
+  });
+  h+=`</div></div>`;
+  if(!solo) h+=`<div class="sch-swipe-hint">← Swipe to see more →</div>`;
+  return h;
+}
+
+function schClick(date,username){
+  const canEdit=['director','admin','branch_manager','sales_manager','supervisor'].includes(CU.role);if(!canEdit) return;
+  const schedules=G('al_schedules')||[];const existing=schedules.find(s=>s.date===date&&s.username===username);
+  const u=userByUn(username);const sup=u?userById(u.supervisorId):null;
+  const dayLabel=new Date(date).toLocaleDateString('en',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const events=G('al_events')||[];
+  const dayEvts=events.filter(e=>e.status!=='suggested'&&date>=e.startDate&&date<=e.endDate);
+
+  const curShift=existing?existing.shift:'';
+  const curEvtId=existing?existing.eventId||'':'';
+
+  // Base shift buttons
+  let shiftBtns=BASE_SHIFTS.map(s=>{
+    const sel=curShift===s.id;const c=s.color;
+    return `<button class="btn btn-sm sch-pick-shift" data-shift="${s.id}" style="flex:1;padding:10px 6px;font-size:11px;${sel?`background:${c};color:#fff;border-color:${c}`:`background:${c}15;border:1px solid ${c}40;color:${c}`}" onclick="schPickShift('${s.id}','${date}','${username}')">${s.icon} ${s.label}</button>`;
+  }).join('');
+
+  // Activity buttons
+  let actBtns='';
+  if(dayEvts.length){
+    actBtns=dayEvts.map(e=>{
+      const sel=curEvtId===e.id;const c=e.color||'#7C3AED';
+      return `<button class="btn btn-sm sch-pick-evt" data-evt="${e.id}" style="width:100%;padding:10px 12px;font-size:12px;text-align:left;${sel?`background:${c};color:#fff;border-color:${c}`:`background:${c}15;border:1px solid ${c}40;color:${c}`}" onclick="schPickEvt(${e.id})">🎯 ${e.name}</button>`;
+    }).join('');
+  }
+
+  const showActs=curShift&&curShift!=='off'&&dayEvts.length;
+
+  $('modalC').classList.remove('hidden');
+  $('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md" style="max-width:420px">
+    <div class="md-h"><span class="md-t">📅 Set Shift</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b">
+      <div style="text-align:center;margin-bottom:14px">
+        <div style="font-size:15px;font-weight:700;color:var(--t1)">${u?u.fullName:username}</div>
+        ${sup?`<div style="font-size:11px;color:var(--t4);margin-top:2px">Supervisor: ${sup.fullName}</div>`:''}
+        <div style="font-size:12px;color:var(--acc);margin-top:4px;font-weight:600">${dayLabel}</div>
+      </div>
+      <div style="font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">1. Regular Shift</div>
+      <div style="display:flex;gap:6px;margin-bottom:14px">${shiftBtns}</div>
+      <div id="schActSection" style="${showActs?'':'display:none'}">
+        <div style="font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">2. Activity Assignment</div>
+        <div style="display:flex;flex-direction:column;gap:6px" id="schActBtns">${actBtns}</div>
+        ${!dayEvts.length?`<div style="font-size:11px;color:var(--t4);text-align:center;padding:10px 0">No activities on this date</div>`:''}
+      </div>
+      <input type="hidden" id="schSelShift" value="${curShift}">
+      <input type="hidden" id="schSelEvt" value="${curEvtId}">
+    </div>
+    <div class="md-f">
+      ${existing?`<button class="btn btn-s btn-sm" onclick="schClear('${date}','${username}')" style="color:var(--red);margin-right:auto">✕ Clear</button>`:'<div></div>'}
+      <button class="btn btn-s" onclick="closeMd()">Cancel</button>
+      <button class="btn btn-p" onclick="schSave('${date}','${username}')">Save</button>
+    </div>
+  </div></div>`;
+}
+
+function schPickShift(shiftId,date,username){
+  $('schSelShift').value=shiftId;
+  // Highlight selected shift
+  document.querySelectorAll('.sch-pick-shift').forEach(b=>{
+    const s=BASE_SHIFTS.find(x=>x.id===b.dataset.shift);if(!s) return;
+    const sel=b.dataset.shift===shiftId;const c=s.color;
+    b.style.background=sel?c:`${c}15`;b.style.color=sel?'#fff':c;b.style.borderColor=sel?c:`${c}40`;
+  });
+  // Show/hide activity section
+  const actSec=$('schActSection');
+  if(shiftId==='off'){
+    actSec.style.display='none';
+    $('schSelEvt').value='';
+    // Clear activity highlights
+    document.querySelectorAll('.sch-pick-evt').forEach(b=>{
+      const evts=G('al_events')||[];const e=evts.find(x=>x.id===Number(b.dataset.evt));
+      if(e){const c=e.color||'#7C3AED';b.style.background=`${c}15`;b.style.color=c;b.style.borderColor=`${c}40`}
+    });
+  }else{
+    const events=G('al_events')||[];
+    const dayEvts=events.filter(e=>e.status!=='suggested'&&date>=e.startDate&&date<=e.endDate);
+    actSec.style.display=dayEvts.length?'':'none';
+  }
+}
+
+function schPickEvt(evtId){
+  const cur=$('schSelEvt').value;
+  const newVal=Number(cur)===evtId?'':evtId; // Toggle
+  $('schSelEvt').value=newVal;
+  // Highlight
+  document.querySelectorAll('.sch-pick-evt').forEach(b=>{
+    const eid=Number(b.dataset.evt);const sel=eid===Number(newVal);
+    const evts=G('al_events')||[];const e=evts.find(x=>x.id===eid);
+    if(e){const c=e.color||'#7C3AED';b.style.background=sel?c:`${c}15`;b.style.color=sel?'#fff':c;b.style.borderColor=sel?c:`${c}40`}
+  });
+}
+
+function schSave(date,username){
+  const shift=$('schSelShift').value;
+  if(!shift){toast('Select a shift first');return}
+  const eventId=shift==='off'?null:($('schSelEvt').value?Number($('schSelEvt').value):null);
+  let schedules=G('al_schedules')||[];
+  schedules=schedules.filter(s=>!(s.date===date&&s.username===username));
+  schedules.push({date,username,shift,eventId,setBy:CU.username,setAt:new Date().toISOString()});
+  S('al_schedules',schedules);closeMd();renderSchedule();
+}
+
+function schSet(date,username,shiftId){
+  let schedules=G('al_schedules')||[];
+  schedules=schedules.filter(s=>!(s.date===date&&s.username===username));
+  schedules.push({date,username,shift:shiftId,eventId:null,setBy:CU.username,setAt:new Date().toISOString()});
+  S('al_schedules',schedules);closeMd();renderSchedule();
+}
+function schClear(date,username){
+  let schedules=G('al_schedules')||[];
+  schedules=schedules.filter(s=>!(s.date===date&&s.username===username));
+  S('al_schedules',schedules);closeMd();renderSchedule();
+}
+function schPrev(){if(schView==='week'&&schWeekStart){schWeekStart.setDate(schWeekStart.getDate()-7);schMonth=schWeekStart.getMonth();schYear=schWeekStart.getFullYear()}else{schMonth--;if(schMonth<0){schMonth=11;schYear--}}renderSchedule()}
+function schNext(){if(schView==='week'&&schWeekStart){schWeekStart.setDate(schWeekStart.getDate()+7);schMonth=schWeekStart.getMonth();schYear=schWeekStart.getFullYear()}else{schMonth++;if(schMonth>11){schMonth=0;schYear++}}renderSchedule()}
+function schToday(){const t=new Date();schYear=t.getFullYear();schMonth=t.getMonth();if(schView==='week'){schWeekStart=new Date(t);const dow=schWeekStart.getDay();schWeekStart.setDate(schWeekStart.getDate()-(dow===0?6:dow-1))}renderSchedule()}
+function schSetWeekView(){schView='week';const t=new Date();schWeekStart=new Date(schYear,schMonth,1);const dow=schWeekStart.getDay();schWeekStart.setDate(schWeekStart.getDate()-(dow===0?6:dow-1));if(t.getMonth()===schMonth&&t.getFullYear()===schYear){schWeekStart=new Date(t);const d2=schWeekStart.getDay();schWeekStart.setDate(schWeekStart.getDate()-(d2===0?6:d2-1))}renderSchedule()}
+
+
+/* ═══════════════════════════════════════
    SETTINGS
    ═══════════════════════════════════════ */
+function buildStockColorSettings(){
+  const colors=getStockColors();
+  const entries=Object.entries(colors);
+  let h=`<div class="set-card"><div class="set-title">Stock Colors</div>
+    <div style="font-size:10px;color:var(--t4);margin-bottom:8px">Colors available when adding stock. Tap a color to edit, ✕ to remove.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">`;
+  entries.forEach(([name,hex])=>{
+    const dark=isDarkHex(hex);
+    h+=`<div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:4px 8px 4px 4px">
+      <div style="width:22px;height:22px;border-radius:6px;background:${hex};border:2px solid ${dark?hex:'var(--bdr)'};cursor:pointer" onclick="editStockColor('${name}','${hex}')"></div>
+      <span style="font-size:11px;font-weight:600;color:var(--t2);cursor:pointer" onclick="editStockColor('${name}','${hex}')">${name}</span>
+      <span style="cursor:pointer;opacity:.4;font-size:11px;margin-left:2px" onclick="removeStockColor('${name}')">✕</span>
+    </div>`;
+  });
+  h+=`</div>
+    <div class="add-row">
+      <input class="fi" id="newStkColorName" placeholder="Color name" style="max-width:120px">
+      <input class="fi" id="newStkColorHex" type="color" value="#3B82F6" style="max-width:50px;padding:2px;height:34px;cursor:pointer">
+      <button class="btn btn-p btn-sm" onclick="addStockColor()">+ Add</button>
+    </div>
+  </div>`;
+  return h;
+}
+
+function addStockColor(){
+  const name=$('newStkColorName').value.trim();
+  const hex=$('newStkColorHex').value;
+  if(!name){toast('Enter a color name');return}
+  const colors=getStockColors();
+  if(colors[name]){toast('Color name already exists');return}
+  colors[name]=hex;
+  S('al_stock_colors',colors);
+  renderSets();toast('Color added');
+}
+
+function removeStockColor(name){
+  const colors=getStockColors();
+  if(Object.keys(colors).length<=1){toast('Must have at least 1 color');return}
+  delete colors[name];
+  S('al_stock_colors',colors);
+  renderSets();toast('Color removed');
+}
+
+function editStockColor(name,hex){
+  $('modalC').classList.remove('hidden');
+  $('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md" style="max-width:360px">
+    <div class="md-h"><span class="md-t">🎨 Edit Color</span><button class="md-x" onclick="closeMd()">✕</button></div>
+    <div class="md-b">
+      <div class="fg"><label class="fl">Color Name</label><input class="fi" id="editStkCName" value="${name}"></div>
+      <div class="fg"><label class="fl">Color</label>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+          <input type="color" id="editStkCHex" value="${hex}" style="width:60px;height:40px;padding:2px;cursor:pointer;border-radius:6px;border:1px solid var(--bdr)" oninput="$('editStkCPreview').style.background=this.value;$('editStkCHexLabel').textContent=this.value">
+          <div id="editStkCPreview" style="width:40px;height:40px;border-radius:8px;background:${hex};border:2px solid var(--bdr)"></div>
+          <span id="editStkCHexLabel" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3)">${hex}</span>
+        </div>
+      </div>
+    </div>
+    <div class="md-f"><button class="btn btn-s" onclick="closeMd()">Cancel</button><button class="btn btn-p" onclick="saveEditStockColor('${name}')">Save</button></div>
+  </div></div>`;
+}
+
+function saveEditStockColor(oldName){
+  const newName=$('editStkCName').value.trim();
+  const newHex=$('editStkCHex').value;
+  if(!newName){toast('Name required');return}
+  const colors=getStockColors();
+  if(newName!==oldName){
+    if(colors[newName]){toast('Color name already exists');return}
+    delete colors[oldName];
+    // Update existing stock items
+    let stock=G('al_stock')||[];
+    stock=stock.map(s=>s.color===oldName?{...s,color:newName}:s);
+    S('al_stock',stock);
+  }
+  colors[newName]=newHex;
+  S('al_stock_colors',colors);
+  closeMd();renderSets();toast('Color updated');
+}
+
 function renderSets(){
   if(!pSettings()){$('pgC').innerHTML=`<div class="empty"><div class="empty-t">Access Denied</div></div>`;return}
   $('topA').innerHTML='';
@@ -2362,11 +3680,27 @@ function renderSets(){
     statusHTML+
     sourceHTML+
     mkSec('Car Types','al_cartypes',carTypes,'Vehicle categories at your dealership.')+
-    `<div class="set-card"><div class="set-title">Data</div><div style="display:flex;gap:6px;flex-wrap:wrap">
-      <button class="btn btn-s btn-sm" onclick="expCSV('all')">📥 Export All CSV</button>
-      <button class="btn btn-p btn-sm" onclick="openImportCSV()">📤 Import CSV</button>
-      <button class="btn btn-d btn-sm" onclick="if(confirm('This will log you out and reload. Server data is preserved. To fully reset, contact your administrator.')){doLogout();location.reload()}">⚠ Reset Session</button>
-    </div>
+    buildStockColorSettings()+
+    `<div class="set-card"><div class="set-title">Data Export</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+        <button class="btn btn-p btn-sm" onclick="expAllZip()">📦 Export All (ZIP)</button>
+        <button class="btn btn-s btn-sm" onclick="expCSV('all')">📥 All Leads CSV</button>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+        <button class="btn btn-s btn-sm" onclick="expCSV('leads')">📋 Leads</button>
+        <button class="btn btn-s btn-sm" onclick="expCSV('spk')">📦 SPK</button>
+        <button class="btn btn-s btn-sm" onclick="expCSV('do')">🚚 DO</button>
+        <button class="btn btn-s btn-sm" onclick="expCSV('lost')">💀 Lost</button>
+        <button class="btn btn-s btn-sm" onclick="expPerfCSV()">📈 Performance</button>
+        <button class="btn btn-s btn-sm" onclick="expScheduleCSV()">📅 Schedule</button>
+        <button class="btn btn-s btn-sm" onclick="expEventsCSV()">🎯 Activities</button>
+        <button class="btn btn-s btn-sm" onclick="expUsersCSV()">👥 Users</button>
+      </div>
+      <div class="set-title" style="margin-top:12px">Data Import</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-p btn-sm" onclick="openImportCSV()">📤 Import CSV</button>
+        <button class="btn btn-d btn-sm" onclick="if(confirm('Log out?')){doLogout();location.reload()}">⚠ Reset Everything</button>
+      </div>
     <div style="margin-top:10px;font-size:10px;color:var(--t4);line-height:1.5">
       <strong style="color:var(--t3)">CSV Format:</strong> Name, Phone, Car Type, Source, Lead Date, Status, Follow Up, Notes<br>
       First row must be headers. Phone number is used to detect duplicates.
@@ -2759,6 +4093,188 @@ function expDOZip(){
   }).catch(err=>{
     toast('Export failed: '+err.message);
   });
+}
+
+/* ═══════════════════════════════════════
+   EXPORT — Schedule, Events, Users, All ZIP
+   ═══════════════════════════════════════ */
+function csvEsc(v){const s=String(v??'');if(!s)return '';return s.includes(',')||s.includes('"')||s.includes('\n')?'"'+s.replace(/"/g,'""')+'"':s}
+function csvPhone(v){const s=String(v||'');return s?'="'+s+'"':''}
+function dlCSV(csv,name){
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`CheryBatam_${name}_${localDate(new Date())}.csv`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  toast(name+' CSV exported');
+}
+
+function expScheduleCSV(){
+  const schedules=G('al_schedules')||[];
+  if(!schedules.length){toast('No schedule data');return}
+  let csv='Date,Day,Sales Person,Supervisor,Shift,Activity\n';
+  const dayN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  schedules.sort((a,b)=>a.date.localeCompare(b.date)||a.username.localeCompare(b.username));
+  schedules.forEach(s=>{
+    const u=userByUn(s.username);const sup=u?userById(u.supervisorId):null;
+    const base=BASE_SHIFTS.find(x=>x.id===s.shift);
+    const shiftLabel=base?base.label:s.shift||'';
+    let actName='';
+    if(s.eventId){const events=G('al_events')||[];const evt=events.find(e=>e.id===s.eventId);if(evt) actName=evt.name}
+    const d=new Date(s.date);const dayName=dayN[d.getDay()];
+    csv+=[s.date,dayName,csvEsc(u?u.fullName:s.username),csvEsc(sup?sup.fullName:''),csvEsc(shiftLabel),csvEsc(actName)].join(',')+'\n';
+  });
+  dlCSV(csv,'Schedule');
+}
+
+function expEventsCSV(){
+  const events=G('al_events')||[];
+  if(!events.length){toast('No activity data');return}
+  let csv='Event Name,Location,Start Date,End Date,Duration (Days),Status,Staff Per Day,Created By,Created At\n';
+  events.forEach(e=>{
+    const days=Math.round((new Date(e.endDate)-new Date(e.startDate))/86400000)+1;
+    const info=getEvtStaffing(e.id);
+    const minStaff=info?info.minStaff:0;
+    const createdByUser=userByUn(e.createdBy);
+    csv+=[csvEsc(e.name),csvEsc(e.location||''),e.startDate,e.endDate,days,e.status||'active',minStaff>=99?0:minStaff,csvEsc(createdByUser?createdByUser.fullName:e.createdBy),e.createdAt||''].join(',')+'\n';
+  });
+  dlCSV(csv,'Activities');
+}
+
+function expUsersCSV(){
+  const users=G('al_users')||[];
+  if(!users.length){toast('No user data');return}
+  let csv='Full Name,Username,Role,Supervisor,Status,Created At\n';
+  users.forEach(u=>{
+    const sup=userById(u.supervisorId);
+    csv+=[csvEsc(u.fullName),u.username,rLabel(u.role),csvEsc(sup?sup.fullName:''),u.active?'Active':'Disabled',u.createdAt||''].join(',')+'\n';
+  });
+  dlCSV(csv,'Users');
+}
+
+function expAllZip(){
+  if(typeof JSZip==='undefined'){toast('ZIP library not loaded. Please refresh.');return}
+  toast('Preparing full export...');
+  const zip=new JSZip();
+  const td=localDate(new Date());
+  const esc=csvEsc;const escP=csvPhone;
+
+  // 1. All Leads
+  const allLeads=getVisibleLeads();
+  if(allLeads.length){
+    let csv='Name,Phone,Car Type,Source,Lead Date,Status,Follow Up,Notes,Sales Person,Supervisor,Created At,SPK Date,DO Date,Section\n';
+    allLeads.forEach(l=>{
+      const u=userByUn(l.createdBy);const sup=u?userById(u.supervisorId):null;
+      const section=l.doSection?'DO':l.spkSection?'SPK':l.status==='LOST'?'LOST':'Lead';
+      csv+=[esc(l.name),escP(l.phone),esc(l.carType),esc(l.source),l.date||'',l.status||'',l.followUp||'',esc(l.notes),esc(u?u.fullName:l.createdBy),esc(sup?sup.fullName:''),l.createdAt||'',l.spkDate||'',l.doDate||'',section].join(',')+'\n';
+    });
+    zip.file('Leads_All.csv',csv);
+  }
+
+  // 2. Schedule
+  const schedules=G('al_schedules')||[];
+  if(schedules.length){
+    const dayN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    let csv='Date,Day,Sales Person,Supervisor,Shift,Activity\n';
+    schedules.sort((a,b)=>a.date.localeCompare(b.date));
+    schedules.forEach(s=>{
+      const u=userByUn(s.username);const sup=u?userById(u.supervisorId):null;
+      const base=BASE_SHIFTS.find(x=>x.id===s.shift);
+      let actName='';if(s.eventId){const evts=G('al_events')||[];const evt=evts.find(e=>e.id===s.eventId);if(evt) actName=evt.name}
+      const d=new Date(s.date);
+      csv+=[s.date,dayN[d.getDay()],esc(u?u.fullName:s.username),esc(sup?sup.fullName:''),esc(base?base.label:s.shift||''),esc(actName)].join(',')+'\n';
+    });
+    zip.file('Schedule.csv',csv);
+  }
+
+  // 3. Activities/Events
+  const events=G('al_events')||[];
+  if(events.length){
+    let csv='Event Name,Location,Start Date,End Date,Duration,Status,Min Staff,Created By\n';
+    events.forEach(e=>{
+      const days=Math.round((new Date(e.endDate)-new Date(e.startDate))/86400000)+1;
+      const info=getEvtStaffing(e.id);
+      const createdByUser=userByUn(e.createdBy);
+      csv+=[esc(e.name),esc(e.location||''),e.startDate,e.endDate,days,e.status||'',info?info.minStaff>=99?0:info.minStaff:0,esc(createdByUser?createdByUser.fullName:e.createdBy)].join(',')+'\n';
+    });
+    zip.file('Activities.csv',csv);
+  }
+
+  // 4. Users
+  const users=G('al_users')||[];
+  if(users.length){
+    let csv='Full Name,Username,Role,Supervisor,Status,Created At\n';
+    users.forEach(u=>{
+      const sup=userById(u.supervisorId);
+      csv+=[esc(u.fullName),u.username,rLabel(u.role),esc(sup?sup.fullName:''),u.active?'Active':'Disabled',u.createdAt||''].join(',')+'\n';
+    });
+    zip.file('Users.csv',csv);
+  }
+
+  // 5. Performance
+  const salesUsers=users.filter(u=>u.role==='sales'&&u.active);
+  if(salesUsers.length){
+    const thisYear=String(new Date().getFullYear());
+    let csv='Sales Person,Supervisor,Total Leads,Hot,Warm,Cold,SPK,DO,LOST,SPK This Year\n';
+    salesUsers.forEach(u=>{
+      const sup=userById(u.supervisorId);
+      const uLeads=allLeads.filter(l=>l.createdBy===u.username);
+      csv+=[esc(u.fullName),esc(sup?sup.fullName:''),uLeads.length,
+        uLeads.filter(l=>l.status==='Hot').length,
+        uLeads.filter(l=>l.status==='Warm').length,
+        uLeads.filter(l=>l.status==='Cold').length,
+        uLeads.filter(l=>l.spkSection).length,
+        uLeads.filter(l=>l.doSection).length,
+        uLeads.filter(l=>l.status==='LOST').length,
+        G('al_leads').filter(l=>l.spkSection&&l.date&&l.date.startsWith(thisYear)&&l.createdBy===u.username).length
+      ].join(',')+'\n';
+    });
+    zip.file('Performance.csv',csv);
+  }
+
+  // 6. Activity Log
+  const acts=G('al_activities')||[];
+  if(acts.length){
+    let csv='Lead ID,User,Action,Detail,Date,Time\n';
+    acts.slice(0,5000).forEach(a=>{
+      const au=userByUn(a.user);
+      csv+=[a.leadId,esc(au?au.fullName:a.user),a.action,esc(a.detail),a.date,a.time].join(',')+'\n';
+    });
+    zip.file('Activity_Log.csv',csv);
+  }
+
+  // 7. DO Photos
+  const doLeads=allLeads.filter(l=>l.doSection&&l.doPhoto);
+  if(doLeads.length){
+    const photoFolder=zip.folder('DO_Photos');
+    doLeads.forEach((l,i)=>{
+      const u=userByUn(l.createdBy);
+      const safeName=(l.name||'lead').replace(/[^a-zA-Z0-9 ]/g,'').replace(/\s+/g,'_').slice(0,30);
+      const salesName=(u?u.fullName:'unknown').replace(/[^a-zA-Z0-9 ]/g,'').replace(/\s+/g,'_').slice(0,20);
+      const b64=l.doPhoto.split(',')[1];
+      if(b64) photoFolder.file(`${String(i+1).padStart(3,'0')}_${safeName}_by_${salesName}.jpg`,b64,{base64:true});
+    });
+  }
+
+  // README
+  let readme=`CheryBatam CRM — Full Export\n`;
+  readme+=`Exported: ${td}\n`;
+  readme+=`Exported by: ${CU.fullName} (${rLabel(CU.role)})\n\n`;
+  readme+=`Files included:\n`;
+  readme+=`- Leads_All.csv — All leads (${allLeads.length})\n`;
+  readme+=`- Schedule.csv — Sales schedule (${schedules.length} entries)\n`;
+  readme+=`- Activities.csv — Events/activities (${events.length})\n`;
+  readme+=`- Users.csv — User accounts (${users.length})\n`;
+  readme+=`- Performance.csv — Sales performance (${salesUsers.length} sales)\n`;
+  readme+=`- Activity_Log.csv — Lead activity log (${Math.min(acts.length,5000)} entries)\n`;
+  if(doLeads.length) readme+=`- DO_Photos/ — Delivery photos (${doLeads.length} photos)\n`;
+  zip.file('README.txt',readme);
+
+  zip.generateAsync({type:'blob'}).then(blob=>{
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download=`CheryBatam_FullExport_${td}.zip`;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    toast(`Full export: ${allLeads.length} leads, ${schedules.length} schedules, ${events.length} activities, ${doLeads.length} photos`);
+  }).catch(err=>toast('Export failed: '+err.message));
 }
 
 /* ═══════════════════════════════════════

@@ -62,6 +62,20 @@ function initSchema() {
   db.run(`CREATE TABLE IF NOT EXISTS sim_approved (
     id INTEGER PRIMARY KEY AUTOINCREMENT, groupKey TEXT UNIQUE NOT NULL
   )`);
+  db.run(`CREATE TABLE IF NOT EXISTS schedules (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT NOT NULL, username TEXT NOT NULL, shift TEXT NOT NULL,
+    eventId INTEGER, activity TEXT, setBy TEXT, setAt TEXT,
+    UNIQUE(date, username)
+  )`);
+  db.run(`CREATE TABLE IF NOT EXISTS events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL, location TEXT, startDate TEXT NOT NULL, endDate TEXT NOT NULL,
+    color TEXT, status TEXT DEFAULT 'active',
+    createdBy TEXT, createdAt TEXT,
+    updatedBy TEXT, updatedAt TEXT,
+    approvedBy TEXT, approvedAt TEXT
+  )`);
   db.run(`CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL)`);
   // Add missing columns to existing dbs
   try { db.run('ALTER TABLE leads ADD COLUMN spkSection INTEGER DEFAULT 0'); } catch(e){}
@@ -72,10 +86,39 @@ function initSchema() {
 }
 
 function seedData() {
-  const row = get('SELECT COUNT(*) as c FROM users');
-  if (row && row.c > 0) return;
-  db.run('INSERT INTO users (id,username,password,fullName,role,supervisorId,active,createdAt) VALUES (?,?,?,?,?,?,1,?)',
-    [1,'admin',bcrypt.hashSync('admin123',10),'Nurul Hana','admin',null,'2026-01-01']);
+  const h = pw => bcrypt.hashSync(pw, 10);
+  const defaults = [
+    { id:1, username:'rio',     pw:'123', fullName:'Rio Antonio', role:'director',       supId:null },
+    { id:2, username:'admin',   pw:'123', fullName:'Maria',       role:'admin',          supId:null },
+    { id:3, username:'bm',      pw:'1',   fullName:'Rocky',       role:'branch_manager', supId:null },
+    { id:4, username:'sm',      pw:'1',   fullName:'Rizky',       role:'sales_manager',  supId:null },
+    { id:5, username:'yanwar',  pw:'1',   fullName:'Yanwar',      role:'supervisor',     supId:null },
+    { id:6, username:'sarul',   pw:'1',   fullName:'Sarul',       role:'supervisor',     supId:null },
+    { id:7, username:'chandra', pw:'1',   fullName:'Chandra',     role:'supervisor',     supId:null },
+  ];
+
+  // Ensure each default user exists (by username)
+  defaults.forEach(u => {
+    const existing = get('SELECT id FROM users WHERE username=?', [u.username]);
+    if (!existing) {
+      // Check if the id slot is taken by another user
+      const idTaken = get('SELECT id FROM users WHERE id=?', [u.id]);
+      const useId = idTaken ? null : u.id;
+      if (useId) {
+        db.run('INSERT INTO users (id,username,password,fullName,role,supervisorId,active,createdAt) VALUES (?,?,?,?,?,?,1,?)',
+          [useId, u.username, h(u.pw), u.fullName, u.role, u.supId, '2026-01-01']);
+      } else {
+        db.run('INSERT INTO users (username,password,fullName,role,supervisorId,active,createdAt) VALUES (?,?,?,?,?,1,?)',
+          [u.username, h(u.pw), u.fullName, u.role, u.supId, '2026-01-01']);
+      }
+      console.log(`  ✅ Created user: ${u.username} (${u.role})`);
+    } else {
+      // Update name and role to match defaults
+      db.run('UPDATE users SET fullName=?,role=? WHERE username=?', [u.fullName, u.role, u.username]);
+    }
+  });
+
+  // Ensure settings exist
   const settings = {
     statuses: ['Hot','Warm','Cold','SPK','LOST'],
     sources: ['Walk-in','Social Media','Ads','Referral','Exhibition','Event','Movex'],
@@ -85,7 +128,6 @@ function seedData() {
   };
   Object.entries(settings).forEach(([k, v]) =>
     db.run('INSERT OR IGNORE INTO settings (key,value) VALUES (?,?)', [k, JSON.stringify(v)]));
-  console.log('✅ Admin account created (username: admin)');
 }
 
 module.exports = { getDb, run, get, all, lastId, persist };

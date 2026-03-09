@@ -114,6 +114,11 @@ app.get('/api/sync', auth, (req, res) => {
     al_activities: activities,
     al_checkins: checkins,
     al_sim_approved: simApproved,
+    al_schedules: all('SELECT * FROM schedules ORDER BY date,username'),
+    al_events: all('SELECT * FROM events ORDER BY startDate DESC'),
+    al_stock: JSON.parse((get("SELECT value FROM settings WHERE key='stock'") || {}).value || '[]'),
+    al_stock_meta: JSON.parse((get("SELECT value FROM settings WHERE key='stock_meta'") || {}).value || '{}'),
+    al_stock_colors: JSON.parse((get("SELECT value FROM settings WHERE key='stock_colors'") || {}).value || 'null'),
     al_statuses: settings.statuses || ['Hot','Warm','Cold','SPK','LOST'],
     al_sources: settings.sources || ['Walk-in','Social Media','Ads','Referral','Exhibition','Event','Movex'],
     al_cartypes: settings.carTypes || [],
@@ -243,6 +248,27 @@ app.post('/api/save', auth, (req, res) => {
         }
         break;
       }
+      case 'al_schedules': {
+        run('DELETE FROM schedules');
+        if (Array.isArray(value)) {
+          value.forEach(s => {
+            run('INSERT OR IGNORE INTO schedules (date,username,shift,eventId,activity,setBy,setAt) VALUES (?,?,?,?,?,?,?)',
+              [s.date, s.username, s.shift||'', s.eventId||null, s.activity||'', s.setBy||req.user.username, s.setAt||new Date().toISOString()]);
+          });
+        }
+        break;
+      }
+      case 'al_events': {
+        run('DELETE FROM events');
+        if (Array.isArray(value)) {
+          value.forEach(e => {
+            run('INSERT INTO events (id,name,location,startDate,endDate,color,status,createdBy,createdAt,updatedBy,updatedAt,approvedBy,approvedAt) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              [e.id, e.name, e.location||'', e.startDate, e.endDate, e.color||'', e.status||'active',
+               e.createdBy||req.user.username, e.createdAt||td, e.updatedBy||null, e.updatedAt||null, e.approvedBy||null, e.approvedAt||null]);
+          });
+        }
+        break;
+      }
       case 'al_statuses':
         run('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)', ['statuses', JSON.stringify(value)]);
         break;
@@ -257,6 +283,15 @@ app.post('/api/save', auth, (req, res) => {
         break;
       case 'al_source_colors':
         run('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)', ['sourceColors', JSON.stringify(value)]);
+        break;
+      case 'al_stock':
+        run('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)', ['stock', JSON.stringify(value)]);
+        break;
+      case 'al_stock_meta':
+        run('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)', ['stock_meta', JSON.stringify(value)]);
+        break;
+      case 'al_stock_colors':
+        run('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)', ['stock_colors', JSON.stringify(value)]);
         break;
       // Local-only keys — skip
       case 'al_session':
