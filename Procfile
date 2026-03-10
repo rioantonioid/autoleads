@@ -1,1 +1,4 @@
-web: node server.js
+node_modules/
+db/autolead.db
+.env
+*.log
