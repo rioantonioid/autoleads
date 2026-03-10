@@ -1,4 +1,1 @@
-node_modules/
-db/autolead.db
-.env
-*.log
+web: node server.js
