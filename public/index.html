@@ -2082,7 +2082,6 @@ function doSaveL(id,name,phone,carType,carColor,source,status,date,followUp,note
   const now=new Date().toISOString().split('T')[0];
   const d={name,phone,carType:carType||'',carColor:carColor||'',source:source||'Walk-in',status:status||'Hot',date:date||now,followUp:followUp||'',notes:notes||'',updatedAt:now,updatedBy:CU.username};
   let leads=G('al_leads')||[];
-  let leads=G('al_leads')||[];
   if(id){
     const old=leads.find(l=>Number(l.id)===Number(id));
     leads=leads.map(l=>Number(l.id)===Number(id)?{...l,...d}:l);

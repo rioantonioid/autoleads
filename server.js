@@ -7,15 +7,16 @@ const db = require('./db/database');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy for Hostinger HTTPS
+app.set('trust proxy', 1);
+
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Serve index.html with no-cache
 app.get('/', (req, res) => {
   res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.set('Pragma', 'no-cache');
-  res.set('Expires', '0');
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 0, etag: false }));
@@ -23,7 +24,8 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 0, etag: false 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'autolead-crm-secret-2026',
   resave: false, saveUninitialized: false,
-  cookie: { httpOnly: true, maxAge: 24*60*60*1000 }
+  proxy: true,
+  cookie: { httpOnly: true, maxAge: 24*60*60*1000, secure: false, sameSite: 'lax' }
 }));
 
 const RC = {
@@ -46,10 +48,8 @@ function auth(req, res, next) {
   next();
 }
 
-// Version check
 app.get('/api/version', (req, res) => res.json({ build: '2026-03-14', status: 'ok' }));
 
-// Login
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
@@ -63,19 +63,16 @@ app.post('/api/login', (req, res) => {
 app.post('/api/logout', (req, res) => { req.session.destroy(); res.json({ ok: true }); });
 app.get('/api/me', auth, (req, res) => res.json({ user: req.user }));
 
-// Phone duplicate check
 app.get('/api/check-phone', auth, (req, res) => {
   const phone = req.query.phone || '';
   const excludeId = Number(req.query.excludeId) || 0;
   res.json(db.checkPhone(phone, excludeId));
 });
 
-// Sync — returns all data for frontend
 app.get('/api/sync', auth, (req, res) => {
   res.json(db.getSync(req.user, req.rc));
 });
 
-// Save — receives {key, value} from frontend
 app.post('/api/save', auth, (req, res) => {
   try {
     const { key, value } = req.body;
@@ -88,7 +85,6 @@ app.post('/api/save', auth, (req, res) => {
   }
 });
 
-// Password change
 app.put('/api/me/password', auth, (req, res) => {
   const { currentPassword, newPassword } = req.body;
   if (!newPassword) return res.status(400).json({ error: 'New password required' });
@@ -102,20 +98,17 @@ app.put('/api/me/password', auth, (req, res) => {
   res.json({ ok: true });
 });
 
-// SPA fallback
+app.get('/api/reset-settings', (req, res) => {
+  const fs = require('fs');
+  try { fs.unlinkSync(path.join(__dirname, 'db', 'data.json')); } catch(e) {}
+  delete require.cache[require.resolve('./db/database')];
+  const freshDb = require('./db/database');
+  res.json({ ok: true, cartypes: freshDb.getStore().cartypes?.length });
+});
+
 app.get('*', (req, res) => {
   res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, () => console.log(`\n🚗 Chery Batam CRM running at http://localhost:${PORT}\n   Build: 2026-03-14\n`));
-
-// Force reset settings (delete data.json, re-seed)
-app.get('/api/reset-settings', (req, res) => {
-  const fs = require('fs');
-  const dbPath = path.join(__dirname, 'db', 'data.json');
-  try { fs.unlinkSync(dbPath); } catch(e) {}
-  delete require.cache[require.resolve('./db/database')];
-  const freshDb = require('./db/database');
-  res.json({ ok: true, message: 'Settings reset. Restart app.', cartypes: freshDb.getStore().cartypes?.length });
-});
