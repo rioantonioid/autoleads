@@ -10,7 +10,15 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({limit:'10mb'}));
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve index.html with no-cache headers
+app.get('/', (req, res) => {
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 0, etag: false }));
 app.use(session({
   secret: process.env.SESSION_SECRET || 'autolead-crm-secret-change-this',
   resave: false, saveUninitialized: false,
@@ -18,12 +26,14 @@ app.use(session({
 }));
 
 const RC = {
-  director:       { level:5, viewAll:true, canExport:true, canUsers:true, canSettings:true },
-  admin:          { level:5, viewAll:true, canExport:true, canUsers:true, canSettings:true },
-  branch_manager: { level:4, viewAll:true, canExport:true, canUsers:true, canSettings:true },
-  sales_manager:  { level:3, viewAll:true, canExport:true, canUsers:true, canSettings:true },
-  supervisor:     { level:2, viewAll:false, canExport:false, canUsers:false, canSettings:false },
-  sales:          { level:1, viewAll:false, canExport:false, canUsers:false, canSettings:false },
+  director:            { level:6, viewAll:true, canExport:true, canUsers:true, canSettings:true },
+  director_assistant:  { level:5, viewAll:true, canExport:true, canUsers:true, canSettings:true },
+  branch_manager:      { level:4, viewAll:true, canExport:true, canUsers:true, canSettings:true },
+  sales_manager:       { level:3, viewAll:true, canExport:true, canUsers:true, canSettings:false },
+  admin:               { level:2, viewAll:true, canExport:false, canUsers:false, canSettings:false },
+  trainer:             { level:2, viewAll:true, canExport:false, canUsers:false, canSettings:false },
+  supervisor:          { level:2, viewAll:false, canExport:false, canUsers:false, canSettings:false },
+  sales:               { level:1, viewAll:false, canExport:false, canUsers:false, canSettings:false },
 };
 
 function auth(req, res, next) {
@@ -32,6 +42,11 @@ function auth(req, res, next) {
   if (!user) return res.status(401).json({ error: 'Session invalid' });
   req.user = user; next();
 }
+
+// ══════ VERSION CHECK ══════
+app.get('/api/version', (req, res) => {
+  res.json({ build: '2026-03-10', status: 'ok' });
+});
 
 // ══════ AUTH ══════
 app.post('/api/login', (req, res) => {
@@ -116,6 +131,7 @@ app.get('/api/sync', auth, (req, res) => {
     al_sim_approved: simApproved,
     al_schedules: all('SELECT * FROM schedules ORDER BY date,username'),
     al_events: all('SELECT * FROM events ORDER BY startDate DESC'),
+    al_trainings: JSON.parse((get("SELECT value FROM settings WHERE key='trainings'") || {}).value || '[]'),
     al_stock: JSON.parse((get("SELECT value FROM settings WHERE key='stock'") || {}).value || '[]'),
     al_stock_meta: JSON.parse((get("SELECT value FROM settings WHERE key='stock_meta'") || {}).value || '{}'),
     al_stock_colors: JSON.parse((get("SELECT value FROM settings WHERE key='stock_colors'") || {}).value || 'null'),
@@ -165,16 +181,16 @@ app.post('/api/save', auth, (req, res) => {
         value.forEach(l => {
           const exists = get('SELECT id FROM leads WHERE id=?', [l.id]);
           if (exists) {
-            run(`UPDATE leads SET name=?,phone=?,carType=?,source=?,date=?,status=?,followUp=?,notes=?,createdBy=?,createdAt=?,updatedAt=?,updatedBy=?,spkSection=?,spkDate=?,doSection=?,doDate=?,doPhoto=? WHERE id=?`,
-              [l.name, l.phone, l.carType||'Sedan', l.source||'Walk-in', l.date||td, l.status||'Hot',
+            run(`UPDATE leads SET name=?,phone=?,carType=?,carColor=?,source=?,date=?,status=?,followUp=?,notes=?,createdBy=?,createdAt=?,updatedAt=?,updatedBy=?,spkSection=?,spkDate=?,spkStockAvail=?,doSection=?,doDate=?,doPhoto=? WHERE id=?`,
+              [l.name, l.phone, l.carType||'Sedan', l.carColor||'', l.source||'Walk-in', l.date||td, l.status||'Hot',
                l.followUp||null, l.notes||null, l.createdBy, l.createdAt||td, l.updatedAt||td, l.updatedBy||null,
-               l.spkSection?1:0, l.spkDate||null, l.doSection?1:0, l.doDate||null, l.doPhoto||null, l.id]);
+               l.spkSection?1:0, l.spkDate||null, l.spkStockAvail||null, l.doSection?1:0, l.doDate||null, l.doPhoto||null, l.id]);
           } else {
-            run(`INSERT INTO leads (id,name,phone,carType,source,date,status,followUp,notes,createdBy,createdAt,updatedAt,updatedBy,spkSection,spkDate,doSection,doDate,doPhoto)
-              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-              [l.id, l.name, l.phone, l.carType||'Sedan', l.source||'Walk-in', l.date||td, l.status||'Hot',
+            run(`INSERT INTO leads (id,name,phone,carType,carColor,source,date,status,followUp,notes,createdBy,createdAt,updatedAt,updatedBy,spkSection,spkDate,spkStockAvail,doSection,doDate,doPhoto)
+              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+              [l.id, l.name, l.phone, l.carType||'Sedan', l.carColor||'', l.source||'Walk-in', l.date||td, l.status||'Hot',
                l.followUp||null, l.notes||null, l.createdBy, l.createdAt||td, l.updatedAt||td, l.updatedBy||null,
-               l.spkSection?1:0, l.spkDate||null, l.doSection?1:0, l.doDate||null, l.doPhoto||null]);
+               l.spkSection?1:0, l.spkDate||null, l.spkStockAvail||null, l.doSection?1:0, l.doDate||null, l.doPhoto||null]);
           }
         });
 
@@ -292,6 +308,9 @@ app.post('/api/save', auth, (req, res) => {
         break;
       case 'al_stock_colors':
         run('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)', ['stock_colors', JSON.stringify(value)]);
+        break;
+      case 'al_trainings':
+        run('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)', ['trainings', JSON.stringify(value)]);
         break;
       // Local-only keys — skip
       case 'al_session':
