@@ -769,7 +769,7 @@ const G=k=>{if(k==='al_theme') return JSON.parse(localStorage.getItem('al_theme'
 const S=(k,v)=>{if(k==='al_theme'){localStorage.setItem(k,JSON.stringify(v));return}window._db[k]=v;fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:k,value:v}),credentials:'same-origin'}).catch(()=>{})};
 const $=id=>document.getElementById(id);
 
-const CRM_VERSION=11;let CU=null;let PAGE='dashboard';
+const CRM_VERSION=10;let CU=null;let PAGE='dashboard';
 let spkViewMode='cards';
 let doViewMode='cards';
 
@@ -865,7 +865,8 @@ function initApp(){
   $('sUname').textContent=CU.fullName;
   $('sUrole').className='side-urole rc-'+CU.role;$('sUrole').textContent=rLabel(CU.role);
   $('sUperm').textContent=PERM_DESC[CU.role];
-  buildNav();go(CU.role==='trainer'?'training':'dashboard');if(window._st)clearInterval(window._st);window._st=setInterval(()=>{fetch('/api/sync',{credentials:'same-origin'}).then(r=>r.json()).then(d=>{Object.keys(d).forEach(k=>{if(d[k]!==null&&k!=='al_theme')window._db[k]=d[k]});buildNav()}).catch(()=>{})},30000)}
+  buildNav();go(CU.role==='trainer'?'training':'dashboard');if(window._st)clearInterval(window._st);window._st=setInterval(()=>{fetch('/api/sync',{credentials:'same-origin'}).then(r=>r.json()).then(d=>{Object.keys(d).forEach(k=>{if(d[k]!==null&&k!=='al_theme')window._db[k]=d[k]});buildNav()}).catch(()=>{})},30000);
+}
 
 function buildNav(){
   const leads=getVisibleLeads();const n=leads.filter(l=>!l.spkSection&&!l.doSection&&l.status!=='LOST').length;
@@ -2051,20 +2052,18 @@ function saveL(id){
   const carType=$('fCT').value;
   const carColor=$('fColor').value;
   if(!carType){toast('Car Type is required');return}
-  if(!carColor){toast('Car Color is required — please select a color');return}
-  const dupes=findDupes(phone,id||0);
-  if(dupes.length){
-    if(CU.role==='sales'){
-      toast('This phone number already exists. Duplicate leads are not allowed.');return;
+  if(!carColor){toast('Car Color is required');return}
+  fetch(`/api/check-phone?phone=${encodeURIComponent(phone)}&excludeId=${id||0}`,{credentials:'same-origin'}).then(r=>r.json()).then(dupes=>{
+    if(dupes.length){
+      if(CU.role==='sales'){toast('This phone number already exists. Duplicate leads are not allowed.');return}
+      const dn=dupes.map(d=>`• ${d.name} (${d.phone}) — by ${d.salesName||d.createdBy} [${d.status}]`).join('\n');
+      if(!id){if(!confirm(`⚠️ DUPLICATE\n\n${dn}\n\nStill save?`))return}
+      else{if(!confirm(`⚠️ DUPLICATE\n\nChanging phone creates duplicate:\n\n${dn}\n\nStill save?`))return}
     }
-    if(!id){
-      const dupeNames=dupes.map(d=>{const u=userByUn(d.createdBy);return `• ${d.name} (${d.phone}) — by ${u?u.fullName:d.createdBy} [${d.status}]`}).join('\n');
-      if(!confirm(`⚠️ DUPLICATE WARNING\n\nThis phone number already exists:\n\n${dupeNames}\n\nDo you still want to save this lead?`))return;
-    }else{
-      const dupeNames=dupes.map(d=>{const u=userByUn(d.createdBy);return `• ${d.name} (${d.phone}) — by ${u?u.fullName:d.createdBy} [${d.status}]`}).join('\n');
-      if(!confirm(`⚠️ DUPLICATE WARNING\n\nChanging phone to this number will create a duplicate:\n\n${dupeNames}\n\nDo you still want to save?`))return;
-    }
-  }
+    doSaveL(id,name,phone);
+  }).catch(()=>doSaveL(id,name,phone));
+}
+function doSaveL(id,name,phone){
   const now=new Date().toISOString().split('T')[0];
   const d={name,phone,carType,carColor,source:$('fSo').value,status:$('fStt').value,date:$('fD').value,followUp:$('fFU').value,notes:$('fNo').value.trim(),updatedAt:now,updatedBy:CU.username};
   let leads=G('al_leads');
