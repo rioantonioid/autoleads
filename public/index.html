@@ -823,7 +823,7 @@ function waIcon(phone){const p=waNum(phone);return `<a href="https://wa.me/${p}"
    ═══════════════════════════════════════ */
 function doLogin(){const u=$('loginUser').value.trim(),p=$('loginPass').value;if(!u||!p){$('loginError').textContent='Enter username and password';$('loginError').style.display='block';return}fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p}),credentials:'same-origin'}).then(r=>{if(!r.ok)throw r;return r.json()}).then(()=>syncFromServer()).catch(async e=>{const m=e.json?await e.json().then(j=>j.error).catch(()=>'Failed'):'Error';$('loginError').textContent=m;$('loginError').style.display='block'})}
 function doLogout(){fetch('/api/logout',{method:'POST',credentials:'same-origin'}).catch(()=>{});CU=null;window._db={};$('appWrap').classList.add('hidden');$('loginPage').classList.remove('hidden');$('loginUser').value='';$('loginPass').value='';$('loginError').style.display='none'}
-function syncFromServer(){return fetch('/api/sync',{credentials:'same-origin'}).then(r=>{if(!r.ok)throw r;return r.json()}).then(d=>{Object.keys(d).forEach(k=>{if(d[k]!==null)window._db[k]=d[k]});if(!window._db.al_cartypes||!window._db.al_cartypes.length)window._db.al_cartypes=['Tiggo 8 Comfort','Tiggo 8 Premium','Tiggo Cross Comfort','Tiggo Cross Premium','Tiggo Cross CSH','Chery E5','Chery C5 Z','Chery C5 RZ','Chery C5 CSH','J6 FWD','J6 IWD','J6T FWD','J6T IWD','Omoda GT FWD','Tiggo 9 CSH'];const u=(d.al_users||[]).find(x=>x.id===d.al_session&&x.active);if(!u)throw 0;CU=u;$('loginPage').classList.add('hidden');$('appWrap').classList.remove('hidden');initApp()}).catch(e=>console.warn('Sync:',e))}
+function syncFromServer(){return fetch('/api/sync',{credentials:'same-origin'}).then(r=>{if(!r.ok)throw r;return r.json()}).then(d=>{Object.keys(d).forEach(k=>{if(d[k]!==null)window._db[k]=d[k]});const u=(d.al_users||[]).find(x=>x.id===d.al_session&&x.active);if(!u)throw 0;CU=u;$('loginPage').classList.add('hidden');$('appWrap').classList.remove('hidden');initApp()}).catch(e=>console.warn('Sync:',e))}
 
 function toggleTheme(){
   const isDark=document.body.classList.toggle('dark');
@@ -1672,8 +1672,10 @@ function filt(){
    LEAD FORM
    ═══════════════════════════════════════ */
 function openLF(id){
-  const leads=G('al_leads');const l=id?leads.find(x=>Number(x.id)===Number(id)):null;
-  const sts=G('al_statuses');const srcs=G('al_sources');const cts=G('al_cartypes');
+  const leads=G('al_leads')||[];const l=id?leads.find(x=>Number(x.id)===Number(id)):null;
+  const sts=G('al_statuses')||['Hot','Warm','Cold','SPK','LOST'];
+  const srcs=G('al_sources')||['Walk-in','Social Media','Ads','Referral','Exhibition','Event','Movex'];
+  const cts=G('al_cartypes')||['Tiggo 8 Comfort','Tiggo 8 Premium','Tiggo Cross Comfort','Tiggo Cross Premium','Tiggo Cross CSH','Chery E5','Chery C5 Z','Chery C5 RZ','Chery C5 CSH','J6 FWD','J6 IWD','J6T FWD','J6T IWD','Omoda GT FWD','Tiggo 9 CSH'];
   const td=new Date().toISOString().split('T')[0];
   $('modalC').classList.remove('hidden');
   $('modalC').innerHTML=`<div class="mo" onclick="if(event.target===this)closeMd()"><div class="md">
@@ -1702,7 +1704,7 @@ function addActivity(leadId,action,detail,skipLeadTouch){
   S('al_activities',acts);
   // Touch lead's updatedAt so auto-lost timer resets — but skip if caller handles leads save
   if(!skipLeadTouch&&CU&&CU.username!=='system'){
-    let leads=G('al_leads');if(!leads) return;
+    let leads=G('al_leads')||[];if(!leads) return;
     leads=leads.map(l=>Number(l.id)===Number(leadId)?{...l,updatedAt:today,updatedBy:CU.username}:l);
     S('al_leads',leads);
   }
@@ -1793,7 +1795,7 @@ function confirmSPKDate(id){
 }
 
 function doMoveToSPK(id,spkDate){
-  let leads=G('al_leads');
+  let leads=G('al_leads')||[];
   const lead=leads.find(l=>Number(l.id)===Number(id));
 
   // Auto-decrement stock — exact match (model + color), allow indent (negative)
@@ -1828,7 +1830,7 @@ function doMoveToSPK(id,spkDate){
   buildNav();go(PAGE);
 }
 function moveFromSPK(id){
-  let leads=G('al_leads');
+  let leads=G('al_leads')||[];
   const lead=leads.find(l=>Number(l.id)===Number(id));
   leads=leads.map(l=>Number(l.id)===Number(id)?{...l,spkSection:false}:l);
   S('al_leads',leads);
@@ -1949,7 +1951,7 @@ function confirmDODate(id){
   if(!dt){err.textContent='Delivery Order Date is required';err.style.display='block';return}
   if(!window._doPhoto){err.textContent='Delivery photo is required';err.style.display='block';return}
   closeMd();
-  let leads=G('al_leads');
+  let leads=G('al_leads')||[];
   leads=leads.map(l=>Number(l.id)===Number(id)?{...l,doSection:true,doDate:dt,doPhoto:window._doPhoto}:l);
   S('al_leads',leads);
   addActivity(id,'moved','Moved to DO Results (DO Date: '+dt+') — Photo attached',true);
@@ -2052,25 +2054,35 @@ function isDupe(leadId){
 }
 
 function saveL(id){
+  try{
   const name=$('fN').value.trim(),phone=$('fP').value.trim();
   if(!name||!phone){toast('Name & Phone required');return}
-  const carType=$('fCT').value;const carColor=$('fColor').value;
+  const carType=$('fCT')?$('fCT').value:'';
+  const carColor=$('fColor')?$('fColor').value:'';
   if(!carType){toast('Car Type is required');return}
   if(!carColor){toast('Car Color is required');return}
+  const source=$('fSo')?$('fSo').value:'Walk-in';
+  const status=$('fStt')?$('fStt').value:'Hot';
+  const date=$('fD')?$('fD').value:new Date().toISOString().split('T')[0];
+  const followUp=$('fFU')?$('fFU').value:'';
+  const notes=$('fNo')?$('fNo').value.trim():'';
   fetch(`/api/check-phone?phone=${encodeURIComponent(phone)}&excludeId=${id||0}`,{credentials:'same-origin'}).then(r=>r.json()).then(dupes=>{
     if(dupes.length){
       if(CU.role==='sales'){toast('This phone number already exists.');return}
       const dn=dupes.map(d=>`\u2022 ${d.name} (${d.phone}) \u2014 by ${d.salesName||d.createdBy} [${d.status}]`).join('\n');
       if(!id){if(!confirm(`\u26a0\ufe0f DUPLICATE\n\n${dn}\n\nStill save?`))return}
-      else{if(!confirm(`\u26a0\ufe0f DUPLICATE\n\nChanging phone creates duplicate:\n\n${dn}\n\nStill save?`))return}
+      else{if(!confirm(`\u26a0\ufe0f DUPLICATE\nChanging phone creates duplicate:\n${dn}\nStill save?`))return}
     }
-    doSaveL(id,name,phone);
-  }).catch(()=>doSaveL(id,name,phone));
+    doSaveL(id,name,phone,carType,carColor,source,status,date,followUp,notes);
+  }).catch(e=>{console.warn('Dupe check failed:',e);doSaveL(id,name,phone,carType,carColor,source,status,date,followUp,notes)});
+  }catch(err){console.error('saveL:',err);toast('Error: '+err.message)}
 }
-function doSaveL(id,name,phone){
+function doSaveL(id,name,phone,carType,carColor,source,status,date,followUp,notes){
+  try{
   const now=new Date().toISOString().split('T')[0];
-  const d={name,phone,carType,carColor,source:$('fSo').value,status:$('fStt').value,date:$('fD').value,followUp:$('fFU').value,notes:$('fNo').value.trim(),updatedAt:now,updatedBy:CU.username};
-  let leads=G('al_leads');
+  const d={name,phone,carType:carType||'',carColor:carColor||'',source:source||'Walk-in',status:status||'Hot',date:date||now,followUp:followUp||'',notes:notes||'',updatedAt:now,updatedBy:CU.username};
+  let leads=G('al_leads')||[];
+  let leads=G('al_leads')||[];
   if(id){
     const old=leads.find(l=>Number(l.id)===Number(id));
     leads=leads.map(l=>Number(l.id)===Number(id)?{...l,...d}:l);
@@ -2135,7 +2147,9 @@ function doSaveL(id,name,phone){
     }
   }
   S('al_leads',leads);closeMd();buildNav();go(PAGE);
+  }catch(err){console.error('doSaveL:',err);toast('Error: '+err.message)}
 }
+
 function delL(id){
   id=Number(id);
   closeDt();
@@ -2153,7 +2167,7 @@ function delL(id){
 
 function confirmDelL(id){
   id=Number(id);
-  let leads=G('al_leads');
+  let leads=G('al_leads')||[];
   const lead=leads.find(l=>Number(l.id)===id);
 
   // Restore stock if deleting an SPK lead
@@ -2260,7 +2274,7 @@ function openLD(id){
 }
 function updSt(id,s){
   const now=new Date().toISOString().split('T')[0];
-  let leads=G('al_leads');
+  let leads=G('al_leads')||[];
   const old=leads.find(l=>Number(l.id)===Number(id));
   const oldSt=old?old.status:'';
   leads=leads.map(l=>Number(l.id)===Number(id)?{...l,status:s,updatedAt:now,updatedBy:CU.username}:l);
@@ -2551,7 +2565,7 @@ function bulkDelLost(){
 function confirmBulkDelLost(){
   const input=$('delLostConfirm')?.value?.trim();
   if(input!=='DELETE'){toast('Please type DELETE to confirm');return}
-  let leads=G('al_leads');
+  let leads=G('al_leads')||[];
   const lostIds=leads.filter(l=>l.status==='LOST'&&!l.spkSection&&!l.doSection).map(l=>l.id);
   leads=leads.filter(l=>!lostIds.includes(l.id));
   S('al_leads',leads);
@@ -2601,7 +2615,7 @@ function confirmReassign(id){
   if(!fu){toast('Follow up date required');return}
   const now=new Date().toISOString().split('T')[0];
   const toUser=G('al_users').find(u=>u.username===to);
-  let leads=G('al_leads');
+  let leads=G('al_leads')||[];
   leads=leads.map(l=>Number(l.id)===Number(id)?{...l,status:st,createdBy:to,followUp:fu,updatedAt:now,updatedBy:CU.username}:l);
   S('al_leads',leads);
   addActivity(id,'status','Reassigned from LOST → '+st+' → '+(toUser?toUser.fullName:to)+(note?' — '+note:''),true);
@@ -5071,7 +5085,7 @@ function setAllDupAction(action){
 function executeImport(){
   if(!window._importRows){toast('No data to import');return}
   const rows=window._importRows;
-  let leads=G('al_leads');
+  let leads=G('al_leads')||[];
   const now=new Date().toISOString().split('T')[0];
   let imported=0,skipped=0,overwritten=0;
 
@@ -5398,7 +5412,7 @@ function fuCountdown(followUpDate){
 }
 
 function autoLost(){
-  let leads=G('al_leads');if(!leads||!leads.length) return;
+  let leads=G('al_leads')||[];if(!leads||!leads.length) return;
   const acts=G('al_activities')||[];
   const now=new Date();now.setHours(0,0,0,0);
   const todayStr=localDate(now);
